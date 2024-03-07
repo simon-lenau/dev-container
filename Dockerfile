@@ -2,7 +2,7 @@
 
 ARG ubuntu_packages=""
 
-FROM "r-base:latest"
+FROM "r-ver:latest"
 
 ARG ubuntu_packages
 

@@ -1,11 +1,7 @@
 #!/bin/bash
 source .env.host
+chmod a+rwx dropbear_init
 
-# rm -rf ./dev-container*
-
-# echo "" | ssh-keygen -f ./dev-container
-
-exit 0
 srun \
     --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
     --cpus-per-task=255 \
@@ -13,7 +9,7 @@ srun \
     --mail-type=ALL \
     --mail-user=lenau@cispa.de \
     --partition=r65257773x \
-    --container-image=${gitlab_registry}dev-container:latest \
+    --container-image=${git_registry}dev-container:latest \
     --container-mounts="./dev-container.pub:~/.ssh/authorized_keys:ro,./dropbear_init:/dropbear_init:ro" \
     --no-container-mount-home \
     --container-entrypoint \
