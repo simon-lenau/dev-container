@@ -2,7 +2,7 @@
 
 ARG ubuntu_packages=""
 
-FROM "r-ver:latest"
+FROM "rocker/r-ver:4.3.3"
 
 ARG ubuntu_packages
 
