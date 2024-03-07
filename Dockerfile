@@ -16,7 +16,7 @@ RUN if [ -n "${ubuntu_packages}" ]; then \
     fi; 
 
 RUN chmod u+rwx /download-vs-code-server.sh && \
-    /download-vs-code-server.sh
+    /download-vs-code-server.sh "linux" "x64"
 
 CMD ["/bin/bash"]
 
