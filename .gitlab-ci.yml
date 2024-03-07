@@ -30,4 +30,4 @@ r-container-build:
       --context "./"
       --dockerfile "./Dockerfile"
       --build-arg "ubuntu_packages"="${ubuntu_packages}"
-      --destination "${CI_REGISTRY_IMAGE}/test:latest"
+      --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"
