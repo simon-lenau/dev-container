@@ -11,6 +11,6 @@ r-container-build:
     entrypoint: [""]
     - >-
       /kaniko/executor
-      --context "./"
-      --dockerfile "./Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"
+        --context "./"
+        --dockerfile "./Dockerfile"
+        --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"
