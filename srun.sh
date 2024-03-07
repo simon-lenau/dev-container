@@ -10,7 +10,7 @@ srun \
     --mail-user=lenau@cispa.de \
     --partition=r65257773x \
     --container-image=${git_registry}dev-container:latest \
-    --container-mounts="./dev-container.pub:~/.ssh/authorized_keys:ro,./dropbear_init:/dropbear_init:ro" \
+    --container-mounts="./dev-container.pub:$HOME/.ssh/authorized_keys:ro,./dropbear_init:/dropbear_init:ro" \
     --no-container-mount-home \
     --container-entrypoint \
     --pty bash

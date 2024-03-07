@@ -14,6 +14,8 @@ RUN if [ -n "${ubuntu_packages}" ]; then \
     /install_pkgs "${ubuntu_packages}"; \
     fi; 
 
+RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
+
 CMD ["/bin/bash"]
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
