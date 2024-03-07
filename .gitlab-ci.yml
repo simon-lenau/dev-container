@@ -23,8 +23,8 @@ r-container-build:
       > /kaniko/.docker/config.json
     - >-
       cd ${CI_PROJECT_DIR};
-      export ubuntu_packages=$(cat dependencies/Ubuntu);
-      export r_packages=$(cat dependencies/R)
+      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || echo "");
+      export r_packages=$(cat dependencies/R 2>/dev/null || echo "")
     - >-
       /kaniko/executor
       --context "./"
