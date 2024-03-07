@@ -1,0 +1,16 @@
+variables:
+  r_version: rocker/r-ver:4.3.2
+
+stages:
+  - r-container-build
+
+r-container-build:
+  stage: r-container-build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+    - >-
+      /kaniko/executor
+      --context "./"
+      --dockerfile "./Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"
