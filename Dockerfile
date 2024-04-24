@@ -8,16 +8,32 @@ ARG ubuntu_packages
 
 SHELL ["/bin/bash", "-c"]
 
-COPY install_pkgs /install_pkgs
-COPY download-vs-code-server.sh /download-vs-code-server.sh
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ========================== > Run Build scripts < =========================== #
+
+COPY scripts/build /build_scripts
+
+# ======================= > Install Ubuntu packages < ======================== #
 
 RUN if [ -n "${ubuntu_packages}" ]; then \
-    /install_pkgs "${ubuntu_packages}"; \
+    /build_scripts/install_pkgs "${ubuntu_packages}"; \
     fi; 
 
-RUN chmod u+rwx /download-vs-code-server.sh && \
-    /download-vs-code-server.sh "linux" "x64"
+# ======================== > Install vscode-server < ========================= #
 
-CMD ["/bin/bash"]
+RUN chmod u+rwx /build_scripts/download-vs-code-server && \
+    /build_scripts/download-vs-code-server "linux" "x64"
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
+
+RUN rm -rf /build_scripts
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ========================= > Copy Runtime Scripts < ========================= #
+COPY scripts/run /scripts
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+CMD ["/bin/bash"]

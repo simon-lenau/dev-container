@@ -10,6 +10,7 @@ r-container-build:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
+    # Set gitlab credentials
     - >-
       mkdir -p /kaniko/.docker;
       printf "{
@@ -21,13 +22,16 @@ r-container-build:
               }
       }" \
       > /kaniko/.docker/config.json
+    # Export package lists
     - >-
       cd ${CI_PROJECT_DIR};
       export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || echo "");
       export r_packages=$(cat dependencies/R 2>/dev/null || echo "")
+    # Run Kaniko to build container
     - >-
       /kaniko/executor
       --context "./"
       --dockerfile "./Dockerfile"
       --build-arg "ubuntu_packages"="${ubuntu_packages}"
+      --build-arg "r_packages"="${r_packages}"
       --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"
