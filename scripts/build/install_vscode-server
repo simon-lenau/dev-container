@@ -6,7 +6,7 @@ chmod u+rwx "${current_dir}/download-vs-code-server" &&
     printf -- "Installing vscode-server..." &&
     ${current_dir}/download-vs-code-server ${@} >"${current_dir}/vscode-server.log" 2>&1 &&
     (
-        printf -- "... successful!" &&
+        printf -- "successful!\n" &&
             rm -rf "${current_dir}/vscode-server.log"
     ) ||
     (
