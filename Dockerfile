@@ -22,8 +22,8 @@ RUN if [ -n "${ubuntu_packages}" ]; then \
 
 # ======================== > Install vscode-server < ========================= #
 
-RUN chmod u+rwx /build_scripts/download-vs-code-server && \
-    /build_scripts/download-vs-code-server "linux" "x64"
+RUN chmod u+rwx /build_scripts/install_vscode-server && \
+    /build_scripts/install_vscode-server "linux" "x64"
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
