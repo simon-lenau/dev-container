@@ -3,14 +3,14 @@
 $(
     cd "$(dirname "${BASH_SOURCE[0]}")" &&
         chmod u+rwx ./download-vs-code-server &&
-        printf "Installing vscode-server..." &&
+        echo "Installing vscode-server..." &&
         ./download-vs-code-server >vscode-server.log 2>&1 &&
         (
             echo "... successful!" &&
                 rm -rf vscode-server.log
         ) ||
         (
-            sed -i 's/^/\t/' vscode-server.log && printf "failed:\n" &&
+            sed -i 's/^/\t/' vscode-server.log && echo "failed:\n" &&
                 cat vscode-server.log &&
                 exit 1
         )
