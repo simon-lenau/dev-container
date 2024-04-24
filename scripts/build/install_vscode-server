@@ -3,15 +3,15 @@
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 chmod u+rwx "${current_dir}/download-vs-code-server" &&
-    echo "Installing vscode-server..." &&
+    printf -- "Installing vscode-server..." &&
     ${current_dir}/download-vs-code-server ${@} >"${current_dir}/vscode-server.log" 2>&1 &&
     (
-        echo "... successful!" &&
+        printf -- "... successful!" &&
             rm -rf "${current_dir}/vscode-server.log"
     ) ||
     (
         sed -i 's/^/\t/' "${current_dir}/vscode-server.log" &&
-            echo "failed:\n" &&
+            printf -- "failed:\n" &&
             cat "${current_dir}/vscode-server.log" &&
             exit 1
     )

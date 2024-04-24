@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Attempting to install packages:"
-printf "\t - %s\n" "${@}"
+printf "\t - %s\n" ${@}
 
 (apt-get update -y && apt-get install -y ${@}) >packages.log 2>&1 &&
     (echo "... successful!" && rm -rf packages.log) ||
