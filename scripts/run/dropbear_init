@@ -6,19 +6,21 @@ cd /etc/dropbear
 
 rm -rf ./dropbear_*_host_key
 
-printf \
-    "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJayptaSnR2N
+
+cat <<EOF | openssl base64 -d > /etc/dropbear/dropbear_ecdsa_host_key
+AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJayptaSnR2N
 rZkhqjZjD094aLP9lGlJd8w3nBLlch0fDn86fi/csJxiOGeftXEHLUORppPJ/Aoe
-FDD5OqXLaMkAAAAgMNc4bTnVYG4fKyxPlLmhH4mNDrottcd6fuyHjYgic28=" > \
-    ./dropbear_ecdsa_host_key
+FDD5OqXLaMkAAAAgMNc4bTnVYG4fKyxPlLmhH4mNDrottcd6fuyHjYgic28=
+EOF
 
-printf \
-    "AAAAC3NzaC1lZDI1NTE5AAAAQH850u+svNolmAeJaJ2iFMIDYByKSaYLKpQQZ6/C
-grhcHkb15NY3AVnlz222xKEYxljjwf9SEu8zGvXgxFwFb4k=" > \
-    ./dropbear_ed25519_host_key
 
-printf \
-    "AAAAB3NzaC1yc2EAAAADAQABAAABAQC19PM42kYa4ziHCI9NVeyjCHqqOlpucjTr
+cat <<EOF | openssl base64 -d >/etc/dropbear/dropbear_ed25519_host_key
+AAAAC3NzaC1lZDI1NTE5AAAAQH850u+svNolmAeJaJ2iFMIDYByKSaYLKpQQZ6/C
+grhcHkb15NY3AVnlz222xKEYxljjwf9SEu8zGvXgxFwFb4k=
+EOF
+
+cat <<EOF | openssl base64 -d >/etc/dropbear/dropbear_rsa_host_key
+AAAAB3NzaC1yc2EAAAADAQABAAABAQC19PM42kYa4ziHCI9NVeyjCHqqOlpucjTr
 HLnUoqeCz2s2WNC25ck72+AnNY6T3tdjYAz4hFMneUjDslvVF6v/DlPGc1tr8LDC
 iWAVhvhzc18yuP6VQFIjEE8fGtQKlD8E6oE8Dk9n347WqeqkxspYdu1ep4Ix2cpj
 MjxAG+FZNnbeuFM2z4EEMWX7UwPeS+zAYe5yPyj2MZVWrmHTc0ilSp+DhKNCZ6So
@@ -34,7 +36,7 @@ yn+xo9AG7a1BifSTWWfxqFjjm+BAV32efgYmkOI7EwFizS6NhNIcWcGueSVAfzWv
 wOt4pRh0TYogOhPZDCSZN3SiQ8cKXrg0mxpaaD3zihzAr7K4t4GzFNSVXzW9IK2f
 AAAAgQDvNLSDpSkYL0Z33IiJIpTBLiQlWbz0LHdKgbjg4QHH/FU9psMOfJnFiucR
 u8xolM9y709H6pASWFUCMR82wk9zPqiRR89ThjU8uCfLXFu+NvCIbC9OGo6qRZua
-cyBZIh5qZAcAzo9Y+SQvSHmS0quwhkmDUCuZxWG1mCbrfmlSUQ==" > \
-    ./dropbear_rsa_host_key
+cyBZIh5qZAcAzo9Y+SQvSHmS0quwhkmDUCuZxWG1mCbrfmlSUQ==
+EOF
 
 dropbear -F -E -p $(id -u)
