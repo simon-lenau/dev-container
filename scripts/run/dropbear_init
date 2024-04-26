@@ -2,10 +2,39 @@ mkdir -p $HOME/.ssh
 
 chmod go-rwx ~/.ssh/authorized_keys
 
-rm /etc/dropbear/dropbear_*_host_key
-dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key
-dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key
-dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
-
 cd /etc/dropbear
-dropbear -F -E -p 11782
+
+rm -rf ./dropbear_*_host_key
+
+echo \
+    "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJayptaSnR2N
+rZkhqjZjD094aLP9lGlJd8w3nBLlch0fDn86fi/csJxiOGeftXEHLUORppPJ/Aoe
+FDD5OqXLaMkAAAAgMNc4bTnVYG4fKyxPlLmhH4mNDrottcd6fuyHjYgic28=" > \
+    dropbear_ecdsa_host_key
+
+echo \
+    "AAAAC3NzaC1lZDI1NTE5AAAAQH850u+svNolmAeJaJ2iFMIDYByKSaYLKpQQZ6/C
+grhcHkb15NY3AVnlz222xKEYxljjwf9SEu8zGvXgxFwFb4k=" > \
+    dropbear_ed25519_host_key
+
+echo \
+    "AAAAB3NzaC1yc2EAAAADAQABAAABAQCYDM9gNj7OdOhZEqcF+kOr7P6syl3IV5+D
+DxTjB8JVqmEuZBGgygWeOR6i8LH4QEx7a0i9RVTkaaqSPeClZ97drheraVAVIdzH
+d7WwnOcE8trpKYUdmfjjvfc0s56yr+GWgtRZKtgr0rqOGw1qwjjY1spW399egAIr
+jM3MJeFCafCthudQu4sD1C/BuloOzS0nFJU592KIE4deyGeuZgxSn+iEYes96tAx
+GhrUtBvj95vXWDFoFiE3adFy9Rbmhnl05Qqk3KR2X2qa3jCfr+F8BKIj0KcpvCN9
+h9TIWIn9BJ/CDPAZP7p/Ajr9XfktIKpzKraPP0N+vGyuf6iroOkzAAABAAG5S3SU
+yNuAWc4AtyILN08wraZ52NxXmfhbaGo2gU6FUvq6qbR/9dZYYW+JeQsOd4+CpN14
+dsDsLcHgr7ZQWid7PMt1szG6I42jXsz0ym207yRrkxXF1BuI4M+ZJbhy5ATX0N59
+7Nt6VSEdT2ahcxGKRdr8SMUCgIPL4d1ppIcjNbjyiu2kSxztWXUe6wkHKAckB3aC
+UAKxG06U9qNfJZOuxzkaamzi6A0fbl/qfC//RcUwIBPXvk7kHvzj8tGI0SUVoHbh
+onxwSwARmr/COSHDcCQbQ/nJtIDl7a+ASoFCXA0szCX8NS+InP5KJTflQ3ChNv41
+GXsP2TFCn9qQZWEAAACBAJmQGGIerdcx88eaLy46FXtKnRezYgAQedK0SkGIR4LG
+VWb6WcrfjZRNS58BxQt6aANUQulbwziZEy04RjcEKsRRQacdrmkLNpKFlGKEmGUI
+SgCd7JeND1cES6/uvob36pe1q05qLzFsUntIWJ+EVIgOt7SmL2iC7BuiB3d6BUnD
+AAAAgQD9el5eit7toMqRVp4RUbkNwOIXssNgDciQmHupToFwzJlwsnfsPNQf+Khp
+cXmJhwic1R8ukADanjDIZybgwF+brTEnZsJC+TCeEwM8PIXHkYIoZg1g6D3A5UZH
+gF8XgNdtKWAkV8VdZ4PPPsryR9AnQLwujmnj4uSOr4EcdLV70Q==" > \
+    dropbear_rsa_host_key
+
+dropbear -F -E -p id -u
