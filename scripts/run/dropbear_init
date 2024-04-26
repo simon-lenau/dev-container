@@ -6,18 +6,18 @@ cd /etc/dropbear
 
 rm -rf ./dropbear_*_host_key
 
-echo \
+printf \
     "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJayptaSnR2N
 rZkhqjZjD094aLP9lGlJd8w3nBLlch0fDn86fi/csJxiOGeftXEHLUORppPJ/Aoe
 FDD5OqXLaMkAAAAgMNc4bTnVYG4fKyxPlLmhH4mNDrottcd6fuyHjYgic28=" > \
-    dropbear_ecdsa_host_key
+    ./dropbear_ecdsa_host_key
 
-echo \
+printf \
     "AAAAC3NzaC1lZDI1NTE5AAAAQH850u+svNolmAeJaJ2iFMIDYByKSaYLKpQQZ6/C
 grhcHkb15NY3AVnlz222xKEYxljjwf9SEu8zGvXgxFwFb4k=" > \
-    dropbear_ed25519_host_key
+    ./dropbear_ed25519_host_key
 
-echo \
+printf \
     "AAAAB3NzaC1yc2EAAAADAQABAAABAQCYDM9gNj7OdOhZEqcF+kOr7P6syl3IV5+D
 DxTjB8JVqmEuZBGgygWeOR6i8LH4QEx7a0i9RVTkaaqSPeClZ97drheraVAVIdzH
 d7WwnOcE8trpKYUdmfjjvfc0s56yr+GWgtRZKtgr0rqOGw1qwjjY1spW399egAIr
@@ -35,6 +35,6 @@ SgCd7JeND1cES6/uvob36pe1q05qLzFsUntIWJ+EVIgOt7SmL2iC7BuiB3d6BUnD
 AAAAgQD9el5eit7toMqRVp4RUbkNwOIXssNgDciQmHupToFwzJlwsnfsPNQf+Khp
 cXmJhwic1R8ukADanjDIZybgwF+brTEnZsJC+TCeEwM8PIXHkYIoZg1g6D3A5UZH
 gF8XgNdtKWAkV8VdZ4PPPsryR9AnQLwujmnj4uSOr4EcdLV70Q==" > \
-    dropbear_rsa_host_key
+    ./dropbear_rsa_host_key
 
 dropbear -F -E -p id -u
