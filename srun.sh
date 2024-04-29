@@ -12,7 +12,6 @@ srun \
     --mail-user=lenau@cispa.de \
     --partition=r65257773x \
     --container-image=projects.cispa.saarland:5005#c01sile/dev-container/dev-container:latest \
-    --container-mounts="./devcontainer.pub:$HOME/.ssh/authorized_keys:ro,./dropbear_keys:/etc/dropbear/,./scripts/run/dropbear_init:/scripts/dropbear_init" \
     --no-container-mount-home \
     --container-entrypoint \
     --pty bash
