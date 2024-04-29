@@ -22,7 +22,7 @@ COPY scripts/build /dev-container_build_scripts
 
 # =========================== > Ubuntu packages < ============================ #
 RUN if [ -n "${ubuntu_packages}" ]; then \
-    /dev-container_build_scripts/install_pkgs "${ubuntu_packages}"; \
+    /dev-container_build_scripts/install_ubuntu_pkgs "${ubuntu_packages}"; \
     fi; 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
