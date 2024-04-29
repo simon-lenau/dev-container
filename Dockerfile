@@ -2,11 +2,7 @@
 
 ARG r_packages=""
 ARG ubuntu_packages=""
-ARG FROM_IMAGE="$(
-    git_repo_info \
-    --type "registry" \
-    --url="https://projects.cispa.saarland/c01sile/containr"/
-    )r_ver:latest"
+ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:latest"
 
 
 FROM "$FROM_IMAGE"
