@@ -4,48 +4,20 @@ chmod go-rwx ~/.ssh/authorized_keys
 
 cd /etc/dropbear
 
+# Delete existing host keys
 rm -rf ./dropbear_*_host_key
 
+# To generate host keys, use this:
+# dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key
+# dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key
+# dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
 
-# … openssl base64 < /etc/dropbear/dropbear_rsa_host_key
-#  - ADJUST -
-cat <<EOF | openssl base64 -d > /etc/dropbear/dropbear_rsa_host_key
-AAAAB3NzaC1yc2EAAAADAQABAAABAQCAYzgQJqebeuZ/ekgiSsCLFyG3nGW8HDfi
-OuZxdb1FFN2gJnBvXaWq0vdwu7DrYvBoqC+46j5bOxPwCAGuAKw6LZd77vC6fJTv
-Bi1WzIEfmmp5jhG5u0NUOmov4A+w1Ts8WNXO/pT3sfozcOBFFMyBiTq8QYiuDPT4
-ITtccjlse5mPLCVjWC0Mp63xbpTn41Ujh6PP2uUyNeSv7MAr/1t/9D6T9MTp0fFi
-S34qJnNl+famgAW6ak1/xS4DgzW5ZTlbgrvCHs7FsXRdx+jvI81cCZ34r7GdLrSD
-cQBiGPpj3mK+G+JEylD9OIku1ZjKx70OLI0mLJLGj9IhWRsbjXWhAAABAB0U3HUk
-HGEmpKGJlF9YKWcYNUX/Ajhq9+mhx+M5dUb5o/4L1voS71zTbsM1cKzQ+33pYu3y
-+W724dxEJAVDF8AR5bdn91V2tNGzx39a0YDUHHwuRyuYFHc2yCjSCxvWIRXZVY0O
-s7Wrte4DCnn7bRuGdyx/d7NdMfwmouic4w8EWhcmURWN1T6pEDBig16dE5NLUpO+
-GzIE2Bu0x1diVlwri3U9gf5S6PqabNXP+MYAym6ONboYvQmkiyyCTegS7tsEnklN
-0PD4wKCfsZBiaeKQjq8qg3u4+vMvSDE2VbuMNGMMZWgU3umY545oDcCk7CnGD0Qa
-RuWqVOz7RAH5v/EAAACBAKxv28eLM6lcooIPL2RP3aDpSuhKGTlEHsk796bsfXda
-utRqbaUHaE6RVCooqPf4OgHGo2bD5TpJ5Nqmu6dmNkd6dnAJc+2dUrRzFqdCKZbc
-nwisK1VL6fa/K4sCPjGQPmbfvrlvkesQbmVcvQALLCSd4aXOwjGf0vjGAmq7vPfl
-AAAAgQC+mrGkDOVm1BLrDXe0meCFVRJu3jGTGGQntF5yWXdpJXM51B1XLKLd0cCe
-sHFQfUuDACroYuVQ+ZhvWZS6adz2xwjb2vLSJB2sqj4pPQYtGYJBkAb6sLGP4BDo
-KjszkwtD6c0NtzoJWLGh4BI2nPftg0Z9AcA93ov3h6eVtaVzDQ==
-EOF
-
-
-# … openssl base64 < /etc/dropbear/dropbear_ed25519_host_key
-#  - ADJUST -
-cat <<EOF | openssl base64 -d > /etc/dropbear/dropbear_ed25519_host_key
-AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCiIuatYOyHA
-Gpji8GGCT74Imh5Q9j1sUc2cwUXvHqnfW7zz+9J/OqYuvetheVaGZr1KER82QQzA
-RU53Ae/+F6YAAAAhANAy9fDvPoRhrejv9WLdpxeB5gRzYKh+oDlNx0msBwGB
-EOF
-
-
-# … openssl base64 < /etc/dropbear/dropbear_ecdsa_host_key
-#  - ADJUST -
-cat <<EOF | openssl base64 -d > /etc/dropbear/dropbear_ecdsa_host_key
-AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOxZYSR9SXAD
-61T1YdJShe7aZgaOVD09ATyrPGik9erSV6TxsCx06a6TcXJ9yheKTVEd6wMPYada
-z23B+4607gQAAAAhAKGbRj6oGnAmsVJZct4MUVQIl45F37CoDYHbPzuYfOfp
-EOF
-
+# To use predefined host keys, use this:
+# … openssl base64 < /etc/dropbear/dropbear_rsa_host_key > /etc/dropbear/dropbear_rsa_host_key.txt
+cat /etc/dropbear/dropbear_rsa_host_key.txt | openssl base64 -d > /etc/dropbear/dropbear_rsa_host_key
+# … openssl base64 < /etc/dropbear/dropbear_ed25519_host_key > /etc/dropbear/dropbear_ed25519_host_key.txt
+cat /etc/dropbear/dropbear_ed25519_host_key.txt | openssl base64 -d > /etc/dropbear/dropbear_ed25519_host_key
+# … openssl base64 < /etc/dropbear/dropbear_ecdsa_host_key > /etc/dropbear/dropbear_ecdsa_host_key.txt
+cat /etc/dropbear/dropbear_ecdsa_host_key.txt | openssl base64 -d > /etc/dropbear/dropbear_ecdsa_host_key
 
 dropbear -F -E -p $(id -u)

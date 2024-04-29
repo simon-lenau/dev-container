@@ -2,17 +2,17 @@
 # source .env.host
 # chmod a+rwx dropbear_init
 
-CISPA_GITLAB_TOKEN="$(cat /home/c01sile/credentials/projects.cispa.saarland/personal_token)"
+export CISPA_GITLAB_TOKEN="$(cat /home/c01sile/credentials/projects.cispa.saarland/personal_token)"
 
 srun \
     --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
-    --cpus-per-task=255 \
+    --cpus-per-task=5 \
     --time 300:00 \
     --mail-type=ALL \
     --mail-user=lenau@cispa.de \
     --partition=r65257773x \
     --container-image=projects.cispa.saarland:5005#c01sile/dev-container/dev-container:latest \
-    --container-mounts="./dev-container.pub:$HOME/.ssh/authorized_keys:ro" \
+    --container-mounts="./devcontainer.pub:$HOME/.ssh/authorized_keys:ro,./dropbear_keys:/etc/dropbear/,./scripts/run/dropbear_init:/scripts/dropbear_init" \
     --no-container-mount-home \
     --container-entrypoint \
     --pty bash
