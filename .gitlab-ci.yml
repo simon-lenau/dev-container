@@ -29,10 +29,8 @@ r-container-build:
       export r_packages=$(cat dependencies/R 2>/dev/null || echo "")
     # Run Kaniko to build container
     - >-
-      source "submodules/gitlab_tokens/init"
-      git_proj=$(git_repo_info --type "project")
-      echo "export WORKDIR=\"/${git_proj}/\""
-      echo "export OUTDIR=\"/${git_proj}_output/\""
+      echo "export WORKDIR=\"/${CI_PROJECT_NAME}/\""
+      echo "export OUTDIR=\"/${CI_PROJECT_NAME}_output/\""
     - >-
       /kaniko/executor
       --context "./"
