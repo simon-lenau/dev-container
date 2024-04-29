@@ -25,7 +25,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-target_path="/.vscode-server"
+target_path="./.vscode-server"
 
 set -e
 
@@ -79,7 +79,10 @@ if [ -n "${commit_sha}" ]; then
 
     # Make the parent directory where the server should live.
     # NOTE: Ensure VS Code will have read/write access; namely the user running VScode or container user.
-    mkdir -vp ${target_path}/bin/"${commit_sha}"
+    mkdir -vp ~/.vscode-server/cli/servers/Stable-"${commit_sha}/server"
+
+    # Extract the tarball to the right location.
+    tar --no-same-owner -xz --strip-components=1 -C ~/.vscode-server/cli/servers/Stable-"${commit_sha}"/server -f "/tmp/${archive}"
 
     # Extract the tarball to the right location.
     tar --no-same-owner -xzv --strip-components=1 -C ${target_path}/bin/"${commit_sha}" -f "/tmp/${archive}"

@@ -34,4 +34,9 @@ r-container-build:
       --dockerfile "./Dockerfile"
       --build-arg "ubuntu_packages"="${ubuntu_packages}"
       --build-arg "r_packages"="${r_packages}"
+      --build-arg "FROM_IMAGE"="$(
+          git_repo_info \
+          --type "registry" \
+          --url="https://projects.cispa.saarland/c01sile/containr"/
+          )r_ver:latest"
       --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"

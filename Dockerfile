@@ -1,9 +1,17 @@
 # =========================== > Base environment < =========================== #
 
+ARG r_packages=""
 ARG ubuntu_packages=""
+ARG FROM_IMAGE="$(
+    git_repo_info \
+    --type "registry" \
+    --url="https://projects.cispa.saarland/c01sile/containr"/
+    )r_ver:latest"
 
-FROM "rocker/r-ver:4.3.3"
 
+FROM "$FROM_IMAGE"
+
+ARG r_packages
 ARG ubuntu_packages
 
 SHELL ["/bin/bash", "-c"]
@@ -12,35 +20,37 @@ SHELL ["/bin/bash", "-c"]
 
 # ========================== > Run Build scripts < =========================== #
 
-COPY scripts/build /build_scripts
+COPY scripts/build /dev-container_build_scripts
 
-# ======================= > Install Ubuntu packages < ======================== #
+# ========================= > Package installation < ========================= #
 
+# =========================== > Ubuntu packages < ============================ #
 RUN if [ -n "${ubuntu_packages}" ]; then \
-    /build_scripts/install_pkgs "${ubuntu_packages}"; \
+    /dev-container_build_scripts/install_pkgs "${ubuntu_packages}"; \
     fi; 
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
 
 # ======================== > Install vscode-server < ========================= #
-
-RUN chmod u+rwx /build_scripts/install_vscode-server && \
-    /build_scripts/install_vscode-server "linux" "x64"
-
+# 2024-04-29: Currently not working
+RUN chmod u+rwx /dev-container_build_scripts/install_vscode-server && \
+    /dev-container_build_scripts/install_vscode-server "linux" "x64"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-RUN rm -rf /build_scripts
+RUN rm -rf /dev-container_build_scripts
 
-# ────────────────────────────────── <end> ─────────────────────────────────── #
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ========================= > Copy Runtime Scripts < ========================= #
-COPY scripts/run /scripts
+COPY scripts/run /dev-container_scripts
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 
-# ============================ > Setup Dropbear < ============================ #
+# ============================ > Dropbear setup < ============================ #
 COPY ssh_keys/* /etc/dropbear/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
-RUN echo "Current user home: echo "$(cd ~/ && echo $PWD)""
 
 CMD ["/bin/bash"]

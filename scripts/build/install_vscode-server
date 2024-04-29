@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "vscode-server pre-install-script currently does not seem to work"
+
+exit 0
+
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 chmod u+rwx "${current_dir}/download-vs-code-server" &&
