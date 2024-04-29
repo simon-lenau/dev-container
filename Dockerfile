@@ -41,6 +41,6 @@ COPY scripts/run /scripts
 COPY ssh_keys/* /etc/dropbear/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-
+RUN echo "Current user home: echo "$(cd ~/ && echo $PWD)""
 
 CMD ["/bin/bash"]
