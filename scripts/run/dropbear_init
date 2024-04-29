@@ -16,8 +16,13 @@ cat ./dropbear_ed25519_host_key.txt | openssl base64 -d > ./dropbear_ed25519_hos
 # … openssl base64 < ./dropbear_ecdsa_host_key > ./dropbear_ecdsa_host_key.txt
 cat ./dropbear_ecdsa_host_key.txt | openssl base64 -d > ./dropbear_ecdsa_host_key
 
-cat ./id_css-container.pub > ./authorized_keys
+authorized_keys_file=$HOME/.ssh/authorized_keys
 
-chmod go-rwx ./authorized_keys
+rm -f "${authorized_keys_file}"
 
-dropbear -F -E -p $(id -u)
+mkdir -p $(dirname "${authorized_keys_file}")
+cat ./id_css-container.pub > "${authorized_keys_file}"
+
+chmod go-rwx "${authorized_keys_file}"
+
+dropbear -F -E -s -p $(id -u)

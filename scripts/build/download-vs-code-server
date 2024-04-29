@@ -25,6 +25,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+target_path="/.vscode-server"
+
 set -e
 
 # Auto-Get the latest commit sha via command line.
@@ -77,12 +79,12 @@ if [ -n "${commit_sha}" ]; then
 
     # Make the parent directory where the server should live.
     # NOTE: Ensure VS Code will have read/write access; namely the user running VScode or container user.
-    mkdir -vp ~/.vscode-server/bin/"${commit_sha}"
+    mkdir -vp ${target_path}/bin/"${commit_sha}"
 
     # Extract the tarball to the right location.
-    tar --no-same-owner -xzv --strip-components=1 -C ~/.vscode-server/bin/"${commit_sha}" -f "/tmp/${archive}"
+    tar --no-same-owner -xzv --strip-components=1 -C ${target_path}/bin/"${commit_sha}" -f "/tmp/${archive}"
     # Add symlink
-    cd ~/.vscode-server/bin && ln -s "${commit_sha}" default_version
+    cd ${target_path}/bin && ln -s "${commit_sha}" default_version
 else
     echo "could not pre install vscode server"
 fi
