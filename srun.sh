@@ -2,7 +2,7 @@
 # source .env.host
 # chmod a+rwx dropbear_init
 
-CISPA_GITLAB_TOKEN="$(cat /home/c01sile/credentials/projects.cispa.saarland)"
+CISPA_GITLAB_TOKEN="$(cat /home/c01sile/credentials/projects.cispa.saarland/personal_token)"
 
 srun \
     --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
