@@ -14,7 +14,7 @@ srun \
     --mail-type=ALL \
     --mail-user=lenau@cispa.de \
     --partition=r65257773x \
-    --container-image=projects.cispa.saarland:5005#c01sile/dev-container/dev-container:latest \
+    --container-image=$(git_repo_info --type="registry")dev-container:latest \
     --no-container-mount-home \
     --container-mounts="./.env:/.env" \
     --container-entrypoint \
