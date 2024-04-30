@@ -4,7 +4,7 @@ source "submodules/gitlab_tokens/init"
 
 source scripts/host/gitlab_tokens
 
-printf "export %s\n" "WORKDIR=/WDTEST/" "OUTDIR=/ODTEST/" > ./.env
+printf "export %s\n" "WORKDIR=/EXAMPLE/" "OUTDIR=/EXAMPLE_OUTPUT/" > ./.env
 
 
 srun \
@@ -18,4 +18,4 @@ srun \
     --no-container-mount-home \
     --container-mounts="./.env:/.env" \
     --container-entrypoint \
-    --pty bash
+    bash -c "/\$DEV_CONTAINER_DIR/dropbear_init"
