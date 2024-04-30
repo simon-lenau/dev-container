@@ -1,14 +1,19 @@
 # =========================== > Base environment < =========================== #
 
-ARG r_packages=""
-ARG ubuntu_packages=""
 ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:lates"
 
 
 FROM "$FROM_IMAGE"
 
-ARG r_packages
-ARG ubuntu_packages
+ARG r_packages="" \
+    ubuntu_packages="" \
+    workdir="/WORKDIR/" \
+    outdir="/OUTDIR/"
+
+ENV \
+    DEV_CONTAINER_DIR="/dev-container_scripts" \
+    WORKDIR="$workdir" \
+    OUTDIR="$outdir"
 
 SHELL ["/bin/bash", "-c"]
 
@@ -16,15 +21,17 @@ SHELL ["/bin/bash", "-c"]
 
 # ========================== > Run Build scripts < =========================== #
 
-COPY scripts/build /dev-container_build_scripts
+COPY scripts/build /$DEV_CONTAINER_DIR/build
 
-# ========================= > Package installation < ========================= #
+# ========================= > Install dependencies < ========================= #
 
-# =========================== > Ubuntu packages < ============================ #
 RUN if [ -n "${ubuntu_packages}" ]; then \
-    /dev-container_build_scripts/install_ubuntu_pkgs "${ubuntu_packages}"; \
-    fi; 
-# ────────────────────────────────── <end> ─────────────────────────────────── #
+    /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
+    fi; \
+    \
+    if [ -n "${r_packages}" ]; then \ 
+    /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
+    fi
 
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
@@ -32,16 +39,16 @@ RUN if [ -n "${ubuntu_packages}" ]; then \
 
 # ======================== > Install vscode-server < ========================= #
 # 2024-04-29: Currently not working
-RUN chmod u+rwx /dev-container_build_scripts/install_vscode-server && \
-    /dev-container_build_scripts/install_vscode-server "linux" "x64"
+RUN chmod u+rwx /$DEV_CONTAINER_DIR/build/install_vscode-server && \
+    /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-RUN rm -rf /dev-container_build_scripts
+RUN rm -rf /$DEV_CONTAINER_DIR/build
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ========================= > Copy Runtime Scripts < ========================= #
-COPY scripts/run /dev-container_scripts
+COPY scripts/run /$DEV_CONTAINER_DIR
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 

@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "Attempting to install R packages:"
+printf "\t - %s\n" ${@}
+
+Rscript "${0}.R" ${@} >r_packages.log 2>&1 &&
+    (echo "... successful!" && rm -rf r_packages.log) ||
+    (sed -i 's/^/\t/' r_packages.log && cat r_packages.log && exit 1)

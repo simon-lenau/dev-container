@@ -34,5 +34,7 @@ r-container-build:
       --dockerfile "./Dockerfile"
       --build-arg "ubuntu_packages"="${ubuntu_packages}"
       --build-arg "r_packages"="${r_packages}"
+      --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
       --build-arg "FROM_IMAGE"="projects.cispa.saarland:5005/c01sile/containr/r-ver:latest"
       --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"

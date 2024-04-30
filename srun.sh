@@ -4,7 +4,7 @@ source "submodules/gitlab_tokens/init"
 
 source scripts/host/gitlab_tokens
 
-printf "export %s\n" "WORKDIR=/BLA/" "OUTDIR=/BLABLA/" > ./.env
+printf "export %s\n" "WORKDIR=/WDTEST/" "OUTDIR=/ODTEST/" > ./.env
 
 
 srun \
