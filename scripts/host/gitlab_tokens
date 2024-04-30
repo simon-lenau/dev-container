@@ -1,4 +1,4 @@
-#!bash
+#!/bin/bash
 
 source "submodules/gitlab_tokens/init"
 

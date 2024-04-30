@@ -1,10 +1,11 @@
-#!bash
+#!/bin/bash
 
 source "submodules/gitlab_tokens/init"
 
-echo "Hardcoded test path in git_token_valid_enroot"
-
 source scripts/host/gitlab_tokens
+
+printf "export %s\n" "WORKDIR=/BLA/" "OUTDIR=/BLABLA/" > ./.env
+
 
 srun \
     --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
@@ -15,5 +16,6 @@ srun \
     --partition=r65257773x \
     --container-image=projects.cispa.saarland:5005#c01sile/dev-container/dev-container:latest \
     --no-container-mount-home \
+    --container-mounts="./.env:/.env" \
     --container-entrypoint \
     --pty bash
