@@ -9,6 +9,14 @@ r-container-build:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
+  rules:
+    - changes:
+        paths:
+          - dependencies/*
+          - scripts/*
+          - ssh_keys/*
+          - Dockerfile
+          - .gitlab-ci.yml
   script:
     # Set gitlab credentials
     - >-
