@@ -1,12 +1,10 @@
-#!/bin/bash
+#!bash
 
 source "submodules/gitlab_tokens/init"
 
 echo "Hardcoded test path in git_token_valid_enroot"
 
 source scripts/host/gitlab_tokens
-
-
 
 srun \
     --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
