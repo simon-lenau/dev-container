@@ -2,7 +2,7 @@
 
 ARG r_packages=""
 ARG ubuntu_packages=""
-ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:latest"
+ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:lates"
 
 
 FROM "$FROM_IMAGE"
