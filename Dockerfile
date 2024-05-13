@@ -1,6 +1,6 @@
 # =========================== > Base environment < =========================== #
 
-ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:lates"
+ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:latest"
 
 
 FROM "$FROM_IMAGE"

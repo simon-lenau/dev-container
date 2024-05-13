@@ -45,4 +45,5 @@ r-container-build:
       --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
       --build-arg "FROM_IMAGE"="projects.cispa.saarland:5005/c01sile/containr/r-ver:latest"
-      --destination "${CI_REGISTRY_IMAGE}/dev-container:latest"
+      --destination "${CI_REGISTRY_IMAGE}/${r_version}"
+      --destination "${CI_REGISTRY_IMAGE}/$(echo ${r_version} | sed 's/\:.*//'):latest"
