@@ -1,5 +1,5 @@
 variables:
-  r_version: r-ver:4.3.3
+  r_version: r-ver:4.3.2
 
 stages:
   - r-container-build
