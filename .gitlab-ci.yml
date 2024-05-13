@@ -1,5 +1,5 @@
 variables:
-  r_version: rocker/r-ver:4.3.2
+  r_version: rocker/r-ver:4.3.3
 
 stages:
   - r-container-build
