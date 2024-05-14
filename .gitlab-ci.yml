@@ -3,6 +3,22 @@ variables:
 
 stages:
   - r-container-build
+  - check_if_image_exists
+
+check_if_image_exists:
+  stage: check_if_image_exists
+  image:
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: [""]
+  script:
+  - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  - >-
+    if crane manifest $CI_REGISTRY_IMAGE/image:tag; then 
+      echo "exists"; 
+    else 
+      echo "not exists"; 
+    fi;
+
 
 r-container-build:
   stage: r-container-build
@@ -42,7 +58,7 @@ r-container-build:
     # Check jq
     - >-
       echo "$CI_PROJECT_URL";
-      echo "$CI_API_V4_URL";
+      echo "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repositories";
       # if [ $( curl --header "PRIVATE-TOKEN: $private_token" "https://gitlab.com/api/v4/projects/$project/registry/repositories/$repo_id/tags/$tag" | jq -r '.name' ) == "$tag" ] ; then
     # Run Kaniko to build container
     # - >-
