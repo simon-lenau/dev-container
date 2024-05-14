@@ -50,8 +50,8 @@ ONBUILD RUN if [ -n "${ubuntu_packages}" ]; then \
 
 # ======================== > Install vscode-server < ========================= #
 RUN curl -L \
-    https://raw.githubusercontent.com/b01/dl-vscode-server/main/download-vs-code-server.sh | 
-    bash -s -- "linux"
+    https://raw.githubusercontent.com/b01/dl-vscode-server/main/download-vs-code-server.sh | \
+    /bin/bash -s -- "linux"
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
