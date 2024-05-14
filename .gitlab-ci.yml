@@ -13,7 +13,7 @@ r-container-build:
     - changes:
         paths:
           - dependencies/*
-          - scripts/*
+          - scripts/**/*
           - ssh_keys/*
           - Dockerfile
           - .gitlab-ci.yml
