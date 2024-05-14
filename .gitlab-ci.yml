@@ -42,6 +42,7 @@ r-container-build:
     # Check jq
     - >-
       echo "$CI_PROJECT_URL";
+      echo "$CI_API_V4_URL";
       # if [ $( curl --header "PRIVATE-TOKEN: $private_token" "https://gitlab.com/api/v4/projects/$project/registry/repositories/$repo_id/tags/$tag" | jq -r '.name' ) == "$tag" ] ; then
     # Run Kaniko to build container
     # - >-
