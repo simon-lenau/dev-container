@@ -49,9 +49,10 @@ ONBUILD RUN if [ -n "${ubuntu_packages}" ]; then \
 
 
 # ======================== > Install vscode-server < ========================= #
-# 2024-04-29: Currently not working
-# RUN chmod u+rwx /$DEV_CONTAINER_DIR/build/install_vscode-server && \
-#     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64"
+curl -L \
+    https://raw.githubusercontent.com/b01/dl-vscode-server/main/download-vs-code-server.sh | 
+    bash -s -- "linux"
+
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 ONBUILD RUN rm -rf /$DEV_CONTAINER_DIR/build
@@ -64,7 +65,11 @@ COPY scripts/run /$DEV_CONTAINER_DIR
 
 
 # ============================ > Dropbear setup < ============================ #
-COPY ssh_keys/* /etc/dropbear/
+COPY ssh_keys    /* /etc/dropbear/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
+
+
+
+
 
 CMD bash -c "/\$DEV_CONTAINER_DIR/dropbear_init"
