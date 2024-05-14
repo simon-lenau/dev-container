@@ -1,5 +1,5 @@
 variables:
-  FROM_IMAGE: projects.cispa.saarland:5005/c01sile/containr/r-ver:4.3.2
+  FROM_IMAGE: projects.cispa.saarland:5005/c01sile/containr/r-ver:4.3.3
 
 stages:
   - r-container-build
