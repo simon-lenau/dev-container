@@ -11,13 +11,15 @@ check_if_image_exists:
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
   script:
-  - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  - >-
+   - >- 
+   crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+   (
     if crane manifest $CI_REGISTRY_IMAGE/r-ver:4.3.3; then 
       echo "exists"; 
     else 
       echo "not exists"; 
-    fi;
+    fi
+   );
 
 
 r-container-build:
