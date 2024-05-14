@@ -38,7 +38,7 @@ r-container-build:
     # Run Kaniko to build container
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
-      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:\(.*\)$/\1/')";
+      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
       echo "image_name: $image_name";
       echo "image_vers: $image_vers";
 
