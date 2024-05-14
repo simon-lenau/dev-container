@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "pre-installation of vscode still not working properly!"
+
 cd /
 
 printf -- "Installing vscode-server..." &&

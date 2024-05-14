@@ -18,7 +18,7 @@ r-container-build:
           - Dockerfile
           - .gitlab-ci.yml
   script:
-    # Set gitlab credentials
+    # Set gitlab credentials x
     - >-
       mkdir -p /kaniko/.docker;
       printf "{
