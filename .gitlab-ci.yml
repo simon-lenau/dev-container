@@ -35,20 +35,24 @@ r-container-build:
       cd ${CI_PROJECT_DIR};
       export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || echo "");
       export r_packages=$(cat dependencies/R 2>/dev/null || echo "")
-    # Run Kaniko to build container
+    # Determine image information
     - >-
+      echo "$FROM_IMAGE";
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
+      export image_test="$(echo ${FROM_IMAGE} | sed 's/.*\/\(.*\)/\1/')";
       echo "image_name: $image_name";
       echo "image_vers: $image_vers";
-
-# /kaniko/executor
-# --context "./"
-# --dockerfile "./Dockerfile"
-# --build-arg "ubuntu_packages"="${ubuntu_packages}"
-# --build-arg "r_packages"="${r_packages}"
-# --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-# --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-# --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
-# --destination "${CI_REGISTRY_IMAGE}/${r_version}"
-# --destination "${CI_REGISTRY_IMAGE}/$(echo ${r_version} | sed 's/\:.*//'):latest" 
+      echo "image_test: $image_test";
+    # Run Kaniko to build container
+    # - >-
+    #   /kaniko/executor
+    #   --context "./"
+    #   --dockerfile "./Dockerfile"
+    #   --build-arg "ubuntu_packages"="${ubuntu_packages}"
+    #   --build-arg "r_packages"="${r_packages}"
+    #   --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+    #   --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
+    #   --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+    #   --destination "${CI_REGISTRY_IMAGE}/${r_version}"
+    #   --destination "${CI_REGISTRY_IMAGE}/$(echo ${r_version} | sed 's/\:.*//'):latest" 
