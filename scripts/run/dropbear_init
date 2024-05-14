@@ -25,4 +25,8 @@ cat ./id_css-container.pub > "${authorized_keys_file}"
 
 chmod go-rwx "${authorized_keys_file}"
 
-dropbear -F -E -s -p $(id -u)
+port=$(id -u)
+
+printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
+
+dropbear -F -E -s -p $port
