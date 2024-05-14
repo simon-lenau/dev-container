@@ -15,6 +15,8 @@ ENV \
     WORKDIR="$workdir" \
     OUTDIR="$outdir"
 
+ONBUILD ENV DEV_CONTAINER_DIR="$DEV_CONTAINER_DIR"
+
 SHELL ["/bin/bash", "-c"]
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
