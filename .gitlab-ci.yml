@@ -37,10 +37,10 @@ r-container-build:
       export r_packages=$(cat dependencies/R 2>/dev/null || echo "")
     # Run Kaniko to build container
     - >-
-      export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')"
-      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:(.*)$/\1/')"
-      echo "image_name: $image_name"
-      echo "image_vers: $image_vers"
+      export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
+      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:(.*)$/\1/')";
+      echo "image_name: $image_name";
+      echo "image_vers: $image_vers";
 
 # /kaniko/executor
 # --context "./"
