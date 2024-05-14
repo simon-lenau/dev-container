@@ -41,7 +41,7 @@ r-container-build:
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
     # Check jq
     - >-
-      echo "$(which jq)"
+      echo "$(which jq)";
     # Run Kaniko to build container
     # - >-
     #   /kaniko/executor
