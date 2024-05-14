@@ -39,15 +39,18 @@ r-container-build:
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-    # Run Kaniko to build container
+    # Check jq
     - >-
-      /kaniko/executor
-      --context "./"
-      --dockerfile "./Dockerfile"
-      --build-arg "ubuntu_packages"="${ubuntu_packages}"
-      --build-arg "r_packages"="${r_packages}"
-      --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-      --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
-      --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
-      --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest" 
+      echo "$(which jq)"
+    # Run Kaniko to build container
+    # - >-
+    #   /kaniko/executor
+    #   --context "./"
+    #   --dockerfile "./Dockerfile"
+    #   --build-arg "ubuntu_packages"="${ubuntu_packages}"
+    #   --build-arg "r_packages"="${r_packages}"
+    #   --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+    #   --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
+    #   --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+    #   --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
+    #   --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest" 
