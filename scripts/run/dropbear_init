@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ln -s /.vscode-server $HOME/.vscode-server 
+ln -s $HOME/.vscode-server /.vscode-server
 
 cd /etc/dropbear
 
