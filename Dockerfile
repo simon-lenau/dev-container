@@ -63,11 +63,7 @@ COPY scripts/run /$DEV_CONTAINER_DIR
 
 
 # ============================ > Dropbear setup < ============================ #
-COPY ssh_keys    /* /etc/dropbear/
+COPY ssh_keys/* /etc/dropbear/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
-
-
-
 
 CMD bash -c "/\$DEV_CONTAINER_DIR/dropbear_init"
