@@ -41,7 +41,7 @@ r-container-build:
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
     # Check jq
     - >-
-      echo "$CI_PROJECT_PATH";
+      echo "$CI_PROJECT_URL";
       # if [ $( curl --header "PRIVATE-TOKEN: $private_token" "https://gitlab.com/api/v4/projects/$project/registry/repositories/$repo_id/tags/$tag" | jq -r '.name' ) == "$tag" ] ; then
     # Run Kaniko to build container
     # - >-
