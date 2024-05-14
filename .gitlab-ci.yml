@@ -1,5 +1,5 @@
 variables:
-  r_version: r-ver:4.3.2
+  FROM_IMAGE: projects.cispa.saarland:5005/c01sile/containr/r-ver:4.3.2
 
 stages:
   - r-container-build
@@ -37,13 +37,18 @@ r-container-build:
       export r_packages=$(cat dependencies/R 2>/dev/null || echo "")
     # Run Kaniko to build container
     - >-
-      /kaniko/executor
-      --context "./"
-      --dockerfile "./Dockerfile"
-      --build-arg "ubuntu_packages"="${ubuntu_packages}"
-      --build-arg "r_packages"="${r_packages}"
-      --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-      --build-arg "FROM_IMAGE"="projects.cispa.saarland:5005/c01sile/containr/${r_version}"
-      --destination "${CI_REGISTRY_IMAGE}/${r_version}"
-      --destination "${CI_REGISTRY_IMAGE}/$(echo ${r_version} | sed 's/\:.*//'):latest"
+      export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')"
+      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:(.*)$/\1/')"
+      echo "image_name: $image_name"
+      echo "image_vers: $image_vers"
+
+# /kaniko/executor
+# --context "./"
+# --dockerfile "./Dockerfile"
+# --build-arg "ubuntu_packages"="${ubuntu_packages}"
+# --build-arg "r_packages"="${r_packages}"
+# --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+# --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
+# --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+# --destination "${CI_REGISTRY_IMAGE}/${r_version}"
+# --destination "${CI_REGISTRY_IMAGE}/$(echo ${r_version} | sed 's/\:.*//'):latest" 
