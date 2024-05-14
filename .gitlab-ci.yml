@@ -40,7 +40,7 @@ r-container-build:
       echo "$FROM_IMAGE";
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-      export image_test="$(echo ${FROM_IMAGE} | sed 's/.*\/\(.*\)/\1/')";
+      export image_test="$(echo ${FROM_IMAGE} | sed 's/.*\/\(.*\)\/.*$/\1/')";
       echo "image_name: $image_name";
       echo "image_vers: $image_vers";
       echo "image_test: $image_test";
