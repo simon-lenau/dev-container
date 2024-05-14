@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd /
+
 printf -- "Installing vscode-server..." &&
     curl -sL \
         https://raw.githubusercontent.com/b01/dl-vscode-server/main/download-vs-code-server.sh |

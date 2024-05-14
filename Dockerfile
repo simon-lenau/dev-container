@@ -49,6 +49,7 @@ ONBUILD RUN if [ -n "${ubuntu_packages}" ]; then \
 
 
 # ======================== > Install vscode-server < ========================= #
+# 2024-04-29: Currently not working
 RUN chmod u+rwx /$DEV_CONTAINER_DIR/build/install_vscode-server && \
     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64"
 # ────────────────────────────────── <end> ─────────────────────────────────── #

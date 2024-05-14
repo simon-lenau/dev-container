@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+ln -s /.vscode-server $HOME/.vscode-server 
+
 cd /etc/dropbear
 
 # Delete existing host keys
@@ -29,6 +31,8 @@ chmod go-rwx "${authorized_keys_file}"
 
 port=$(id -u)
 
+echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
+echo "----------------------------------------------------"
 
 dropbear -F -E -s -p $port
