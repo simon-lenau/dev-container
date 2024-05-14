@@ -1,21 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo "vscode-server pre-install-script currently does not seem to work"
-
-exit 0
-
-current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-chmod u+rwx "${current_dir}/download-vs-code-server" &&
-    printf -- "Installing vscode-server..." &&
-    ${current_dir}/download-vs-code-server ${@} >"${current_dir}/vscode-server.log" 2>&1 &&
+printf -- "Installing vscode-server..." &&
+    curl -L \
+        https://raw.githubusercontent.com/b01/dl-vscode-server/main/download-vs-code-server.sh |
+    /bin/bash -s -- ${@} > \
+        "./vscode-server.log" 2>&1 &&
     (
         printf -- "successful!\n" &&
-            rm -rf "${current_dir}/vscode-server.log"
+            rm -rf "./vscode-server.log"
     ) ||
     (
-        sed -i 's/^/\t/' "${current_dir}/vscode-server.log" &&
+        sed -i 's/^/\t/' "./vscode-server.log" &&
             printf -- "failed:\n" &&
-            cat "${current_dir}/vscode-server.log" &&
+            cat "./vscode-server.log" &&
             exit 1
     )
