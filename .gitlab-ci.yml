@@ -42,6 +42,7 @@ r-container-build:
     # Check jq
     - >-
       echo "$(which jq)";
+      echo "BLABLA";
     # Run Kaniko to build container
     # - >-
     #   /kaniko/executor
