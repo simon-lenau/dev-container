@@ -3,24 +3,6 @@ variables:
 
 stages:
   - r-container-build
-  - check_if_image_exists
-
-check_if_image_exists:
-  stage: check_if_image_exists
-  image:
-    name: gcr.io/go-containerregistry/crane:debug
-    entrypoint: [""]
-  script:
-   - >- 
-    crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
-    (
-      if crane manifest $CI_REGISTRY_IMAGE/r-ver:4.3.4; then 
-        echo "exists"; 
-      else 
-        echo "not exists"; 
-      fi
-    );
-
 
 r-container-build:
   stage: r-container-build
@@ -57,20 +39,15 @@ r-container-build:
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-    # Check jq
-    - >-
-      echo "$CI_PROJECT_URL";
-      echo "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repositories";
-      # if [ $( curl --header "PRIVATE-TOKEN: $private_token" "https://gitlab.com/api/v4/projects/$project/registry/repositories/$repo_id/tags/$tag" | jq -r '.name' ) == "$tag" ] ; then
     # Run Kaniko to build container
-    # - >-
-    #   /kaniko/executor
-    #   --context "./"
-    #   --dockerfile "./Dockerfile"
-    #   --build-arg "ubuntu_packages"="${ubuntu_packages}"
-    #   --build-arg "r_packages"="${r_packages}"
-    #   --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-    #   --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-    #   --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
-    #   --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
-    #   --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest" 
+    - >-
+      /kaniko/executor
+      --context "./"
+      --dockerfile "./Dockerfile"
+      --build-arg "ubuntu_packages"="${ubuntu_packages}"
+      --build-arg "r_packages"="${r_packages}"
+      --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
+      --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+      --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
+      --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest" 
