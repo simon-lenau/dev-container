@@ -40,8 +40,8 @@ r-container-build:
       > /kaniko/.docker/config.json;
     # Export package lists
     - >- 
-      export ubuntu_packages=$(cat R-Code/env/dependencies/Ubuntu 2>/dev/null || return 0);
-      export r_packages=$(cat R-Code/env/dependencies/R 2>/dev/null || return 0);
+      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
+      export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
     # Determine image information
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";

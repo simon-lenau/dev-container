@@ -27,21 +27,21 @@ COPY scripts/build /$DEV_CONTAINER_DIR/build
 
 # ========================= > Install dependencies < ========================= #
 
-RUN if [ -n "${ubuntu_packages}" ]; then \
-    /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
+RUN \
+    if [ -n "${ubuntu_packages}" ]; then \
+        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
     fi; \
-    \
     if [ -n "${r_packages}" ]; then \ 
-    /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
+        /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
     fi
 
 
-ONBUILD RUN if [ -n "${ubuntu_packages}" ]; then \
-    /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
+ONBUILD RUN \
+    if [ -n "${ubuntu_packages}" ]; then \
+        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
     fi; \
-    \
     if [ -n "${r_packages}" ]; then \ 
-    /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
+        /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
     fi
 
 
