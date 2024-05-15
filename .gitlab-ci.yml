@@ -18,28 +18,35 @@ r-container-build:
           - Dockerfile
           - .gitlab-ci.yml
   script:
-    # Set gitlab credentials x
+       # Set folders
+    - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;
+    # Set Credentials
     - >-
-      mkdir -p /kaniko/.docker;
       printf "{
-          \"auths\": 
-              {
-                  \"${CI_REGISTRY}\": { 
-                      \"auth\": \"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 -w 0)\"
-                  }
-              }
+        \"auths\": 
+        {
+        \"${CI_REGISTRY}\":
+          { 
+            \"auth\": 
+              \"$(
+              printf "%s:%s" \
+                "${CI_REGISTRY_USER}" \
+                "${CI_REGISTRY_PASSWORD}" | \
+              base64 -w 0
+              )\"
+          }
+        }
       }" \
-      > /kaniko/.docker/config.json
+      > /kaniko/.docker/config.json;
     # Export package lists
-    - >-
-      cd ${CI_PROJECT_DIR};
-      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || echo "");
-      export r_packages=$(cat dependencies/R 2>/dev/null || echo "")
+    - >- 
+      export ubuntu_packages=$(cat R-Code/env/dependencies/Ubuntu 2>/dev/null || return 0);
+      export r_packages=$(cat R-Code/env/dependencies/R 2>/dev/null || return 0);
     # Determine image information
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-    # Run Kaniko to build container
+    # Build the container
     - >-
       /kaniko/executor
       --context "./"
