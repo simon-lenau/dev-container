@@ -64,4 +64,12 @@ COPY scripts/run /$DEV_CONTAINER_DIR/run
 COPY ssh_keys/* /etc/dropbear/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
+# ========================== > Entrypoint for ssh < ========================== #
+RUN printf "%s\n" \
+    "   if [[ -f /.entrypoint ]] ; then" \
+    "       source /.entrypoint" \
+    "   fi" \  
+    >> /etc/bash.bashrc
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
 CMD bash -c "/\$DEV_CONTAINER_DIR/run/dropbear_init"
