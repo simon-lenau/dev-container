@@ -29,6 +29,10 @@ chmod go-rwx "${authorized_keys_file}"
 
 port=$(id -u)
 
+if [ ! "${port}" -gt 0 ]; then
+    port=11782
+fi
+
 echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
 echo "----------------------------------------------------"
