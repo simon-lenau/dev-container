@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-ln -s /root/.vscode-server/ $HOME/.vscode-server/
-
 cd /etc/dropbear
 
 # Delete existing host keys

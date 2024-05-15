@@ -49,22 +49,19 @@ ONBUILD RUN \
 
 
 # ======================== > Install vscode-server < ========================= #
-# 2024-04-29: Currently not working
-RUN chmod u+rwx /$DEV_CONTAINER_DIR/build/install_vscode-server && \
-    /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64"
+# 2024-05-15: Currently not working
+# RUN chmod u+rwx /$DEV_CONTAINER_DIR/build/install_vscode-server && \
+#     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
-ONBUILD RUN rm -rf /$DEV_CONTAINER_DIR/build
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ========================= > Copy Runtime Scripts < ========================= #
-COPY scripts/run /$DEV_CONTAINER_DIR
+COPY scripts/run /$DEV_CONTAINER_DIR/run
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
 
 # ============================ > Dropbear setup < ============================ #
 COPY ssh_keys/* /etc/dropbear/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-CMD bash -c "/\$DEV_CONTAINER_DIR/dropbear_init"
+CMD bash -c "/\$DEV_CONTAINER_DIR/run/dropbear_init"

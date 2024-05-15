@@ -2,7 +2,7 @@
 
 echo "pre-installation of vscode still not working properly!"
 
-exit 0
+
 cd /
 
 printf -- "Installing vscode-server..." &&
