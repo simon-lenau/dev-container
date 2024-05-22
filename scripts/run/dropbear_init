@@ -43,5 +43,6 @@ echo "----------------------------------------------------"
 # since it should be run in all ssh sessions
 # (which is not the case if the dropbear shell exports it)
 unset __entrypoint_run__
+export __entrypoint_run__
 
 dropbear -F -E -s -p $port
