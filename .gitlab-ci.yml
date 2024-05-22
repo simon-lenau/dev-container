@@ -44,11 +44,7 @@ r-container-build:
       export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
     # Determine image information
     - >-
-      export image_name="$(
-        echo ${FROM_IMAGE} |
-          perl -p0e "s/.*\///gmi"  |
-          perl -p0e "s/\:.*$//gmi" 
-        )";
+      export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
     # Build the container
     - >-
