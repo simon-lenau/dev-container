@@ -1,3 +1,6 @@
 [submodule "submodules/gitlab_tokens"]
 	path = submodules/gitlab_tokens
 	url = https://github.com/simon-lenau/gitlab_tokens	
+[submodule "submodules/gitlab-tokens"]
+	path = submodules/gitlab-tokens
+	url = https://github.com/simon-lenau/gitlab-tokens.git

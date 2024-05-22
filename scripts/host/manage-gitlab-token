@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "submodules/gitlab_tokens/gitlab-tokens-init"
+source "submodules/gitlab-tokens/gitlab-tokens-init"
 
 
 # ============================ > Git repo infos < ============================ #
