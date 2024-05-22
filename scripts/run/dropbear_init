@@ -39,4 +39,9 @@ echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
 echo "----------------------------------------------------"
 
+# Unset include guard for entrypoint, 
+# since it should be run in all ssh sessions
+# (which is not the case if the dropbear shell exports it)
+unset __entrypoint_run__
+
 dropbear -F -E -s -p $port
