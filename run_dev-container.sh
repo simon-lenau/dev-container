@@ -20,7 +20,7 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
                 > \
                 /dev/null
     }
-    docker pull ${docker_path}dev-container:latest
+    docker pull ${docker_path}r-ver:latest
     docker run \
         --mount type=bind,source=./.env,destination=/.env,readonly \
         -p 127.0.0.1:11782:11782/tcp \
@@ -35,7 +35,7 @@ else
         --mail-type=ALL \
         --mail-user=lenau@cispa.de \
         --partition=r65257773x \
-        --container-image=$(git_repo_info --type="registry")dev-container:latest \
+        --container-image=$(git_repo_info --type="registry")r-ver:latest \
         --no-container-mount-home \
         --container-mounts="./.env:/.env" \
         --container-entrypoint \
