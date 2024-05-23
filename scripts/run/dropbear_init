@@ -40,10 +40,26 @@ printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
 echo "----------------------------------------------------"
 # Hier
 printf "%s\n" \
+    "echo "Running ~/.bashrc""
     "   if [[ -f /.entrypoint ]] ; then" \
     "       unset __entrypoint_run__" \
     "       source /.entrypoint" \
     "   fi" \  
     >> ~/.bashrc
+printf "%s\n" \
+    "echo "Running ~/.profile""
+    "   if [[ -f /.entrypoint ]] ; then" \
+    "       unset __entrypoint_run__" \
+    "       source /.entrypoint" \
+    "   fi" \  
+    >> ~/.profile
+
+printf "%s\n" \
+    "echo "Running /etc/bash.bashrc""
+    "   if [[ -f /.entrypoint ]] ; then" \
+    "       unset __entrypoint_run__" \
+    "       source /.entrypoint" \
+    "   fi" \  
+    >> /etc/bash.bashrc
 
 dropbear -F -E -s -p $port
