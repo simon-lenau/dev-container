@@ -41,9 +41,9 @@ echo "----------------------------------------------------"
 # Hier
 printf "%s\n" \
     "   if [[ -f /.entrypoint ]] ; then" \
+    "       unset __entrypoint_run__" \
     "       source /.entrypoint" \
     "   fi" \  
     >> ~/.bashrc
-    # "       unset __entrypoint_run__" \
 
 dropbear -F -E -s -p $port
