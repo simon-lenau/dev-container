@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+cd /etc/dropbear
+
+# Delete existing host keys
+rm -rf ./dropbear_*_host_key
+
+# To generate host keys, use this:
+# dropbearkey -t ed25519 -f ./dropbear_ed25519_host_key
+# dropbearkey -t ecdsa -f ./dropbear_ecdsa_host_key
+# dropbearkey -t rsa -f ./dropbear_rsa_host_key
+
+# To use predefined host keys, use this:
+# … openssl base64 < ./dropbear_rsa_host_key > ./dropbear_rsa_host_key.txt
+cat ./dropbear_rsa_host_key.txt | openssl base64 -d >./dropbear_rsa_host_key
+# … openssl base64 < ./dropbear_ed25519_host_key > ./dropbear_ed25519_host_key.txt
+cat ./dropbear_ed25519_host_key.txt | openssl base64 -d >./dropbear_ed25519_host_key
+# … openssl base64 < ./dropbear_ecdsa_host_key > ./dropbear_ecdsa_host_key.txt
+cat ./dropbear_ecdsa_host_key.txt | openssl base64 -d >./dropbear_ecdsa_host_key
+
+authorized_keys_file=$HOME/.ssh/authorized_keys
+
+rm -f "${authorized_keys_file}"
+
+mkdir -p $(dirname "${authorized_keys_file}")
+cat ./id_css-container.pub >"${authorized_keys_file}"
+
+chmod go-rwx "${authorized_keys_file}"
+
+port=$(id -u)
+
+if [ ! "${port}" -gt 0 ]; then
+    port=11782
+fi
+
+printf '%s\n' \
+    "if [[ "${TERM_PROGRAM}" == "vscode" ]] ; then" \
+    "    code -r "$WORKDIR"" \
+    "fi" >>$HOME/.bashrc
+
+echo "----------------------------------------------------"
+printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
+echo "----------------------------------------------------"
+
+dropbear -F -E -s -p $port
