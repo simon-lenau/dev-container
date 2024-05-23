@@ -39,27 +39,19 @@ echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
 echo "----------------------------------------------------"
 # Hier
-printf "%s\n" \
-    "echo "Running ~/.bashrc""
-    "   if [[ -f /.entrypoint ]] ; then" \
-    "       unset __entrypoint_run__" \
-    "       source /.entrypoint" \
-    "   fi" \  
-    >> ~/.bashrc
-printf "%s\n" \
-    "echo "Running ~/.profile""
-    "   if [[ -f /.entrypoint ]] ; then" \
-    "       unset __entrypoint_run__" \
-    "       source /.entrypoint" \
-    "   fi" \  
-    >> ~/.profile
+function modify_init_file {
+    echo "echo \"Running $1\"" >> $1
+    cat <<'EOF' >> $1
+if [[ -f /.entrypoint ]] ; then
+    unset __entrypoint_run__
+    source /.entrypoint
+fi
+EOF
+}
 
-printf "%s\n" \
-    "echo "Running /etc/bash.bashrc""
-    "   if [[ -f /.entrypoint ]] ; then" \
-    "       unset __entrypoint_run__" \
-    "       source /.entrypoint" \
-    "   fi" \  
-    >> /etc/bash.bashrc
+modify_init_file "$HOME/.bashrc"
+modify_init_file "$HOME/.profile"
+modify_init_file "/etc/bash.bashrc"
+
 
 dropbear -F -E -s -p $port
