@@ -17,15 +17,18 @@ bashrc_path="${3:-$HOME/.bashrc}"
 norm_folder="$(perl -p0e "s/[\/\\\\]/_/gi" <<<"${folder}")"
 
 # The file to store timestamp in
-time_filename="$DEV_CONTAINER_DIR/run/tmp/set_vscode_folder_${norm_folder}"
+time_filename="$DEV_CONTAINER_DIR/run/tmp/set_vscode_folder/${norm_folder}"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ======================== > Check time difference < ========================= #
 # If `time_varname` is still empty: define variable beyond `time_limit`
-echo "time_filename: $time_filename"
 if [ -f ${time_filename} ]; then
     prev_time="$(cat "${time_filename}")"
 else
+    tmp_folder="$(dirname ${time_filename})"
+    if [ ! -d "${tmp_folder}" ]; then
+        mkdir -p "${tmp_folder}"
+    fi
     prev_time="$(date -I"seconds" -d "-${time_limit}")"
 fi
 
@@ -40,6 +43,6 @@ code -r "${folder}"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ====================== > Store timestamp in .bashrc < ====================== #
-# If write current timestap to `time_filename`
+# Write current timestap to `time_filename`
 echo "$(date -I"seconds")" >"${time_filename}"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
