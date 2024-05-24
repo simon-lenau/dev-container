@@ -50,7 +50,7 @@ fi
 
 ./dropbear_check_keys || {
     printf "%s\n" "Do you wish to proceed? (yes / no)"
-    read -s -n 255 answer
+    read -n 255 answer
     if (echo "${answer}" | grep -i "yes"); then
         :
     else
