@@ -28,6 +28,11 @@ fi
 
 timediff="$((("$(date +%s -d "-${time_limit}")" - $(date -d ${!time_varname} +%s))))"
 
+echo "timediff: $timediff" >> "${folder}/Log.txt"
+echo "${time_varname}: ${!time_varname}" >> "${folder}/Log.txt"
+echo "threshold: $(date +%s -d "-${time_limit}")" >> "${folder}/Log.txt"
+
+
 # If the folder was changed less than `timediff` ago: end script
 if [ ${timediff} -lt 0 ]; then exit 0; fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
