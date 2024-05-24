@@ -29,11 +29,18 @@ if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
         function key_fmt {
             echo "$(tput bold)$(tput setaf 5)$1$(tput sgr0)"
         }
+        # Format for command to move to default dir
+        function cmd_fmt {
+            echo "$(tput bold)$(tput setaf 2)$1$(tput sgr0)"
+        }
     } || {
     function folder_fmt {
         echo "$1"
     }
     function key_fmt {
+        echo "$1"
+    }
+    function cmd_fmt {
         echo "$1"
     }
 }
@@ -53,7 +60,8 @@ read -s -n 1 -t 3 key
 (command -v "tput" >/dev/null 2>&1) && tput rc && echo -e "\033[0J" && tput rc
 
 if [[ "$key" == $'\e' ]]; then
-    printf "OK, staying in\n\t%s\nrather than moving to\n\t%s\n" "$(folder_fmt "${current_folder}")" "$(folder_fmt "${folder}")"
+    printf "OK, staying in\n\t%s\n" "$(folder_fmt "${current_folder}")"
+    printf "To move to default workdir, use\n\t%s\n" "$(cmd_fmt "code -r \"${current_folder}\"")"
     exit 0
 fi
 
