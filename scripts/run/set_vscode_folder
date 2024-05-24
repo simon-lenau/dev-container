@@ -6,7 +6,6 @@ if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then exit 0; fi
 # ============================== > Arguments < =============================== #
 # $1: Target folder
 folder="${1:-$HOME}"
-
 # Fully expand target folder
 folder="$(readlink -f $(eval "echo "${folder}""))"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
@@ -23,11 +22,11 @@ if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
     {
         # Format for folder
         function folder_fmt {
-            echo "$(tput bold)$(tput setaf 1)$1$(tput sgr0)"
+            echo "$(tput bold)$(tput setaf 5)$1$(tput sgr0)"
         }
         # Format for user-choice keys
         function key_fmt {
-            echo "$(tput bold)$(tput setaf 5)$1$(tput sgr0)"
+            echo "$(tput bold)$(tput setaf 1)$1$(tput sgr0)"
         }
         # Format for command to move to default dir
         function cmd_fmt {
@@ -49,7 +48,7 @@ if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
 (command -v "tput" >/dev/null 2>&1) && tput sc
 
 # Print folder and user choices
-printf "Moving vscode to\n%s\nin 3 secs.\n" "$(folder_fmt "${folder}")"
+printf "Moving vscode to\n\t%s\nin 3 secs.\n" "$(folder_fmt "${folder}")"
 printf "\t%-35s%20s\n" \
     "$(key_fmt "ESCAPE")" "$(key_fmt "cancel")" \
     "$(key_fmt "Any other")" "$(key_fmt "proceed")"

@@ -1,0 +1,28 @@
+# If tput is available:
+(command -v "tput" >/dev/null 2>&1) &&
+    {
+        # Format for folder
+        function folder_fmt {
+            echo "$(tput bold)$(tput setaf 5)$1$(tput sgr0)"
+        }
+    } || {
+        function folder_fmt {
+            echo "$5"
+        }
+}
+
+# Run entrypoint if it exists
+if [ -f /.entrypoint ]; then
+    source /.entrypoint
+fi
+
+# Print default folders
+echo "================================================================================"
+printf "%-12s%s\n" "\$WORKDIR" "$(folder_fmt $(readlink -f ${WORKDIR}))"
+printf "%-12s%s\n" "\$OUTDIR" "$(folder_fmt $(readlink -f ${OUTDIR}))"
+echo "================================================================================"
+
+# Offer user to set vscode to default workdir
+if [ ! -z "${WORKDIR}" ]; then
+    $DEV_CONTAINER_DIR/run/set_vscode_folder "${WORKDIR}"
+fi
