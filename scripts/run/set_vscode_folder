@@ -12,11 +12,11 @@ time_limit="${2:-5 minutes}"
 bashrc_path="${3:-$HOME/.bashrc}"
 
 # Fully expand target folder
-folder="$(eval "echo "${folder}"")"
+folder="$(readlink -f $(eval "echo "${folder}""))"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# If already in target folder: exit
-current_folder="$(eval "echo "${PWD}"")"
+
+current_folder="$(readlink -f $(eval "echo "${PWD}""))"
 if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
 
 
