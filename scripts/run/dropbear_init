@@ -34,11 +34,11 @@ if [ ! "${port}" -gt 0 ]; then
 fi
 
 # Add script to .bashrc that automatically changes the directory of vscode to $WORKDIR with a time limit
-time_limit="5 minutes"
+time_limit="30 seconds"
 bashrc_path="$HOME/.bashrc"
 
 if ! grep -iq "set_vscode_folder" "${bashrc_path}"; then
-    echo "$DEV_CONTAINER_DIR/run/set_vscode_folder \"${WORKDIR}\" \"${time_limit}\" \"${bashrc_path}\" " >>"${bashrc_path}"
+    echo "$DEV_CONTAINER_DIR/run/set_vscode_folder \"${WORKDIR}\" \"${time_limit}\"" >>"${bashrc_path}"
 fi
 echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
