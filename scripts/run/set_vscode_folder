@@ -53,7 +53,7 @@ read -s -n 1 -t 3 key
 (command -v "tput" >/dev/null 2>&1) && tput rc && echo -e "\033[0J" && tput rc
 
 if [[ "$key" == $'\e' ]]; then
-    printf "OK, staying in\n\t%s\n" "$(folder_fmt "${current_folder}")"
+    printf "OK, staying in\n\t%s\nrather than moving to\n\t%s\n" "$(folder_fmt "${current_folder}")" "$(folder_fmt "${folder}")"
     exit 0
 fi
 
