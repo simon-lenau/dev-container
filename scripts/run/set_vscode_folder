@@ -35,6 +35,7 @@ if [ -f ${time_filename} ]; then
     prev_time="$(cat "${time_filename}")"
 else
     tmp_folder="$(dirname ${time_filename})"
+    echo "Creating $tmp_folder"
     if [ ! -d "${tmp_folder}" ]; then
         mkdir -p "${tmp_folder}"
     fi
