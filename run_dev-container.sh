@@ -37,7 +37,7 @@ else
         --partition=r65257773x \
         --container-image=$(git_repo_info --type="registry")r-ver:latest \
         --no-container-mount-home \
-        --container-mounts="./.env:/.env,./scripts/run/dropbear_init:/dev-container_scripts/run/dropbear_init" \
+        --container-mounts="./.env:/.env,./scripts/run/:/dev-container_scripts/run/" \
         --container-entrypoint \
         --pty bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
 fi
