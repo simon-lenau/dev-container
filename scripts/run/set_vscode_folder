@@ -16,13 +16,16 @@ current_folder="$(readlink -f $(eval "echo "${PWD}""))"
 if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# ======================= > Offer user to move vscode to `folder` < ======================= #
+# ================ > Offer user to move vscode to `folder` < ================= #
 
+# If tput is available:
 (command -v "tput" >/dev/null 2>&1) &&
     {
+        # Format for folder
         function folder_fmt {
             echo "$(tput bold)$(tput setaf 1)$1$(tput sgr0)"
         }
+        # Format for user-choice keys
         function key_fmt {
             echo "$(tput bold)$(tput setaf 5)$1$(tput sgr0)"
         }
@@ -35,14 +38,18 @@ if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
     }
 }
 
+# If tput is available: Store cursor position
 (command -v "tput" >/dev/null 2>&1) && tput sc
 
+# Print folder and user choices
 printf "Moving vscode to\n%s\nin 3 secs.\n" "$(folder_fmt "${folder}")"
 printf "\t%-35s%20s\n" \
     "$(key_fmt "ESCAPE")" "$(key_fmt "cancel")" \
     "$(key_fmt "Any other")" "$(key_fmt "proceed")"
+# Wait 3 secs for user input
 read -s -n 1 -t 3 key
 
+# If tput is available: Restore cursor position and clear everything afterwards
 (command -v "tput" >/dev/null 2>&1) && tput rc && echo -e "\033[0J" && tput rc
 
 if [[ "$key" == $'\e' ]]; then
