@@ -39,7 +39,11 @@ bashrc_path="$HOME/.bashrc"
 
 if ! grep -iq "set_vscode_folder" "${bashrc_path}"; then
     echo "$DEV_CONTAINER_DIR/run/set_vscode_folder \"${WORKDIR}\" \"${time_limit}\"" >>"${bashrc_path}"
+    echo "printf \"%-12s%s\" \"\$WORKDIR\" \"$(readlink -f $WORKDIR)\"" >>"$HOME/.bashrc"
+    echo "printf \"%-12s%s\" \"\$OUTDIR\" \"$(readlink -f $OUTDIR)\"" >>"$HOME/.bashrc"
 fi
+
+
 echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
 echo "----------------------------------------------------"

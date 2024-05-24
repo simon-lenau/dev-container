@@ -64,10 +64,7 @@ COPY scripts/run /$DEV_CONTAINER_DIR/run
 COPY ssh_keys/* /etc/dropbear/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# ====================== > Print default directories < ======================= #
-echo "printf \"%-12s%s\" \"\$WORKDIR\" \"$(readlink -f $WORKDIR)\"" >> ~/.bashrc
-echo "printf \"%-12s%s\" \"\$OUTDIR\" \"$(readlink -f $OUTDIR)\"" >> ~/.bashrc
-# ────────────────────────────────── <end> ─────────────────────────────────── #
+
 
 
 
