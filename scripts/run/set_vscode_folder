@@ -52,6 +52,7 @@ printf "Moving vscode to\n\t%s\nin 3 secs.\n" "$(folder_fmt "${folder}")"
 printf "\t%-35s%20s\n" \
     "$(key_fmt "ESCAPE")" "$(key_fmt "cancel")" \
     "$(key_fmt "Any other")" "$(key_fmt "proceed")"
+    
 # Wait 3 secs for user input
 read -s -n 1 -t 3 key
 

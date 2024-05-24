@@ -42,12 +42,21 @@ end_delim="# <<<<<<<<<<<<<<<<<<<< dev-container shell setup <<<<<<<<<<<<<<<<<<<<
 if ! grep -iq "${begin_delim}" "${bashrc_path}"; then
     cat >>${bashrc_path} <<EOF
 ${begin_delim}
-
 export DEV_CONTAINER_DIR=${DEV_CONTAINER_DIR}
 source \$DEV_CONTAINER_DIR/run/ssh_shell_setup
 ${end_delim}
 EOF
 fi
+
+./dropbear_check_keys || {
+    printf "%s\n" "Do you wish to proceed? (yes / no)"
+    read -s -n 255 answer
+    if (echo "${answer}" | grep -i "yes"); then
+        :
+    else
+        exit 1
+    fi
+}
 
 echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
