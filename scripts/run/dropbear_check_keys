@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 
-key_warned=0
 unchanged_keys=()
 
 function key_has_changed {
-    current_key="$(cat ./dropbear_${1}_host_key.txt)"
+    current_key="$(cat "${1}")"
 
-    if [[ "${1}" == "ecdsa" ]]; then
+    if [[ "${1}" == "dropbear_ecdsa_host_key.txt" ]]; then
         org_key="AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOxZYSR9SXAD
 61T1YdJShe7aZgaOVD09ATyrPGik9erSV6TxsCx06a6TcXJ9yheKTVEd6wMPYada
 z23B+4607gQAAAAhAKGbRj6oGnAmsVJZct4MUVQIl45F37CoDYHbPzuYfOfp"
-        ((key_warned++))
-    elif [[ "${1}" == "ed25519" ]]; then
+    elif [[ "${1}" == "dropbear_ed25519_host_key.txt" ]]; then
         org_key="AAAAC3NzaC1lZDI1NTE5AAAAQOthyqGnCYeVFvmgehopuvum7NqbxYgJZTRdf/AF
 ndbKGqrkutuXfzpjliUKaSMgN1VQfUpRQ08CxAK+EnP92+c="
         ((key_warned++))
-    elif [[ "${1}" == "rsa" ]]; then
+    elif [[ "${1}" == "dropbear_rsa_host_key.txt" ]]; then
         org_key="AAAAB3NzaC1yc2EAAAADAQABAAABAQC0roumY9gtiteU4WX68ktyoUDRFuz20E1T
 PvtoxeNsp3xmkIY9poK+TgY9toWNNjqYVScvZIa/UPC6SLLuwhmrf1MUTJRvpatH
 2Y2j4d5lKRQ//eSs9kmX4SEfG6uEbT27FVkSTusAvT1ny02+hzceTyMfPIVOaFIM
@@ -33,7 +31,8 @@ e5PSpgVhx+Ok//TYqBwkgQqPkB8KqZXFfmPd9R25EPda0E9+vEpmwcT0+Fa7ipD3
 AAAAgQD6Nk72+VuM3g/U0jKhXNs+vmGmqGsWnPgcnnhbLxVwEZc53WF26y4nroB5
 dhcxF1GKcXyvayWWFOR/jVAvbdHbb+YcQZGr6Gkd0v1+Vdaop9XA/tXMyw1vHkkT
 5SngqqgifFvYvGG75V1irw2P2EZCZYkwvlnZNNaicwlaItfQtw=="
-        ((key_warned++))
+    elif [[ "${1}" == "id_css-container.pub" ]]; then
+        org_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGmGs3Z72LUUCfos8fLXtcylLznUEUAA+tCDGG6ubx4 simonlenau@Simons-MacBook.local"
     fi
 
     if [[ "${current_key}" == "${org_key}" ]]; then
@@ -43,7 +42,17 @@ dhcxF1GKcXyvayWWFOR/jVAvbdHbb+YcQZGr6Gkd0v1+Vdaop9XA/tXMyw1vHkkT
     exit 0
 }
 
-key_types=($(ls | grep "dropbear_.*_host_key.txt" | perl -p0e "s/dropbear_(.*)_host_key.txt/\${1}/gmi"))
+if [ -d "/etc/dropbear" ]; then
+    fld="/etc/dropbear"
+else
+    fld="./ssh_keys"
+fi
+
+key_types=($(ls "${fld}"))
+
+cur_pwd="${PWD}"
+
+cd "${fld}"
 
 for key_type in "${key_types[@]}"; do
     :
@@ -52,24 +61,33 @@ for key_type in "${key_types[@]}"; do
     }
 done
 
+cd "${cur_pwd}"
+
 if [ ${#unchanged_keys[@]} -eq 0 ]; then exit 0; fi
 
 (command -v "tput" >/dev/null 2>&1) &&
     {
-        # Format for folder
         function tput_red {
             echo "$(tput bold)$(tput setaf 1)$1$(tput sgr0)"
         }
-    } || {
-        function tput_red {
-            echo "$5"
+        function tput_green {
+            echo "$(tput bold)$(tput setaf 2)$1$(tput sgr0)"
         }
+    } || {
+    function tput_red {
+        echo "$1"
+    }
+    function tput_green {
+        echo "$1"
+    }
 }
 
-printf "$(tput_red %s)\n" "The following keys are unchanged:"
+printf "$(tput_red %s)\n" "The following key files are unchanged:"
 
 printf "\t$(tput_red "- %s")\n" "${unchanged_keys[@]}"
 
 printf "$(tput_red "%s")\n" "This poses security risks as they are publicly available."
+
+printf "$(tput_green "%s\n%s\n%s\n%s")\n" "Please consider changing them in" "./ssh_keys before starting the container" "or in" "/etc/dropbear after starting the container."
 
 exit 1
