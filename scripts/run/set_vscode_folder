@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# Do this only if the current terminal runs in vscode
+if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then exit 0; fi
+
+# ============================== > Arguments < =============================== #
+# $1: Target folder
+folder="${1:-$HOME}"
+# $2: Time limit for this script to be executed
+time_limit="${2:-5 minutes}"
+# $3: Path to .bashrc file
+bashrc_path="${3:-$HOME/.bashrc}"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# =============================== > Settings < =============================== #
+
+norm_folder="$(perl -p0e "s/[\/\\\\]/_/gi" <<<"${folder}")"
+
+# The variable name to store timestamp in
+time_varname="__DEV_CONTAINER_CHANGED_CODE_DIR_${norm_folder}___"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ======================== > Check time difference < ========================= #
+# If `time_varname` is empty: try sourcing `bashrc_path`
+if [ -z ${!time_varname} ]; then
+    source "${bashrc_path}"
+fi
+# If `time_varname` is still empty: define variable beyond `time_limit`
+if [ -z ${!time_varname} ]; then
+    declare ${time_varname}="$(date -I"seconds" -d "-${time_limit}")"
+fi
+
+timediff="$((("$(date +%s -d "-${time_limit}")" - $(date -d ${!time_varname} +%s))))"
+
+# If the folder was changed less than `timediff` ago: end script
+if [ ${timediff} -lt 0 ]; then exit 0; fi
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ======================= >  Move vscode to `folder` < ======================= #
+# code -r "${folder}"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ====================== > Store timestamp in .bashrc < ====================== #
+# If time_varname is already in `bashrc_path`: replace the value,
+# otherwise add it
+if grep -iq "${time_varname}" "${bashrc_path}"; then
+    $(perl -i -p0e "s/(.*${time_varname}\s*)=.*/\${1}=$(date -I"seconds")/gi" "${bashrc_path}")
+else
+    printf "\nexport %s=%s\n" "${time_varname}" "$(date -I"seconds")" >>"${bashrc_path}"
+fi
+# ────────────────────────────────── <end> ─────────────────────────────────── #
