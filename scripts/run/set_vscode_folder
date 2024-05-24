@@ -61,7 +61,7 @@ read -s -n 1 -t 3 key
 
 if [[ "$key" == $'\e' ]]; then
     printf "OK, staying in\n\t%s\n" "$(folder_fmt "${current_folder}")"
-    printf "To move to default workdir, use\n\t%s\n" "$(cmd_fmt "code -r \"${current_folder}\"")"
+    printf "To move to default workdir, use\n\t%s\n" "$(cmd_fmt "code -r \"\${WORKDIR}\"")"
     exit 0
 fi
 
