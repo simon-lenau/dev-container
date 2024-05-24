@@ -10,11 +10,13 @@ folder="${1:-$HOME}"
 time_limit="${2:-5 minutes}"
 # $3: Path to .bashrc file
 bashrc_path="${3:-$HOME/.bashrc}"
+
+folder="$(eval "echo "${folder}"")"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # =============================== > Settings < =============================== #
 
-norm_folder="$(perl -p0e "s/[\/\\\\]/_/gi" <<<"$(eval "echo "${folder}")")"
+norm_folder="$(perl -p0e "s/[\/\\\\]/_/gi" <<<"${folder}")"
 
 # The file to store timestamp in
 time_filename="$DEV_CONTAINER_DIR/run/tmp/set_vscode_folder/${norm_folder}"
@@ -39,10 +41,13 @@ if [ ${timediff} -lt 0 ]; then exit 0; fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ======================= >  Move vscode to `folder` < ======================= #
-code -r "${folder}"
+# code -r "${folder}"
+echo "Setting folder!"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ====================== > Store timestamp in .bashrc < ====================== #
-# Write current timestap to `time_filename`
+# If write current timestap to `time_filename`
 echo "$(date -I"seconds")" >"${time_filename}"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
+
+exit 0
