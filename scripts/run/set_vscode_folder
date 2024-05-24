@@ -21,10 +21,6 @@ time_varname="__DEV_CONTAINER_CHANGED_CODE_DIR_${norm_folder}___"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ======================== > Check time difference < ========================= #
-# If `time_varname` is empty: try sourcing `bashrc_path`
-if [ -z ${!time_varname} ]; then
-    source "${bashrc_path}"
-fi
 # If `time_varname` is still empty: define variable beyond `time_limit`
 if [ -z ${!time_varname} ]; then
     declare ${time_varname}="$(date -I"seconds" -d "-${time_limit}")"
