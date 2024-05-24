@@ -14,7 +14,7 @@ bashrc_path="${3:-$HOME/.bashrc}"
 
 # =============================== > Settings < =============================== #
 
-norm_folder="$(perl -p0e "s/[\/\\\\]/_/gi" <<<"${folder}")"
+norm_folder="$(perl -p0e "s/[\/\\\\]/_/gi" <<<"$(eval "echo "${folder}")")"
 
 # The file to store timestamp in
 time_filename="$DEV_CONTAINER_DIR/run/tmp/set_vscode_folder/${norm_folder}"
