@@ -3,7 +3,6 @@
 # =============================== > Settings < =============================== #
 source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
 # List key files
 key_files=($(ls "${SSH_KEY_FOLDER}" | grep -v "user_id$"))
 
