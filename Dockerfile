@@ -11,7 +11,7 @@ ARG r_packages="" \
     outdir="/OUTDIR/"
 
 ENV \
-    DEV_CONTAINER_DIR="/dev-container/" \
+    DEV_CONTAINER_DIR="/dev-container" \
     WORKDIR="$workdir" \
     OUTDIR="$outdir"
 

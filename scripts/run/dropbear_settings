@@ -1,6 +1,6 @@
 # =============================== > Settings < =============================== #
 SSH_KEY_FOLDER="${DEV_CONTAINER_DIR}/ssh_keys"
-DROPBEAR_FOLDER="/etc/dropbear/"
+DROPBEAR_FOLDER="/etc/dropbear"
 
 host_key_types=(
     ed25519
@@ -19,11 +19,11 @@ SSH_KEY_FOLDER="$(echo "$(eval "echo "${SSH_KEY_FOLDER}"")")"
 authorized_keys_file="$(echo "$(eval "echo "${authorized_keys_file}"")")"
 
 # Delete existing authorized keys file and create folder
-if [ -f "${authorized_keys_file}" ]; then
-    rm -f "${authorized_keys_file}"
-else
-    mkdir -p $(dirname "${authorized_keys_file}")
-fi
+
+mkdir -p "$(dirname "${authorized_keys_file}")"
+mkdir -p "${DROPBEAR_FOLDER}"
+
+echo "DROPBEAR_FOLDER: $DROPBEAR_FOLDER"
 
 # Check tput availability
 (command -v "tput" >/dev/null 2>&1) && {

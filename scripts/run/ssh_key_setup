@@ -44,12 +44,12 @@ for host_key_type in "${host_key_types[@]}"; do
         # Generate host key
         dropbearkey \
             -t "${host_key_type}" \
-            -f ${dropbear_file} \
-            >/dev/null 2>&1
+            -f ${dropbear_file} 
+            # >/dev/null 2>&1
         # Store host key in org_file
-        openssl base64 \
-            <"${dropbear_file}" \
-            >"${org_file}"
+        # openssl base64 \
+        #     <"${dropbear_file}" \
+        #     >"${org_file}"
     else
         # Insert predefined host keys
         cat "${org_file}" |
