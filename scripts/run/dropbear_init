@@ -5,10 +5,7 @@ source "${DEV_CONTAINER_DIR}/dropbear_settings"
 # Delete existing host keys
 rm -rf ${DROPBEAR_FOLDER}/host_key_*
 
-# To use predefined host keys, use this:
-for host_key_type in "${host_key_types[@]}"; do
-    cat "${dropbear_key_folder}/host_key_${host_key_type}.txt" | openssl base64 -d >"${DROPBEAR_FOLDER}/host_key_${host_key_type}"
-done
+
 
 
 cat "${SSH_KEY_FOLDER}/dropbear_rsa_host_key.txt" | openssl base64 -d >${DROPBEAR_FOLDER}/dropbear_rsa_host_key
@@ -51,12 +48,12 @@ fi
 # Check if keys have been changed in comparison to those
 # publicly available on git
 ${DEV_CONTAINER_DIR}/run/dropbear_check_keys || {
-    # If tput is available: Store cursor position
-    (command -v "tput" >/dev/null 2>&1) && tput sc
+    # Store cursor position
+    tput_store_cursor
     printf "\n%s\n" "Do you wish to proceed? (yes / no)"
     read -n 255 -t 30 answer
-    # If tput is available: Restore cursor position and clear everything afterwards
-    (command -v "tput" >/dev/null 2>&1) && tput rc && echo -e "\033[0J" && tput rc
+    # Restore cursor position and clear everything afterwards
+    tput_restore_and_clear
 
     if (echo "${answer}" | grep "[Yy]\([Ee][Ss]\)\{1,1\}"); then
         echo "OK"

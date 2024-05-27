@@ -23,7 +23,7 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     docker pull ${docker_path}r-ver:latest
     docker run \
         --mount type=bind,source=./.env,destination=/.env,readonly \
-        --mount type=bind,source=./scripts/run/,destination=/dev-container_scripts/run/,readonly \
+        --mount type=bind,source=./scripts/,destination=/dev-container_scripts/ \
         -p 127.0.0.1:11782:11782/tcp \
         -t -i \
         ${docker_path}r-ver:latest \

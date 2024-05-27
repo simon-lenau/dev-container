@@ -14,7 +14,7 @@ fi
 
 # List key files
 key_files=($(ls "${SSH_KEY_FOLDER}"))
-exit 0
+
 # Declare arrays of (un)changed key files
 unchanged_key_files=()
 changed_key_files=()
@@ -44,14 +44,13 @@ else
     # Check if all key files were changed
     if [ ${#unchanged_key_files[@]} -eq 0 ]; then exit 0; fi
 
-    printf "$(tput_red %s)\n" "The following key files are unchanged:"
-
-    printf "\t$(tput_red "- %s")\n" "${unchanged_key_files[@]}"
-
+    printf "$(tput_red %s)\n" "The following key files are unchanged:" >&2
+    printf "\t$(tput_red "$(tput_bold "- %s")")\n" "${unchanged_key_files[@]}" >&2
     printf "$(tput_red "%s")\n" "This poses security risks as they are publicly available." >&2
-
-    printf "$(tput_green "%s\n\t%s\n%s\n\t%s")\n" "Please consider changing them in" "./ssh_keys before starting the container" "or in" "/etc/dropbear after starting the container." >&2
-
-# exit 1
-
+    printf "$(tput_green "%s\n%b\n%s\n%b")\n" \
+        "Please consider changing them." \
+        "$(tput_bold "Before starting the container")" \
+        "./ssh_keys " \
+        "or in" \
+        "/etc/dropbear after starting the container.\nx" >&2
 fi
