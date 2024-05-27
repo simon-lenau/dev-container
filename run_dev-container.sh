@@ -23,7 +23,6 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     docker pull ${docker_path}r-ver:latest
     docker run \
         --mount type=bind,source=./.env,destination=/.env,readonly \
-        --mount type=bind,source=./scripts/run/,destination=/dev-container/run/ \
         -p 127.0.0.1:11782:11782/tcp \
         -t -i \
         ${docker_path}r-ver:latest \
@@ -42,3 +41,4 @@ else
         --container-entrypoint \
         --pty bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
 fi
+        # --mount type=bind,source=./scripts/run/,destination=/dev-container/run/ \

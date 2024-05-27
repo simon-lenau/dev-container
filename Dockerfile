@@ -62,7 +62,7 @@ COPY scripts/run /$DEV_CONTAINER_DIR/run
 
 # =============================== > SSH keys < =============================== #
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
-COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/default_ssh_keys/
+COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 CMD bash -c "/\$DEV_CONTAINER_DIR/run/dropbear_init"
