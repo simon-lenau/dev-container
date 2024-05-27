@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+source "${DEV_CONTAINER_DIR}/dropbear_settings"
+
+mkdir -p "${dropbear_key_folder}"
+
+for host_key_type in "${host_key_types[@]}"; do
+    if (echo "${1}" | grep -iq "generate"); then
+        # Generate host and store host keys
+        dropbearkey -t "${host_key_type}" -f "${DROPBEAR_FOLDER}/host_key_${host_key_type}" >/dev/null 2>&1
+        openssl base64 <"${DROPBEAR_FOLDER}/host_key_${host_key_type}" >"${dropbear_key_folder}/host_key_${host_key_type}.txt"
+    elif (echo "${1}" | grep -iq "insert"); then
+        # Insert predefined host keys
+        cat "${dropbear_key_folder}/host_key_${host_key_type}.txt" | openssl base64 -d >"${DROPBEAR_FOLDER}/host_key_${host_key_type}"
+    else
+        printf "$(tput_red "%s")\n" "This poses security risks as they are publicly available." >&2
+    fi
+done

@@ -1,0 +1,40 @@
+# =============================== > Settings < =============================== #
+SSH_KEY_FOLDER="${DEV_CONTAINER_DIR}/ssh_keys"
+DROPBEAR_FOLDER="/etc/dropbear/"
+
+host_key_types=(
+    ed25519
+    ecdsa
+    rsa
+    dsa
+)
+
+default_key_file="./scripts/run/.default_keys"
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# Fully expand paths
+SSH_KEY_FOLDER="$(echo "$(eval "echo "${SSH_KEY_FOLDER}"")")"
+default_key_file="$(echo "$(eval "echo "${default_key_file}"")")"
+
+# Check tput availability
+(command -v "tput" >/dev/null 2>&1) && {
+    export tput_available=true
+} || {
+    export tput_available=false
+}
+
+function use_tput {
+    if [[ "${tput_available}" == "true" ]]; then
+        tput $@
+    fi
+}
+
+# Set formatting functions
+
+function tput_red {
+    printf -- "$(use_tput bold)$(use_tput setaf 1)$1$(use_tput sgr0)"
+}
+function tput_green {
+    echo "$(use_tput bold)$(use_tput setaf 2)$1$(use_tput sgr0)"
+}

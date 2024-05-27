@@ -1,93 +1,57 @@
 #!/usr/bin/env bash
 
-unchanged_keys=()
+# =============================== > Settings < =============================== #
+source "$(readlink -f $(dirname ${BASH_SOURCE[0]}))/dropbear_settings"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 
-function key_has_changed {
-    current_key="$(cat "${1}")"
-
-    if [[ "${1}" == "dropbear_ecdsa_host_key.txt" ]]; then
-        org_key="AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOxZYSR9SXAD
-61T1YdJShe7aZgaOVD09ATyrPGik9erSV6TxsCx06a6TcXJ9yheKTVEd6wMPYada
-z23B+4607gQAAAAhAKGbRj6oGnAmsVJZct4MUVQIl45F37CoDYHbPzuYfOfp"
-    elif [[ "${1}" == "dropbear_ed25519_host_key.txt" ]]; then
-        org_key="AAAAC3NzaC1lZDI1NTE5AAAAQOthyqGnCYeVFvmgehopuvum7NqbxYgJZTRdf/AF
-ndbKGqrkutuXfzpjliUKaSMgN1VQfUpRQ08CxAK+EnP92+c="
-        ((key_warned++))
-    elif [[ "${1}" == "dropbear_rsa_host_key.txt" ]]; then
-        org_key="AAAAB3NzaC1yc2EAAAADAQABAAABAQC0roumY9gtiteU4WX68ktyoUDRFuz20E1T
-PvtoxeNsp3xmkIY9poK+TgY9toWNNjqYVScvZIa/UPC6SLLuwhmrf1MUTJRvpatH
-2Y2j4d5lKRQ//eSs9kmX4SEfG6uEbT27FVkSTusAvT1ny02+hzceTyMfPIVOaFIM
-siNQFH/xsMR/iR1dxlucvfT0Z0Y9JDYaz1oqV2D0zmmoKT28zB2gezqc6B9z2S2X
-lV0BD1hVZT33vRKdg188TDXGW2kr2jhRArMXNjXHyBXnjdkNjrCexZZHZXPxv+2F
-IRljyXgPCOC5AEgrLGP0loeL9ZxWAUWei4K7DbZ7ziVojNczR1CRAAABAA8we0n+
-K87MVMpN1pptox0cZEwPntUy9sUwTsdkl3VrcSBYNwjYxjYEbi7i+MBB1lQ3GGe6
-Dj/oKIyoju5Wf/z0Y8IZnAL0zPzp06f61YzwkqS8jexiehZcFUI9u8ISwvVG2qmY
-29XAkvh2VW9Wg7I3Ge9G0bghOgCaOzDAwG7Ldm4LHaGHBdPiPaXMVA1SbToEWXv6
-quO/DTxCDm7VCQSDzUo85UGJKSBd2++riiDKdEjZS950KoV4CkF+UA+Z8YuPHQO2
-sNVl/jN0gCa9OkaU9unYPcLFrEPui5vAPerFPiAnTIjWZOiw3Aey2ZLL7tp7ns0D
-MqRJsFLwX8UUR+cAAACBALjcfxihxHIY+2s+J9Oc9TvUg6fsIqkoyzhG2U0CsPJN
-FMEE77dn6fnUCJWwZe/LTdlVQA1XNizinEzKr5IHuew5b0VF3rAELfGT3oD+a9nJ
-e5PSpgVhx+Ok//TYqBwkgQqPkB8KqZXFfmPd9R25EPda0E9+vEpmwcT0+Fa7ipD3
-AAAAgQD6Nk72+VuM3g/U0jKhXNs+vmGmqGsWnPgcnnhbLxVwEZc53WF26y4nroB5
-dhcxF1GKcXyvayWWFOR/jVAvbdHbb+YcQZGr6Gkd0v1+Vdaop9XA/tXMyw1vHkkT
-5SngqqgifFvYvGG75V1irw2P2EZCZYkwvlnZNNaicwlaItfQtw=="
-    elif [[ "${1}" == "id_css-container.pub" ]]; then
-        org_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGmGs3Z72LUUCfos8fLXtcylLznUEUAA+tCDGG6ubx4 simonlenau@Simons-MacBook.local"
-    fi
-
-    if [[ "${current_key}" == "${org_key}" ]]; then
-        exit 1
-    fi
-
-    exit 0
-}
-
-if [ -d "/etc/dropbear" ]; then
-    fld="/etc/dropbear"
-else
-    fld="./ssh_keys"
+# Read list of default keys
+if [ -f ${default_key_file} ]; then
+    default_keys="$(
+        cat "${default_key_file}" |
+            grep -v "$(basename "${default_key_file}")"
+    )"
 fi
 
-key_types=($(ls "${fld}"))
+# List key files
+key_files=($(ls "${SSH_KEY_FOLDER}"))
+exit 0
+# Declare arrays of (un)changed key files
+unchanged_key_files=()
+changed_key_files=()
 
-cur_pwd="${PWD}"
-
-cd "${fld}"
-
-for key_type in "${key_types[@]}"; do
-    :
-    (key_has_changed "${key_type}") || {
-        unchanged_keys+=("${key_type}")
-    }
+# Loop over keys
+for key_file in "${key_files[@]}"; do
+    key="$(cat "${SSH_KEY_FOLDER}/$key_file")"
+    # If keys are in list of default keys:
+    # add key_file to `unchanged_key_files`,
+    # otherwise to `changed_key_files`
+    if (echo "${default_keys}" | grep -iq "${key}"); then
+        unchanged_key_files+=("${key_file}")
+    else
+        changed_key_files+=("${key_file}")
+    fi
 done
 
-cd "${cur_pwd}"
+# If this script is run from a file in `git/hooks`
+if (dirname "${BASH_SOURCE[-1]}" | grep -iq "git/hooks"); then
+    # Write `changed_key_files` to `default_key_file`,
+    # since these files are likely published on git
+    for key_file in "${changed_key_files[@]}"; do
+        printf "%s\n\n" "$(cat "${SSH_KEY_FOLDER}/${key_file}")" >>"${default_key_file}"
+    done
+    git add "${default_key_file}"
+else
+    # Check if all key files were changed
+    if [ ${#unchanged_key_files[@]} -eq 0 ]; then exit 0; fi
 
-if [ ${#unchanged_keys[@]} -eq 0 ]; then exit 0; fi
+    printf "$(tput_red %s)\n" "The following key files are unchanged:"
 
-(command -v "tput" >/dev/null 2>&1) &&
-    {
-        function tput_red {
-            echo "$(tput bold)$(tput setaf 1)$1$(tput sgr0)"
-        }
-        function tput_green {
-            echo "$(tput bold)$(tput setaf 2)$1$(tput sgr0)"
-        }
-    } || {
-    function tput_red {
-        echo "$1"
-    }
-    function tput_green {
-        echo "$1"
-    }
-}
+    printf "\t$(tput_red "- %s")\n" "${unchanged_key_files[@]}"
 
-printf "$(tput_red %s)\n" "The following key files are unchanged:"
+    printf "$(tput_red "%s")\n" "This poses security risks as they are publicly available." >&2
 
-printf "\t$(tput_red "- %s")\n" "${unchanged_keys[@]}"
+    printf "$(tput_green "%s\n\t%s\n%s\n\t%s")\n" "Please consider changing them in" "./ssh_keys before starting the container" "or in" "/etc/dropbear after starting the container." >&2
 
-printf "$(tput_red "%s")\n" "This poses security risks as they are publicly available."
+# exit 1
 
-printf "$(tput_green "%s\n%s\n%s\n%s")\n" "Please consider changing them in" "./ssh_keys before starting the container" "or in" "/etc/dropbear after starting the container."
-
-exit 1
+fi
