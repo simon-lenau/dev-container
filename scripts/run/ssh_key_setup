@@ -12,9 +12,8 @@ if (echo "${action}" | grep -iq "generate"); then
 elif (echo "${action}" | grep -iq "insert"); then
     action="insert"
 else
-    printf "$(tput_red "%b%b")\n" \
-        "Error: First (any only) argument to\n\t${BASH_SOURCE[0]}\nshould be " \
-        "'generate' or 'insert'." >&2
+    printf "%b\n" \
+        "$(tput_red "Error:") First (any only) argument to $(tput_file "${BASH_SOURCE[0]}" 1) should be 'generate' or 'insert'." >&2
     exit 1
 fi
 
@@ -41,8 +40,8 @@ chmod go-rwx "${authorized_keys_file}"
 
 # =========================== > Set-up host keys < =========================== #
 for host_key_type in "${host_key_types[@]}"; do
-    org_file="${SSH_KEY_FOLDER}/host_key_${host_key_type}.txt"
-    dropbear_file="${DROPBEAR_FOLDER}/host_key_${host_key_type}"
+    org_file="${SSH_KEY_FOLDER}/dropbear_${host_key_type}_host_key.txt"
+    dropbear_file="${DROPBEAR_FOLDER}/dropbear_${host_key_type}_host_key"
     if [[ "${action}" == "generate" ]]; then
         rm -rf "${dropbear_file}"
         # Generate host key

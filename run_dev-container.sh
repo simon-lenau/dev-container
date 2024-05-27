@@ -27,6 +27,7 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
         --mount type=bind,source=./scripts/run/ssh_key_check,destination=/dev-container/run/ssh_key_check \
         --mount type=bind,source=./scripts/run/dropbear_settings,destination=/dev-container/run/dropbear_settings \
         --mount type=bind,source=./scripts/run/ssh_key_setup,destination=/dev-container/run/ssh_key_setup \
+        --mount type=bind,source=./scripts/run/dropbear_init,destination=/dev-container/run/dropbear_init \
         -p 127.0.0.1:11782:11782/tcp \
         -t -i \
         ${docker_path}r-ver:latest \

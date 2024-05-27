@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-source "${DEV_CONTAINER_DIR}/dropbear_settings"
+source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
 
 # Delete existing host keys
 cd ${DROPBEAR_FOLDER}
 rm -rf ./host_key_*
 
-
-source "${DEV_CONTAINER_DIR}/ssh_key_setup" "insert"
+source "${DEV_CONTAINER_DIR}/run/ssh_key_setup" "insert"
 
 port=$(id -u)
 
@@ -32,16 +31,15 @@ fi
 
 # Check if keys have been changed in comparison to those
 # publicly available on git
-${DEV_CONTAINER_DIR}/run/dropbear_check_keys || {
+${DEV_CONTAINER_DIR}/run/ssh_key_check || {
     # Store cursor position
     tput_store_cursor
-    printf "\n%s\n" "Do you wish to proceed? (yes / no)"
+    printf "%s\n" "Do you wish to proceed $(tput_red "with unsafe keys")? (yes / no)"
     read -n 255 -t 30 answer
-    # Restore cursor position and clear everything afterwards
-    tput_restore_and_clear
-
-    if (echo "${answer}" | grep "[Yy]\([Ee][Ss]\)\{1,1\}"); then
-        echo "OK"
+    if (echo "${answer}" | grep "^\s*[Yy]\([Ee][Ss]\)\{1,1\}\s*$"); then
+        # Restore cursor position and clear everything afterwards
+        tput_restore_and_clear
+        echo "OK, $(tput_red "proceeding with unsafe keys")"
     else
         exit 1
     fi
