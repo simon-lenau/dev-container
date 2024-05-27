@@ -45,7 +45,7 @@ for host_key_type in "${host_key_types[@]}"; do
     if [[ "${action}" == "generate" ]]; then
         rm -rf "${dropbear_file}"
         # Generate host key
-        printf "Generating $(tput_file "%-64s" 5)" "${dropbear_file}"
+        printf "Generating $(tput_file "%-64s" 5)" "${org_file}"
         dropbearkey \
             -t "${host_key_type}" \
             -f "${dropbear_file}" \

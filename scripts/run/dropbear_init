@@ -23,6 +23,7 @@ end_delim="# <<<<<<<<<<<<<<<<<<<< dev-container shell setup <<<<<<<<<<<<<<<<<<<<
 if ! grep -iq "${begin_delim}" "${bashrc_path}"; then
     cat >>${bashrc_path} <<EOF
 ${begin_delim}
+
 export DEV_CONTAINER_DIR=${DEV_CONTAINER_DIR}
 source \$DEV_CONTAINER_DIR/run/ssh_shell_setup
 ${end_delim}

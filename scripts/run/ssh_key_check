@@ -36,7 +36,7 @@ printf "%b\n" \
     "Please consider changing the keys in $(tput_file "${SSH_KEY_FOLDER}" 2) by" \
     "$(tput_bold [a]) mounting a folder to $(tput_file "${SSH_KEY_FOLDER}" 2) and/or" \
     "    with files corresponding to those in $(tput_file "./scripts/ssh_keys" 2)" \
-    "$(tput_bold [b]) running $(tput_file "$DEV_CONTAINER_DIR/run/ssh_key_setup" 2) \"generate\"" \
+    "$(tput_bold [b]) running $(tput_file "$DEV_CONTAINER_DIR/run/ssh_key_setup" \"generate\" 2)" \
     "When combining $(tput_bold [a]) and $(tput_bold [b]), the keys will be in the mounted folder and easily re-usable." \
     >&2
 
