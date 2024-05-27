@@ -4,18 +4,29 @@ DROPBEAR_FOLDER="/etc/dropbear/"
 
 host_key_types=(
     ed25519
-    # ecdsa
-    # rsa
-    # dss
+    ecdsa
+    rsa
+    dss
 )
 
 default_key_file="${DEV_CONTAINER_DIR}/run/.default_keys"
+
+authorized_keys_file=$HOME/.ssh/authorized_keys
+
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # Fully expand paths
 SSH_KEY_FOLDER="$(echo "$(eval "echo "${SSH_KEY_FOLDER}"")")"
 default_key_file="$(echo "$(eval "echo "${default_key_file}"")")"
+authorized_keys_file="$(echo "$(eval "echo "${authorized_keys_file}"")")"
+
+# Delete existing authorized keys file and create folder
+if [ -f "${authorized_keys_file}" ]; then
+    rm -f "${authorized_keys_file}"
+else
+    mkdir -p $(dirname "${authorized_keys_file}")
+fi
 
 # Check tput availability
 (command -v "tput" >/dev/null 2>&1) && {
@@ -44,7 +55,7 @@ function tput_bold {
 }
 
 function tput_underline {
-    echo "$(use_tput smul)$1$(use_tput sgr0)"
+    echo "$(use_tput smul)$1$(use_tput rmul)"
 }
 
 function tput_store_cursor {

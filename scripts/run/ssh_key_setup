@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
+
+mkdir -p "${SSH_KEY_FOLDER}"
+mkdir -p "${DROPBEAR_FOLDER}"
+
+action="${1}"
+
+if (echo "${action}" | grep -iq "generate"); then
+    action="generate"
+elif (echo "${action}" | grep -iq "insert"); then
+    action="insert"
+else
+    printf "$(tput_red "%b%b")\n" \
+        "Error: First (any only) argument to\n\t${BASH_SOURCE[0]}\nshould be " \
+        "'generate' or 'insert'." >&2
+    exit 1
+fi
+
+# =========================== > Set-up user keys < =========================== #
+
+if [[ "${action}" == "generate" ]]; then
+    rm -rf "${SSH_KEY_FOLDER}/dev-container_user_id"
+    ssh-keygen \
+        -N "" \
+        -t ed25519 \
+        -f "${SSH_KEY_FOLDER}/dev-container_user_id" \
+        >/dev/null 2>&1
+fi
+
+cat "${SSH_KEY_FOLDER}/dev-container_user_id.pub" >>"${authorized_keys_file}"
+chmod go-rwx "${authorized_keys_file}"
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+# =========================== > Set-up host keys < =========================== #
+for host_key_type in "${host_key_types[@]}"; do
+    if [[ "${action}" == "generate" ]]; then
+        # Generate host and store host keys
+        dropbearkey \
+            -t "${host_key_type}" \
+            -f "${DROPBEAR_FOLDER}/host_key_${host_key_type}" \
+            >/dev/null 2>&1
+        openssl base64 \
+            <"${DROPBEAR_FOLDER}/host_key_${host_key_type}" \
+            >"${SSH_KEY_FOLDER}/host_key_${host_key_type}.txt"
+    else
+        # Insert predefined host keys
+        cat "${SSH_KEY_FOLDER}/host_key_${host_key_type}.txt" |
+            openssl base64 -d \
+                >"${DROPBEAR_FOLDER}/host_key_${host_key_type}"
+    fi
+done
+# ────────────────────────────────── <end> ─────────────────────────────────── #

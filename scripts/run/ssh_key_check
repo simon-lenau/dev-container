@@ -13,7 +13,7 @@ if [ -f ${default_key_file} ]; then
 fi
 
 # List key files
-key_files=($(ls "${SSH_KEY_FOLDER}"))
+key_files=($(ls "${SSH_KEY_FOLDER}" | grep -v "user_id$"))
 
 # Declare arrays of (un)changed key files
 unchanged_key_files=()
@@ -47,10 +47,11 @@ else
     printf "$(tput_red %s)\n" "The following key files are unchanged:" >&2
     printf "\t$(tput_red "$(tput_bold "- %s")")\n" "${unchanged_key_files[@]}" >&2
     printf "$(tput_red "%s")\n" "This poses security risks as they are publicly available." >&2
-    printf "$(tput_green "%s\n%b\n%s\n%b")\n" \
-        "Please consider changing them." \
-        "$(tput_bold "Before starting the container")" \
-        "./ssh_keys " \
-        "or in" \
-        "/etc/dropbear after starting the container.\nx" >&2
+    printf "$(tput_green "%s\n%-15s%s\n%-15s%s")\n" \
+        "Please consider changing the keys in" \
+        "./ssh_keys" \
+        "$(tput_underline "(outside container)")" \
+        "/etc/dropbear" \
+        "$(tput_underline "(inside container)")" \
+        >&2
 fi

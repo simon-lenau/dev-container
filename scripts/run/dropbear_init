@@ -6,23 +6,7 @@ source "${DEV_CONTAINER_DIR}/dropbear_settings"
 rm -rf ${DROPBEAR_FOLDER}/host_key_*
 
 
-
-
-cat "${SSH_KEY_FOLDER}/dropbear_rsa_host_key.txt" | openssl base64 -d >${DROPBEAR_FOLDER}/dropbear_rsa_host_key
-cat "${SSH_KEY_FOLDER}/dropbear_ed25519_host_key.txt" | openssl base64 -d >${DROPBEAR_FOLDER}/dropbear_ed25519_host_key
-cat "${SSH_KEY_FOLDER}/dropbear_ecdsa_host_key.txt" | openssl base64 -d >${DROPBEAR_FOLDER}/dropbear_ecdsa_host_key
-
-authorized_keys_file=$HOME/.ssh/authorized_keys
-
-if [ -f "${authorized_keys_file}" ]; then
-    rm -f "${authorized_keys_file}"
-else
-    mkdir -p $(dirname "${authorized_keys_file}")
-fi
-
-cp "${SSH_KEY_FOLDER}/id_css-container.pub" >"${authorized_keys_file}"
-
-chmod go-rwx "${authorized_keys_file}"
+source "${DEV_CONTAINER_DIR}/ssh_key_setup" "insert"
 
 port=$(id -u)
 
