@@ -11,7 +11,6 @@ host_key_types=(
 
 authorized_keys_file=$HOME/.ssh/authorized_keys
 
-
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # Fully expand paths
@@ -22,8 +21,6 @@ authorized_keys_file="$(echo "$(eval "echo "${authorized_keys_file}"")")"
 
 mkdir -p "$(dirname "${authorized_keys_file}")"
 mkdir -p "${DROPBEAR_FOLDER}"
-
-echo "DROPBEAR_FOLDER: $DROPBEAR_FOLDER"
 
 # Check tput availability
 (command -v "tput" >/dev/null 2>&1) && {
@@ -39,6 +36,14 @@ function use_tput {
 }
 
 # Set formatting functions
+
+function tput_file {
+    col="${2}"
+    if [ -z "${col}" ]; then
+        col=0
+    fi
+    echo "$(use_tput setaf ${col} && use_tput bold && use_tput smul)$1$(use_tput sgr0)"
+}
 
 function tput_red {
     echo "$(use_tput setaf 1)$1$(use_tput sgr0)"
@@ -61,6 +66,6 @@ function tput_store_cursor {
 
 function tput_restore_and_clear {
     if [[ "${tput_available}" == "true" ]]; then
-    tput rc && echo -e "\033[0J" && tput rc
+        tput rc && echo -e "\033[0J" && tput rc
     fi
 }

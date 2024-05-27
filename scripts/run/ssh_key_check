@@ -28,19 +28,15 @@ done
 if [ ${#unchanged_key_files[@]} -eq 0 ]; then exit 0; fi
 
 # Otherwise: warn user
-printf "%s\n" "The following key files are unchanged:" >&2
-printf "\t$(tput_red "$(tput_underline "$(tput_bold "- %s")")")\n" "${unchanged_key_files[@]}" >&2
+printf "%s\n" "$(tput_red "WARNING:") The following key files are unchanged:" >&2
+printf "  - $(tput_file "%s" 1)\n" "${unchanged_key_files[@]}" >&2
 printf "$(tput_red "%s")\n" "This poses security risks as they are publicly available." >&2
 
 printf "%b\n" \
-    "Please consider changing the keys in" \
-    "\t$(tput_green $(tput_underline "$(tput_bold "${SSH_KEY_FOLDER}")"))" \
-    "either by running" \
-    "\t$(tput_green "$(tput_underline "$(tput_bold "$DEV_CONTAINER_DIR/run/ssh_key_setup \"generate\"")")")" \
-    "or by mounting a folder with files corresponding to those in" \
-    "\t$(tput_green $(tput_underline "$(tput_bold ".scripts/ssh_keys")"))" \
-    "to" \
-    "\t$(tput_green $(tput_underline "$(tput_bold "${SSH_KEY_FOLDER}")"))" \
+    "Please consider changing the keys in $(tput_file "${SSH_KEY_FOLDER}" 2) by" \
+    "[$(tput_bold a)] either by running $(tput_file "$DEV_CONTAINER_DIR/run/ssh_key_setup" 2) \"generate\" and/or" \
+    "[$(tput_bold b)] mounting a folder to $(tput_file "${SSH_KEY_FOLDER}" 2)" \
+    "    with files corresponding to those in $(tput_file ".scripts/ssh_keys" 2)" \
     >&2
 
 # printf "$(tput_green "%s\n\t\n")" \

@@ -22,34 +22,40 @@ fi
 user_key_file="${SSH_KEY_FOLDER}/dev-container_user_id"
 
 if [[ "${action}" == "generate" ]]; then
-    rm -rf "${user_key_file}*"
+    rm -rf ${user_key_file}*
+        printf "Generating $(tput_file "%-64s" 5)" "${user_key_file}"
     ssh-keygen \
         -N "" \
         -t ed25519 \
         -f "${user_key_file}" \
         >/dev/null 2>&1
+        printf "$(tput_green "%s")\n" "OK"
 fi
+touch "${authorized_keys_file}"
 if (! cat "${authorized_keys_file}" | grep -iq "$(cat "${user_key_file}.pub")"); then
-    echo "Adding to ${authorized_keys_file}"
     cat "${user_key_file}.pub" >>"${authorized_keys_file}"
 fi
 chmod go-rwx "${authorized_keys_file}"
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
+
 # =========================== > Set-up host keys < =========================== #
 for host_key_type in "${host_key_types[@]}"; do
     org_file="${SSH_KEY_FOLDER}/host_key_${host_key_type}.txt"
     dropbear_file="${DROPBEAR_FOLDER}/host_key_${host_key_type}"
     if [[ "${action}" == "generate" ]]; then
+        rm -rf "${dropbear_file}"
         # Generate host key
+        printf "Generating $(tput_file "%-64s" 5)" "${dropbear_file}"
         dropbearkey \
             -t "${host_key_type}" \
-            -f ${dropbear_file} 
-            # >/dev/null 2>&1
+            -f "${dropbear_file}" \
+            >/dev/null 2>&1
         # Store host key in org_file
-        # openssl base64 \
-        #     <"${dropbear_file}" \
-        #     >"${org_file}"
+        openssl base64 \
+            <"${dropbear_file}" \
+            >"${org_file}"
+        printf "$(tput_green "%s")\n" "OK"
     else
         # Insert predefined host keys
         cat "${org_file}" |
