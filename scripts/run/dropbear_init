@@ -3,7 +3,8 @@
 source "${DEV_CONTAINER_DIR}/dropbear_settings"
 
 # Delete existing host keys
-rm -rf ${DROPBEAR_FOLDER}/host_key_*
+cd ${DROPBEAR_FOLDER}
+rm -rf ./host_key_*
 
 
 source "${DEV_CONTAINER_DIR}/ssh_key_setup" "insert"
