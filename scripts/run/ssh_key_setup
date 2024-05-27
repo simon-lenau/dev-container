@@ -19,36 +19,42 @@ else
 fi
 
 # =========================== > Set-up user keys < =========================== #
+user_key_file="${SSH_KEY_FOLDER}/dev-container_user_id"
 
 if [[ "${action}" == "generate" ]]; then
-    rm -rf "${SSH_KEY_FOLDER}/dev-container_user_id"
+    rm -rf "${user_key_file}*"
     ssh-keygen \
         -N "" \
         -t ed25519 \
-        -f "${SSH_KEY_FOLDER}/dev-container_user_id" \
+        -f "${user_key_file}" \
         >/dev/null 2>&1
 fi
-
-cat "${SSH_KEY_FOLDER}/dev-container_user_id.pub" >>"${authorized_keys_file}"
+if (! cat "${authorized_keys_file}" | grep -iq "$(cat "${user_key_file}.pub")"); then
+    echo "Adding to ${authorized_keys_file}"
+    cat "${user_key_file}.pub" >>"${authorized_keys_file}"
+fi
 chmod go-rwx "${authorized_keys_file}"
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 # =========================== > Set-up host keys < =========================== #
 for host_key_type in "${host_key_types[@]}"; do
+    org_file="${SSH_KEY_FOLDER}/host_key_${host_key_type}.txt"
+    dropbear_file="${DROPBEAR_FOLDER}/host_key_${host_key_type}"
     if [[ "${action}" == "generate" ]]; then
-        # Generate host and store host keys
+        # Generate host key
         dropbearkey \
             -t "${host_key_type}" \
-            -f "${DROPBEAR_FOLDER}/host_key_${host_key_type}" \
+            -f ${dropbear_file} \
             >/dev/null 2>&1
+        # Store host key in org_file
         openssl base64 \
-            <"${DROPBEAR_FOLDER}/host_key_${host_key_type}" \
-            >"${SSH_KEY_FOLDER}/host_key_${host_key_type}.txt"
+            <"${dropbear_file}" \
+            >"${org_file}"
     else
         # Insert predefined host keys
-        cat "${SSH_KEY_FOLDER}/host_key_${host_key_type}.txt" |
+        cat "${org_file}" |
             openssl base64 -d \
-                >"${DROPBEAR_FOLDER}/host_key_${host_key_type}"
+                >"${dropbear_file}"
     fi
 done
 # ────────────────────────────────── <end> ─────────────────────────────────── #

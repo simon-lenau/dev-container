@@ -11,7 +11,7 @@ ARG r_packages="" \
     outdir="/OUTDIR/"
 
 ENV \
-    DEV_CONTAINER_DIR="/dev-container_scripts" \
+    DEV_CONTAINER_DIR="/dev-container/" \
     WORKDIR="$workdir" \
     OUTDIR="$outdir"
 
@@ -29,7 +29,7 @@ COPY scripts/build /$DEV_CONTAINER_DIR/build
 
 RUN \
     if [ -n "${ubuntu_packages}" ]; then \
-        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
+        /$DEV_CONTAINER_DIR/scripts/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
@@ -60,12 +60,9 @@ ONBUILD RUN \
 COPY scripts/run /$DEV_CONTAINER_DIR/run
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# ============================ > Dropbear setup < ============================ #
-COPY ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
+# =============================== > SSH keys < =============================== #
+COPY scripts/default_ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
+COPY scripts/default_ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
-
-
-
 
 CMD bash -c "/\$DEV_CONTAINER_DIR/run/dropbear_init"

@@ -9,8 +9,6 @@ host_key_types=(
     dss
 )
 
-default_key_file="${DEV_CONTAINER_DIR}/run/.default_keys"
-
 authorized_keys_file=$HOME/.ssh/authorized_keys
 
 
@@ -18,7 +16,6 @@ authorized_keys_file=$HOME/.ssh/authorized_keys
 
 # Fully expand paths
 SSH_KEY_FOLDER="$(echo "$(eval "echo "${SSH_KEY_FOLDER}"")")"
-default_key_file="$(echo "$(eval "echo "${default_key_file}"")")"
 authorized_keys_file="$(echo "$(eval "echo "${authorized_keys_file}"")")"
 
 # Delete existing authorized keys file and create folder
