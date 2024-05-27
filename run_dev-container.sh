@@ -24,10 +24,6 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     docker run \
         --mount type=bind,source=./.env,destination=/.env,readonly \
         --mount type=bind,source=./ssh_keys,destination=/dev-container/ssh_keys \
-        --mount type=bind,source=./scripts/run/ssh_key_check,destination=/dev-container/run/ssh_key_check \
-        --mount type=bind,source=./scripts/run/dropbear_settings,destination=/dev-container/run/dropbear_settings \
-        --mount type=bind,source=./scripts/run/ssh_key_setup,destination=/dev-container/run/ssh_key_setup \
-        --mount type=bind,source=./scripts/run/dropbear_init,destination=/dev-container/run/dropbear_init \
         -p 127.0.0.1:11782:11782/tcp \
         -t -i \
         ${docker_path}r-ver:latest \
@@ -42,7 +38,7 @@ else
         --partition=r65257773x \
         --container-image=$(git_repo_info --type="registry")r-ver:latest \
         --no-container-mount-home \
-        --container-mounts="./.env:/.env,./scripts/run/:/dev-container_scripts/run/" \
+        --container-mounts="./.env:/.env,./ssh_keys/:/dev-container/ssh_keys/" \
         --container-entrypoint \
         --pty bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
 fi
