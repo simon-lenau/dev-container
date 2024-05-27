@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # =============================== > Settings < =============================== #
-source "$(readlink -f $(dirname ${BASH_SOURCE[0]}))/dropbear_settings"
+source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # Read list of default keys
