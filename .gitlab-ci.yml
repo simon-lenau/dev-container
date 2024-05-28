@@ -1,5 +1,5 @@
 variables:
-  FROM_IMAGE: index.docker.io/simonlenau/r-ver_4.3.3
+  FROM_IMAGE: simonlenau/r-ver_4.3.3
 
 stages:
   - r-container-build
