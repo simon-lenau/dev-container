@@ -55,7 +55,7 @@ r-container-build:
     # Determine image information
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
-      export image_tag="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
+      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
     - >-
       echo "image_name: $image_name";
       echo "image_tag: $image_tag";
