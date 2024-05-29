@@ -46,21 +46,17 @@ r-container-build:
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export image_tag="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-    - >-
-      echo "FROM_IMAGE: $FROM_IMAGE";
-      echo "image_name: $image_name";
-      echo "image_tag: $image_tag";
     # Build the container
-    # - >-
-    #   /kaniko/executor
-    #   --context "./"
-    #   --dockerfile "./Dockerfile"
-    #   --build-arg "ubuntu_packages"="${ubuntu_packages}"
-    #   --build-arg "r_packages"="${r_packages}"
-    #   --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-    #   --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-    #   --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
-    #   --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
-    #   --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest"
-    #   --destination "simonlenau/dev-container:${image_name}_${image_vers}"
-    #   --destination "simonlenau/dev-container:${image_name}_latest"
+    - >-
+      /kaniko/executor
+      --context "./"
+      --dockerfile "./Dockerfile"
+      --build-arg "ubuntu_packages"="${ubuntu_packages}"
+      --build-arg "r_packages"="${r_packages}"
+      --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
+      --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+      --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
+      --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest"
+      --destination "simonlenau/dev-container:${image_name}_${image_vers}"
+      --destination "simonlenau/dev-container:${image_name}_latest"
