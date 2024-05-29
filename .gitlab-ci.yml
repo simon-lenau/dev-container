@@ -18,7 +18,7 @@ r-container-build:
           - Dockerfile
           - .gitlab-ci.yml
   script:
-       # Set folders
+    # Set folders
     - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;
     # Set Credentials
     - >-
