@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Do this only if the current terminal runs in vscode
-if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then exit 0; fi
-
 # ============================== > Arguments < =============================== #
 # $1: Target folder
 folder="${1:-$HOME}"
@@ -48,11 +45,11 @@ if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
 (command -v "tput" >/dev/null 2>&1) && tput sc
 
 # Print folder and user choices
-printf "Moving vscode to\n\t%s\nin 3 secs.\n" "$(folder_fmt "${folder}")"
+printf "Moving to\n\t%s\nin 3 secs.\n" "$(folder_fmt "${folder}")"
 printf "\t%-35s%20s\n" \
     "$(key_fmt "ESCAPE")" "$(key_fmt "cancel")" \
     "$(key_fmt "Any other")" "$(key_fmt "proceed")"
-    
+
 # Wait 3 secs for user input
 read -s -n 1 -t 3 key
 
@@ -61,12 +58,24 @@ read -s -n 1 -t 3 key
 
 if [[ "$key" == $'\e' ]]; then
     printf "OK, staying in\n\t%s\n" "$(folder_fmt "${current_folder}")"
-    printf "To move to default workdir, use\n\t%s\n" "$(cmd_fmt "code -r \"\${WORKDIR}\"")"
+    printf "To move to default folder, use\n\t"
+    if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
+        printf "%s\n" "$(cmd_fmt "cd \"\${folder}\"")"
+    else
+        printf "%s\n" "$(cmd_fmt "code -r \"\${folder}\"")"
+    fi
     exit 0
 fi
 
-printf "Moving to\n\t%s\n" "$(folder_fmt "${folder}")"
-code -r "${folder}"
+# Move to workdir
+    printf "Moving to\n\t%s\n" "$(folder_fmt "${folder}")"
+
+# Check if the shell is run from vscode
+if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
+    cd "${folder}"
+else
+    code -r "${folder}"
+fi
 
 exit 0
 # ────────────────────────────────── <end> ─────────────────────────────────── #

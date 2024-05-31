@@ -7,8 +7,13 @@ Docker ontainers are available on dockerhub: [simonlenau/dev-container](https://
 
 ## SSH connection
 
+### SSH server
+
 To allow a connection inside the container, a [SSH](https://en.wikipedia.org/wiki/Secure_Shell) server is started
 using [Dropbear](https://github.com/mkj/dropbear)
+
+
+### SSH keys
 
 Some default [SSH](https://en.wikipedia.org/wiki/Secure_Shell) keys for host & user are stored in [`scripts/ssh_keys/`](scripts/ssh_keys). \
 The default keys are **publicly available on [github](https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys)**
@@ -17,7 +22,7 @@ The default keys are **publicly available on [github](https://github.com/simon-l
 ```
 
 
-### Replacing default SSH keys
+#### Replacing default SSH keys
 
 The default SSH keys can be replaced 
 by
@@ -27,6 +32,11 @@ by
 2. running [`/dev-container/run/ssh_key_setup "generate"`](scripts/run/ssh_key_setup) inside the container
 
 When combining **1.** and **2.**, the keys will be (re)placed the in mounted folder and easily re-usable.
+
+
+### Connecting to the SSH server
+
+To connect to the [SSH](https://en.wikipedia.org/wiki/Secure_Shell) server inside the container
 
 ## Working environment set-up
 
@@ -39,7 +49,7 @@ It executes the following steps:
 
 1. If an environment file `~/.env` or `/.env` exists, source it.
 2. If an entrypoint script `/.entrypoint` exists, execute it
-3. Open `${WORKDIR}` 
+3. Open `${WORKDIR}` after waiting for user interruption
     a. If the connection comes from a [vscode](https://code.visualstudio.com/) instance: offer user to open `${WORKDIR}` in [vscode](https://code.visualstudio.com/)
     b. Otherwise, `cd` into `${WORKDIR}` 
 
