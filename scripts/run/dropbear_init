@@ -33,6 +33,7 @@ if ! grep -iq "${begin_delim}" "${bashrc_path}"; then
     cat \
         >>${bashrc_path} <<EOF
 ${begin_delim}
+export DEV_CONTAINER_DIR="${DEV_CONTAINER_DIR}"
 source /ssh_entrypoint
 ${end_delim}
 EOF
