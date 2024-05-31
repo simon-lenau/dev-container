@@ -9,9 +9,6 @@ printf "export %s\n" \
     "dropbear_port=$(id -u)" \
     >./.env
 
-echo "$(git_repo_info --type="registry")"
-
-exit 0
 
 if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     {
@@ -31,6 +28,7 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     docker pull ${docker_path}r-ver:latest
     docker run \
         --mount type=bind,source=./.env,destination=/.env,readonly \
+        --mount type=bind,source=./scripts/run/,destination=/dev-container/run \
         -p 127.0.0.1:11782:11782/tcp \
         -t -i \
         ${docker_path}r-ver:latest \
