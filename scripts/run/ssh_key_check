@@ -41,21 +41,22 @@ if [ ${#unchanged_key_files[@]} -eq 0 ]; then exit 0; fi
 
 # Otherwise: warn user
 err \
-    "Warning:" \ 
-"The following key files are unchanged:"
-err "" "$(
-    printf "  - $(tput_file "%s" 1)\n" \
-        "${unchanged_key_files[@]}"
-)"
-err "" \
+    "Warning:" \
+    "The following key files are unchanged:"
+printf -- "\n"
+printf "  - $(tput_file "%s" 5)\n" \
+    "${unchanged_key_files[@]}" \
+    >&2
+
+printf "$(tput_red "%s")\n" \
     "This poses security risks as they are publicly available."
 
 printf "%b\n" \
-    "Please consider changing the keys in $(tput_file "${SSH_KEY_FOLDER}" 2) by" \
-    "$(tput_bold [a]) mounting a folder to $(tput_file "${SSH_KEY_FOLDER}" 2)" \
-    "    with files corresponding to those in $(tput_file "./scripts/ssh_keys" 2) and/or" \
-    "$(tput_bold [b]) running $(tput_file "$DEV_CONTAINER_DIR/run/ssh_key_setup" \"generate\" 2)" \
-    "When combining $(tput_bold [a]) and $(tput_bold [b]), the keys will be in the mounted folder and easily re-usable." \
+    "Please consider changing the keys in $(tput_file "${SSH_KEY_FOLDER}" 5) by" \
+    "$(tput_file [a] 2) mounting a folder to $(tput_file "${SSH_KEY_FOLDER}" 5)" \
+    "    with files corresponding to those in $(tput_file "./scripts/ssh_keys" 5) and/or" \
+    "$(tput_file [b] 2) running $(tput_command "$DEV_CONTAINER_DIR/run/ssh_key_setup \"generate\"" 5)" \
+    "When combining $(tput_file [a] 2) and $(tput_file [b] 2), the keys will be in the mounted folder and easily re-usable." \
     >&2
 
 exit 1

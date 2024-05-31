@@ -71,13 +71,7 @@ function tput_restore_and_clear {
 }
 
 function err {
-    if [ ! -z "${1}" ]; then
-        printf "%b " "$(use_tput setaf 1 && tput bold)$(echo "$1" | tr a-z A-Z)$(use_tput sgr0)" >&2
-        shift
-    fi
-    for arg in "$@"; do
-        printf "%b " "$(use_tput setaf 1)${arg}$(use_tput sgr0)" >&2
-    done
+    printf "%b " "$(use_tput setaf 1)${@}$(use_tput sgr0)" >&2
 }
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #

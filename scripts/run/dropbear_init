@@ -20,20 +20,20 @@ cd ${DROPBEAR_FOLDER}
 # Delete existing host keys
 rm -rf ./host_key_*
 
+# Read host keys from files in ${SSH_KEY_FOLDER}
 source "${DEV_CONTAINER_DIR}/run/ssh_key_setup" "insert"
 
-# Add script to .bashrc that automatically changes the directory of vscode to $WORKDIR with a time limit
+# Add section to .bashrc that automatically execudes code
 bashrc_path="$HOME/.bashrc"
 
 begin_delim="# >>>>>>>>>>>>>>>>>>>> dev-container shell setup >>>>>>>>>>>>>>>>>>>> "
 end_delim="# <<<<<<<<<<<<<<<<<<<< dev-container shell setup <<<<<<<<<<<<<<<<<<<< "
 
 if ! grep -iq "${begin_delim}" "${bashrc_path}"; then
-    cat >>${bashrc_path} <<EOF
+    cat \
+        >>${bashrc_path} <<EOF
 ${begin_delim}
-
-export DEV_CONTAINER_DIR=${DEV_CONTAINER_DIR}
-source \$DEV_CONTAINER_DIR/run/ssh_entrypoint
+source /ssh_entrypoint
 ${end_delim}
 EOF
 fi

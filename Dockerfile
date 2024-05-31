@@ -66,5 +66,6 @@ COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 RUN ln -s "${DEV_CONTAINER_DIR}/run/dropbear_init" /dropbear_init
+RUN ln -s "${DEV_CONTAINER_DIR}/run/ssh_entrypoint" /ssh_entrypoint
 
 CMD bash -c "/dropbear_init"
