@@ -8,6 +8,5 @@ Docker ontainers are available on dockerhub: [simonlenau/dev-container](https://
 ## SSH keys
 
 The ssh keys for host & user are defined in [`scripts/ssh_keys/`](scripts/ssh_keys).
-```
-! **Please change these keys** before using the container, as the default keys are **publicly available on [github](https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys)**
-```
+
+!!! **Please change these keys** before using the container, as the default keys are **publicly available on [github](https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys)**
