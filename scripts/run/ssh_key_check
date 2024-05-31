@@ -6,7 +6,7 @@
 # ││ └─ ./scripts/run/dropbear_settings                                     ││ #
 # ││ └─ ./scripts/run/print_functions                                       ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
-DEV_CONTAINER_DIR=scripts
+
 # ========================= > Source dependencies < ========================== #
 source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
 source "${DEV_CONTAINER_DIR}/run/print_functions"
