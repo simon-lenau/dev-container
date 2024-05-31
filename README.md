@@ -10,7 +10,8 @@ Docker ontainers are available on dockerhub: [simonlenau/dev-container](https://
 ### SSH server
 
 To allow a connection inside the container, a [SSH](https://en.wikipedia.org/wiki/Secure_Shell) server is started
-using [Dropbear](https://github.com/mkj/dropbear)
+using [Dropbear](https://github.com/mkj/dropbear). \
+The server is started running the [`/dropbear_init`](scripts/run/dropbear_init) script
 
 
 ### SSH keys
@@ -36,7 +37,9 @@ When combining **1.** and **2.**, the keys will be (re)placed the in mounted fol
 
 ### Connecting to the SSH server
 
-To connect to the [SSH](https://en.wikipedia.org/wiki/Secure_Shell) server inside the container
+To connect to the [SSH](https://en.wikipedia.org/wiki/Secure_Shell) server inside the container,
+tools like [OpenSSH](https://www.openssh.com/) or [Dropbear](https://github.com/mkj/dropbear)
+may be used.
 
 ## Working environment set-up
 
