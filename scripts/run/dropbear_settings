@@ -23,13 +23,11 @@ mkdir -p "$(dirname "${authorized_keys_file}")"
 mkdir -p "${DROPBEAR_FOLDER}"
 
 # Set dropbear port
-echo "PORT IS ${dropbear_port}"
+
 if [ -z "${dropbear_port}" ]; then
     dropbear_port=$(id -u)
 fi
 if [ ! "${dropbear_port}" -gt 0 ]; then
     dropbear_port=50201
 fi
-
-echo "-> PORT IS ${dropbear_port}"
 
