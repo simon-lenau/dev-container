@@ -1,10 +1,33 @@
 source "${DEV_CONTAINER_DIR}/run/print_functions"
 
+# =========================== > Environment File < =========================== #
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ This will check for an environment file and source it if it is there   ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
 
-# Run entrypoint if it exists
-if [ -f /.entrypoint ]; then
+if [ -f ${HOME}/.env ]; then
+    __containr_entrypoint_log__ "sourcing" "${HOME}/.env"
+    source "${HOME}/.env" && printf "%s\n" "ok" || printf "%s\n" "failed"
+elif [ -f /.env ]; then
+    __containr_entrypoint_log__ "sourcing" "/.env"
+    source /.env && printf "%s\n" "ok" || printf "%s\n" "failed"
+fi
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ========================== > Entrypoint script < =========================== #
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ This will check for an entrypoint script and source it if it is there  ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+if [ -f ${HOME}/.entrypoint ]; then
+    source ${HOME}/.entrypoint
+elif [ -f /.entrypoint ]; then
     source /.entrypoint
 fi
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+
+
 
 # Print default folders
 echo "================================================================================"

@@ -23,11 +23,10 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     docker pull ${docker_path}r-ver:latest
     docker run \
         --mount type=bind,source=./.env,destination=/.env,readonly \
-        --mount type=bind,source=./ssh_keys,destination=/dev-container/ssh_keys \
         -p 127.0.0.1:11782:11782/tcp \
         -t -i \
         ${docker_path}r-ver:latest \
-        bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
+        bash -c /\$DEV_CONTAINER_DIR/run/dropbear_init
 else
     srun \
         --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
@@ -42,3 +41,4 @@ else
         --container-entrypoint \
         --pty bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
 fi
+        # --mount type=bind,source=./ssh_keys,destination=/dev-container/ssh_keys \
