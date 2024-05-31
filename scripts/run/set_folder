@@ -39,9 +39,9 @@ if [[ "$key" == $'\e' ]]; then
     printf "OK, staying in\n\t%s\n" "$(tput_file "${current_folder}" 5)"
     printf "To move to default folder, use\n\t"
     if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
-        printf "%s\n" "$(tput_command "cd \"\${folder}\"" 2)"
+        printf "%s\n" "$(tput_command "cd \"${folder}\"" 2)"
     else
-        printf "%s\n" "$(tput_command "code -r \"\${folder}\"" 2)"
+        printf "%s\n" "$(tput_command "code -r \"${folder}\"" 2)"
     fi
     exit 0
 fi

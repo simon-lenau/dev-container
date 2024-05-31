@@ -12,11 +12,10 @@ docker pull simonlenau/dev-container:containr_latest
 
 docker run \
     --mount type=bind,source=./.env,destination=/.env,readonly \
-    --mount type=bind,source=./scripts/run/ssh_entrypoint,destination=/dev-container/run/ssh_entrypoint \
     -p 127.0.0.1:${dropbear_port}:${dropbear_port}/tcp \
     -t -i \
     simonlenau/dev-container:containr_latest \
-    bash #-c /dropbear_init
+    bash -c /dropbear_init
 
         # --mount type=bind,source=./scripts/run/ssh_key_check,destination=/dev-container/run/ssh_key_check \
     # --mount type=bind,source=./scripts/run/print_functions,destination=/dev-container/run/print_functions \

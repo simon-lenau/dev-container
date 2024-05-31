@@ -47,7 +47,7 @@ The working environment is defined by two folders defined in environment variabl
 `${WORKDIR}` and `${OUTDIR}`.
 
 Once a client connects into the container using [SSH](https://en.wikipedia.org/wiki/Secure_Shell),
-[`scripts/run/ssh_shell_setup`](scripts/run/ssh_shell_setup) is `source`d.
+[`scripts/run/entrypoint_ssh`](scripts/run/ssh_shell_setup) is `source`ed.
 It executes the following steps:
 
 1. If an environment file `~/.env` or `/.env` exists, source it.
