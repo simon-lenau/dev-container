@@ -10,10 +10,11 @@ Docker ontainers are available on dockerhub: [simonlenau/dev-container](https://
 To allow a connection inside the container, a [SSH](https://en.wikipedia.org/wiki/Secure_Shell) server is started
 using [Dropbear](https://github.com/mkj/dropbear)
 
-Some default [SSH](https://en.wikipedia.org/wiki/Secure_Shell) keys for host & user are stored in [`scripts/ssh_keys/`](scripts/ssh_keys).
-`diff
+Some default [SSH](https://en.wikipedia.org/wiki/Secure_Shell) keys for host & user are stored in [`scripts/ssh_keys/`](scripts/ssh_keys). \
+The default keys are **publicly available on [github](https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys)**
+```diff
 ! Please replace these keys before using the container! 
-`
+```
 
 ### Replacing default SSH keys
 
