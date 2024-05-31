@@ -6,7 +6,7 @@ printf "export %s\n" \
 
 source ./.env
 
-# docker pull simonlenau/dev-container:containr_latest
+docker pull simonlenau/dev-container:containr_latest
 
 # exit 0
 
