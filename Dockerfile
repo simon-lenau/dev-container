@@ -57,7 +57,9 @@ ONBUILD RUN \
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ========================= > Copy Runtime Scripts < ========================= #
-COPY scripts/run /$DEV_CONTAINER_DIR/run
+COPY scripts/run $DEV_CONTAINER_DIR/run
+
+RUN cat $DEV_CONTAINER_DIR/run/dropbear_settings
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # =============================== > SSH keys < =============================== #
