@@ -11,10 +11,9 @@ To allow a connection inside the container, a [SSH](https://en.wikipedia.org/wik
 using [Dropbear](https://github.com/mkj/dropbear)
 
 Some default [SSH](https://en.wikipedia.org/wiki/Secure_Shell) keys for host & user are stored in [`scripts/ssh_keys/`](scripts/ssh_keys).
-```diff
+`diff
 ! Please replace these keys before using the container! 
-! The default keys are **publicly available on [github](https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys)**
-```
+`
 
 ### Replacing default SSH keys
 
