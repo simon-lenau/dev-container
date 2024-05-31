@@ -7,9 +7,8 @@
 
 if [ -n "${__ssh_entrypoint_run__}" ]; then return; fi
 export __ssh_entrypoint_run__=true
-echo "DEV_CONTAINER_DIR: $DEV_CONTAINER_DIR"
 source "${DEV_CONTAINER_DIR}/run/print_functions"
-return 0
+
 # =========================== > Environment File < =========================== #
 # ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
 # ││ This will check for an environment file and source it if it is there   ││ #
