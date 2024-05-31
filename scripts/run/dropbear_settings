@@ -1,4 +1,8 @@
-source ${DEV_CONTAINER_DIR}/run/print_functions
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/dropbear_settings                                        ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
 # =============================== > Settings < =============================== #
 SSH_KEY_FOLDER="${DEV_CONTAINER_DIR}/ssh_keys"
 DROPBEAR_FOLDER="/etc/dropbear"
@@ -10,19 +14,17 @@ host_key_types=(
     dss
 )
 
-authorized_keys_file=$HOME/.ssh/authorized_keys
-
+authorized_keys_file="$HOME/.ssh/authorized_keys"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# Fully expand paths
+# ============================= > Expand paths < ============================= #
+
 SSH_KEY_FOLDER="$(echo "$(eval "echo "${SSH_KEY_FOLDER}"")")"
 authorized_keys_file="$(echo "$(eval "echo "${authorized_keys_file}"")")"
 
-# Delete existing authorized keys file and create folder
-mkdir -p "$(dirname "${authorized_keys_file}")"
-mkdir -p "${DROPBEAR_FOLDER}"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# Set dropbear port
+# ================== > Set dropbear port if empty / zero < =================== #
 
 if [ -z "${dropbear_port}" ]; then
     dropbear_port=$(id -u)
@@ -30,4 +32,6 @@ fi
 if [ ! "${dropbear_port}" -gt 0 ]; then
     dropbear_port=50201
 fi
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 

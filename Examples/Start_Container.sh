@@ -6,6 +6,10 @@ printf "export %s\n" \
 
 source ./.env
 
+# docker pull simonlenau/dev-container:containr_latest
+
+# exit 0
+
 docker run \
     --mount type=bind,source=./.env,destination=/.env,readonly \
     -p 127.0.0.1:${dropbear_port}:${dropbear_port}/tcp \

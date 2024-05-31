@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
+    # ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/ssh_key_setup                                            ││ #
+# ││ └─ ./scripts/run/dropbear_settings                                     ││ #
+# ││ └─ ./scripts/run/print_functions                                       ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+DEV_CONTAINER_DIR=scripts
+# ========================= > Source dependencies < ========================== #
 source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
+source "${DEV_CONTAINER_DIR}/run/print_functions"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 
-mkdir -p "${SSH_KEY_FOLDER}"
-mkdir -p "${DROPBEAR_FOLDER}"
-
+# ========================= > Argument processing < ========================== #
 action="${1}"
 
 if (echo "${action}" | grep -iq "generate"); then
@@ -12,24 +20,33 @@ if (echo "${action}" | grep -iq "generate"); then
 elif (echo "${action}" | grep -iq "insert"); then
     action="insert"
 else
-    printf "%b\n" \
-        "$(tput_red "Error:") First (any only) argument to $(tput_file "${BASH_SOURCE[0]}" 1) should be 'generate' or 'insert'." >&2
+    err \
+        "Error:" \
+        "First (any only) argument to\n\t$(tput_file "${BASH_SOURCE[0]}" 1)\n" \
+        "should be 'generate' or 'insert'." >&2
     exit 1
 fi
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+exit 0
+# ============================ > Create folders < ============================ #
+mkdir -p "${SSH_KEY_FOLDER}"
+mkdir -p "${DROPBEAR_FOLDER}"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # =========================== > Set-up user keys < =========================== #
 user_key_file="${SSH_KEY_FOLDER}/dev-container_user_id"
 
 if [[ "${action}" == "generate" ]]; then
     rm -rf ${user_key_file}*
-        printf "Generating $(tput_file "%-64s" 5)" "${user_key_file}"
+    printf "Generating $(tput_file "%-64s" 5)" "${user_key_file}"
     ssh-keygen \
         -N "" \
         -t ed25519 \
         -f "${user_key_file}" \
         >/dev/null 2>&1
-        printf "$(tput_green "%s")\n" "OK"
+    printf "$(tput_green "%s")\n" "OK"
 fi
+mkdir -p "$(dirname "${authorized_keys_file}")"
 touch "${authorized_keys_file}"
 if (! cat "${authorized_keys_file}" | grep -iq "$(cat "${user_key_file}.pub")"); then
     cat "${user_key_file}.pub" >>"${authorized_keys_file}"

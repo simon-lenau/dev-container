@@ -1,3 +1,10 @@
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/ssh_entrypoint                                           ││ #
+# ││ └─ ./scripts/run/print_functions                                       ││ #
+# ││ └─ ./scripts/run/set_folder                                            ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
 source "${DEV_CONTAINER_DIR}/run/print_functions"
 
 # =========================== > Environment File < =========================== #
@@ -6,9 +13,11 @@ source "${DEV_CONTAINER_DIR}/run/print_functions"
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
 
 if [ -f ${HOME}/.env ]; then
-    source "${HOME}/.env" || printf "%s\n" "${HOME}/.env failed"
+    source "${HOME}/.env" ||
+        printf "%s\n" "source ${HOME}/.env failed"
 elif [ -f /.env ]; then
-    source /.env || printf "%s\n" "${HOME}/.env failed"
+    source /.env ||
+        printf "%s\n" "source /.env failed"
 fi
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
@@ -18,22 +27,29 @@ fi
 # ││ This will check for an entrypoint script and source it if it is there  ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
 if [ -f ${HOME}/.entrypoint ]; then
-    source ${HOME}/.entrypoint || printf "%s\n" "${HOME}/.entrypoint failed"
+    source ${HOME}/.entrypoint ||
+        printf "%s\n" "source ${HOME}/.entrypoint failed"
 elif [ -f /.entrypoint ]; then
-    source /.entrypoint || printf "%s\n" "/.entrypoint failed"
+    source /.entrypoint ||
+        printf "%s\n" "source /.entrypoint failed"
 fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
+# ======================== > Print default folders < ========================= #
 
-
-
-# Print default folders
 echo "================================================================================"
-printf "%-12s%s\n" "\$WORKDIR" "$(tput_file "$(readlink -f ${WORKDIR})" 5)"
-printf "%-12s%s\n" "\$OUTDIR" "$(tput_file "$(readlink -f ${OUTDIR})" 5)"
+printf "%-12s%s\n" \
+    "\$WORKDIR" \
+    "$(tput_file "$(readlink -f ${WORKDIR})" 5)"
+printf "%-12s%s\n" \
+    "\$OUTDIR" \
+    "$(tput_file "$(readlink -f ${OUTDIR})" 5)"
 echo "================================================================================"
 
-# Offer user to set vscode to default workdir
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ========== > Call script to set workdir if not objected by user < ========== #
 if [ ! -z "${WORKDIR}" ]; then
     $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
 fi
+# ────────────────────────────────── <end> ─────────────────────────────────── #

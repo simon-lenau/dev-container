@@ -1,9 +1,24 @@
 #!/usr/bin/env bash
 
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/dropbear_init                                            ││ #
+# ││ └─ dropbear                                                            ││ #
+# ││ └─ ./scripts/run/dropbear_settings                                     ││ #
+# ││ └─ ./scripts/run/print_functions                                       ││ #
+# ││ └─ ./scripts/run/ssh_entrypoint                                        ││ #
+# ││ └─ ./scripts/run/ssh_key_check                                         ││ #
+# ││ └─ ./scripts/run/ssh_key_setup                                         ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
 source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
+source "${DEV_CONTAINER_DIR}/run/print_functions"
+
+# Enter folder
+mkdir -p "${DROPBEAR_FOLDER}"
+cd ${DROPBEAR_FOLDER}
 
 # Delete existing host keys
-cd ${DROPBEAR_FOLDER}
 rm -rf ./host_key_*
 
 source "${DEV_CONTAINER_DIR}/run/ssh_key_setup" "insert"
@@ -19,7 +34,7 @@ if ! grep -iq "${begin_delim}" "${bashrc_path}"; then
 ${begin_delim}
 
 export DEV_CONTAINER_DIR=${DEV_CONTAINER_DIR}
-source \$DEV_CONTAINER_DIR/run/ssh_shell_setup
+source \$DEV_CONTAINER_DIR/run/ssh_entrypoint
 ${end_delim}
 EOF
 fi

@@ -54,4 +54,3 @@ It executes the following steps:
 2. If an entrypoint script `/.entrypoint` exists, source it
 3. If user does not object: open `${WORKDIR}` in [vscode](https://code.visualstudio.com/) and/or terminal
 
-Falls Benutzer nicht widerspricht

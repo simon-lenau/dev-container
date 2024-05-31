@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
 
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/print_functions                                          ││ #
+# ││ └─ [Optional] tput                                                     ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
 
-# Check tput availability
+# ======================= > Check tput availability < ======================== #
+
 (command -v "tput" >/dev/null 2>&1) && {
     export tput_available=true
 } || {
     export tput_available=false
 }
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ============== > Functions for conditional tput formatting < =============== #
 
 function use_tput {
     if [[ "${tput_available}" == "true" ]]; then
@@ -21,6 +31,14 @@ function tput_file {
         col=0
     fi
     echo "$(use_tput setaf ${col} && use_tput bold && use_tput smul)$1$(use_tput sgr0)"
+}
+
+function tput_command {
+    col="${2}"
+    if [ -z "${col}" ]; then
+        col=0
+    fi
+    echo "$(use_tput setaf ${col} && use_tput bold)$1$(use_tput sgr0)"
 }
 
 function tput_red {
@@ -38,12 +56,28 @@ function tput_underline {
     echo "$(use_tput smul)$1$(use_tput rmul)"
 }
 
+function tput_keys {
+    echo "$(use_tput setaf 1 && use_tput bold)$1 $2$(use_tput sgr0)"
+}
+
 function tput_store_cursor {
     echo "$(use_tput sc)"
 }
 
 function tput_restore_and_clear {
     if [[ "${tput_available}" == "true" ]]; then
-        tput rc && echo -e "\033[0J" && tput rc
+        tput rc && tput ed && tput rc
     fi
 }
+
+function err {
+    if [ ! -z "${1}" ]; then
+        printf "%b " "$(use_tput setaf 1 && tput bold)$(echo "$1" | tr a-z A-Z)$(use_tput sgr0)" >&2
+        shift
+    fi
+    for arg in "$@"; do
+        printf "%b " "$(use_tput setaf 1)${arg}$(use_tput sgr0)" >&2
+    done
+}
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
