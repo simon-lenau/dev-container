@@ -32,7 +32,7 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
         -p 127.0.0.1:11782:11782/tcp \
         -t -i \
         ${docker_path}r-ver:latest \
-        bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
+        bash -c /\$DEV_CONTAINER_DIR/run/dropbear_init
 else
     srun \
         --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
@@ -45,6 +45,6 @@ else
         --no-container-mount-home \
         --container-mounts="./.env:/.env,./ssh_keys/:/dev-container/ssh_keys/" \
         --container-entrypoint \
-        --pty bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
+        --pty bash -c /\$DEV_CONTAINER_DIR/run/dropbear_init
 fi
-# --mount type=bind,source=./ssh_keys,destination=/dev-container/ssh_keys \
+

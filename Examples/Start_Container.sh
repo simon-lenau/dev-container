@@ -8,8 +8,6 @@ source ./.env
 
 docker pull simonlenau/dev-container:containr_latest
 
-# exit 0
-
 docker run \
     --mount type=bind,source=./.env,destination=/.env,readonly \
     -p 127.0.0.1:${dropbear_port}:${dropbear_port}/tcp \
@@ -17,5 +15,3 @@ docker run \
     simonlenau/dev-container:containr_latest \
     bash -c /dropbear_init
 
-        # --mount type=bind,source=./scripts/run/ssh_key_check,destination=/dev-container/run/ssh_key_check \
-    # --mount type=bind,source=./scripts/run/print_functions,destination=/dev-container/run/print_functions \
