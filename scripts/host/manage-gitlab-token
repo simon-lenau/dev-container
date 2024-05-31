@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/host/manage-gitlab-token                                     ││ #
+# ││ └─ gitlab-tokens                                                       ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
 source "submodules/gitlab-tokens/gitlab-tokens-init"
 
 # ============================ > Git repo infos < ============================ #
