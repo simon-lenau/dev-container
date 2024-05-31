@@ -3,7 +3,11 @@ source "submodules/gitlab-tokens/gitlab-tokens-init"
 
 source "scripts/host/manage-gitlab-token"
 
-printf "export %s\n" "WORKDIR=~/EXAMPLE/" "OUTDIR=~/EXAMPLE_OUTPUT/" >./.env
+printf "export %s\n" \
+    "WORKDIR=~/EXAMPLE/" \
+    "OUTDIR=~/EXAMPLE_OUTPUT/" \
+    "dropbear_port=$(id -u)" \
+    >./.env
 
 if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     {
@@ -41,4 +45,4 @@ else
         --container-entrypoint \
         --pty bash #-c /\$DEV_CONTAINER_DIR/run/dropbear_init
 fi
-        # --mount type=bind,source=./ssh_keys,destination=/dev-container/ssh_keys \
+# --mount type=bind,source=./ssh_keys,destination=/dev-container/ssh_keys \

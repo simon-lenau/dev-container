@@ -51,8 +51,7 @@ Once a client connects into the container using [SSH](https://en.wikipedia.org/w
 It executes the following steps:
 
 1. If an environment file `~/.env` or `/.env` exists, source it.
-2. If an entrypoint script `/.entrypoint` exists, execute it
-3. Open `${WORKDIR}` after waiting for user interruption
-    a. If the connection comes from a [vscode](https://code.visualstudio.com/) instance: offer user to open `${WORKDIR}` in [vscode](https://code.visualstudio.com/)
-    b. Otherwise, `cd` into `${WORKDIR}` 
+2. If an entrypoint script `/.entrypoint` exists, source it
+3. If user does not object: open `${WORKDIR}` in [vscode](https://code.visualstudio.com/) and/or terminal
 
+Falls Benutzer nicht widerspricht

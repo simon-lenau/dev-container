@@ -19,6 +19,13 @@ SSH_KEY_FOLDER="$(echo "$(eval "echo "${SSH_KEY_FOLDER}"")")"
 authorized_keys_file="$(echo "$(eval "echo "${authorized_keys_file}"")")"
 
 # Delete existing authorized keys file and create folder
-
 mkdir -p "$(dirname "${authorized_keys_file}")"
 mkdir -p "${DROPBEAR_FOLDER}"
+
+# Set dropbear port
+if [ -z "${dropbear_port}" ]; then
+    dropbear_port=$(id -u)
+fi
+if [ ! "${dropbear_port}" -gt 0 ]; then
+    dropbear_port=12345
+fi

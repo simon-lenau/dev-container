@@ -6,11 +6,9 @@ source "${DEV_CONTAINER_DIR}/run/print_functions"
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
 
 if [ -f ${HOME}/.env ]; then
-    __containr_entrypoint_log__ "sourcing" "${HOME}/.env"
-    source "${HOME}/.env" && printf "%s\n" "ok" || printf "%s\n" "failed"
+    source "${HOME}/.env" || printf "%s\n" "${HOME}/.env failed"
 elif [ -f /.env ]; then
-    __containr_entrypoint_log__ "sourcing" "/.env"
-    source /.env && printf "%s\n" "ok" || printf "%s\n" "failed"
+    source /.env || printf "%s\n" "${HOME}/.env failed"
 fi
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
@@ -20,9 +18,9 @@ fi
 # ││ This will check for an entrypoint script and source it if it is there  ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
 if [ -f ${HOME}/.entrypoint ]; then
-    source ${HOME}/.entrypoint
+    source ${HOME}/.entrypoint || printf "%s\n" "${HOME}/.entrypoint failed"
 elif [ -f /.entrypoint ]; then
-    source /.entrypoint
+    source /.entrypoint || printf "%s\n" "/.entrypoint failed"
 fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
