@@ -11,7 +11,7 @@ To allow a connection inside the container, a [SSH](https://en.wikipedia.org/wik
 using [Dropbear](https://github.com/mkj/dropbear)
 
 Some default [SSH](https://en.wikipedia.org/wiki/Secure_Shell) keys for host & user are stored in [`scripts/ssh_keys/`](scripts/ssh_keys). \
-The default keys are **publicly available on [github](https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys)** \
+The default keys are **publicly available on [github](https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys)**
 ```diff
 !!! Please replace these keys before using the container !!!
 ```
@@ -22,11 +22,11 @@ The default keys are **publicly available on [github](https://github.com/simon-l
 The default SSH keys can be replaced 
 by
 
-1. mounting a folder to /dev-container/ssh_keys
+1. mounting a folder to `/dev-container/ssh_keys`
     with files corresponding to those in [`scripts/ssh_keys/`](scripts/ssh_keys) and/or
-2. running [`/dev-container/run/ssh_key_setup`](scripts/run/ssh_key_setup) inside the container
+2. running [`/dev-container/run/ssh_key_setup "generate"`](scripts/run/ssh_key_setup) inside the container
 
-When combining **1.** and **2.**, the keys will be replaced the in mounted folder and easily re-usable.
+When combining **1.** and **2.**, the keys will be (re)placed the in mounted folder and easily re-usable.
 
 ## Working environment set-up
 
@@ -37,7 +37,9 @@ Once a client connects into the container using [SSH](https://en.wikipedia.org/w
 [`scripts/run/ssh_shell_setup`](scripts/run/ssh_shell_setup) is `source`d.
 It executes the following steps:
 
-1. If an environment file `~/.env` or `/.env` exists, sources it.
+1. If an environment file `~/.env` or `/.env` exists, source it.
 2. If an entrypoint script `/.entrypoint` exists, execute it
-3. If the connection comes from a [vscode](https://code.visualstudio.com/) instance: offer user to open `${WORKDIR}` in [vscode](https://code.visualstudio.com/).
+3. Open `${WORKDIR}` 
+    a. If the connection comes from a [vscode](https://code.visualstudio.com/) instance: offer user to open `${WORKDIR}` in [vscode](https://code.visualstudio.com/)
+    b. Otherwise, `cd` into `${WORKDIR}` 
 

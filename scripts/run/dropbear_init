@@ -8,11 +8,6 @@ rm -rf ./host_key_*
 
 source "${DEV_CONTAINER_DIR}/run/ssh_key_setup" "insert"
 
-port=$(id -u)
-
-if [ ! "${port}" -gt 0 ]; then
-    port=11782
-fi
 
 # Add script to .bashrc that automatically changes the directory of vscode to $WORKDIR with a time limit
 bashrc_path="$HOME/.bashrc"
@@ -49,5 +44,11 @@ ${DEV_CONTAINER_DIR}/run/ssh_key_check || {
 echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" "$HOST$HOSTNAME" "$port"
 echo "----------------------------------------------------"
+
+port=$(id -u)
+
+if [ ! "${port}" -gt 0 ]; then
+    port=11782
+fi
 
 dropbear -F -E -s -p $port
