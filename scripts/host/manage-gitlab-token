@@ -2,8 +2,6 @@
 
 source "submodules/gitlab-tokens/gitlab-tokens-init"
 
-
-
 # ============================ > Git repo infos < ============================ #
 git_host=$(git_repo_info --type "host")
 git_proj=$(git_repo_info --type "project")
