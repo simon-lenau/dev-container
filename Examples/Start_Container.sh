@@ -6,7 +6,7 @@ printf "export %s\n" \
 
 source ./.env
 
-docker pull simonlenau/dev-container:containr_latest
+# docker pull simonlenau/dev-container:containr_latest
 
 # exit 0
 
@@ -15,4 +15,4 @@ docker run \
     -p 127.0.0.1:${dropbear_port}:${dropbear_port}/tcp \
     -t -i \
     simonlenau/dev-container:containr_latest \
-    bash -c /dropbear_init
+    bash #-c /dropbear_init
