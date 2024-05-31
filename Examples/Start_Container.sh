@@ -1,7 +1,7 @@
 printf "export %s\n" \
     "WORKDIR=~/EXAMPLE/" \
     "OUTDIR=~/EXAMPLE_OUTPUT/" \
-    "dropbear_port=$(id -u)01" \
+    "dropbear_port="$(echo "$(id -u)12345" | cut -c1-5)""  \
     >./.env
 
 source ./.env
@@ -11,4 +11,4 @@ docker run \
     -p 127.0.0.1:${dropbear_port}:${dropbear_port}/tcp \
     -t -i \
     simonlenau/dev-container:containr_latest \
-    bash #-c /dropbear_init
+    bash -c /dropbear_init

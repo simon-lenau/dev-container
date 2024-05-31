@@ -9,6 +9,9 @@ printf "export %s\n" \
     "dropbear_port=$(id -u)" \
     >./.env
 
+echo "$(git_repo_info --type="registry")"
+
+exit 0
 
 if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
     {

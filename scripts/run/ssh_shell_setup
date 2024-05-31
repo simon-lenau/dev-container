@@ -35,5 +35,5 @@ echo "==========================================================================
 
 # Offer user to set vscode to default workdir
 if [ ! -z "${WORKDIR}" ]; then
-    $DEV_CONTAINER_DIR/run/set_vscode_folder "${WORKDIR}"
+    $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
 fi
