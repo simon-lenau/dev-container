@@ -23,7 +23,7 @@ else
     err \
         "Error:" \
         "First (any only) argument to\n\t$(tput_file "${BASH_SOURCE[0]}" 1)\n" \
-        "should be 'generate' or 'insert'." >&2
+        "should be 'generate' or 'insert'."
     exit 1
 fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
