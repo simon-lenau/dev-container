@@ -15,7 +15,15 @@ ENV \
     WORKDIR="$workdir" \
     OUTDIR="$outdir"
 
-ONBUILD ENV DEV_CONTAINER_DIR="$DEV_CONTAINER_DIR"
+ONBUILD ARG \
+    r_packages="" \
+    ubuntu_packages="" \
+    workdir="/WORKDIR/" \
+    outdir="/OUTDIR/"
+
+ONBUILD ENV \
+    WORKDIR="$workdir" \
+    OUTDIR="$outdir"
 
 SHELL ["/bin/bash", "-c"]
 
