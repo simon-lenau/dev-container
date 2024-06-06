@@ -4,7 +4,6 @@
 # ││ ./scripts/run/set_folder                                               ││ #
 # ││ └─ ./scripts/run/print_functions                                       ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
-
 source "${DEV_CONTAINER_DIR}/run/print_functions"
 
 # ============================== > Arguments < =============================== #
@@ -16,7 +15,7 @@ folder="$(readlink -f $(eval "echo "${folder}""))"
 
 # ================== > Check if already in target folder < =================== #
 current_folder="$(readlink -f $(eval "echo "${PWD}""))"
-if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
+if [[ "${current_folder}" == "${folder}" ]]; then return 0; fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ================ > Offer user to move vscode to `folder` < ================= #
@@ -43,7 +42,7 @@ if [[ "$key" == $'\e' ]]; then
     else
         printf "%s\n" "$(tput_command "code -r \"${folder}\"" 2)"
     fi
-    exit 0
+    return 0
 fi
 
 # Move to workdir
@@ -51,12 +50,10 @@ fi
 
 # Check if the shell is run from vscode
 if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
-echo "1"
-    cd "${folder}"
+    cd "${folder}" && echo "A!" || echo "B!"
 else
-echo "2"
     code -r "${folder}"
 fi
 
-exit 0
+return 0
 # ────────────────────────────────── <end> ─────────────────────────────────── #
