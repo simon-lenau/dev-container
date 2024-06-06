@@ -26,14 +26,14 @@ fi
 
 # ========================== > Entrypoint script < =========================== #
 # ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
-# ││ This will check for an entrypoint script and source it if it is there  ││ #
+# ││ This will check for an entrypoint script and run it if it is there     ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
 if [ -f ${HOME}/.entrypoint ]; then
-    source ${HOME}/.entrypoint ||
-        printf "%s\n" "source ${HOME}/.entrypoint failed"
+    ${HOME}/.entrypoint ||
+        printf "%s\n" "${HOME}/.entrypoint failed"
 elif [ -f /.entrypoint ]; then
-    source /.entrypoint ||
-        printf "%s\n" "source /.entrypoint failed"
+    /.entrypoint ||
+        printf "%s\n" "/.entrypoint failed"
 fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
