@@ -34,7 +34,7 @@ if ! grep -iq "${begin_delim}" "${bashrc_path}"; then
         >>${bashrc_path} <<EOF
 ${begin_delim}
 export DEV_CONTAINER_DIR="${DEV_CONTAINER_DIR}"
-if [[ "${TERM_PROGRAM}" == "vscode" ]]; then
+if [[ "\${TERM_PROGRAM}" == "vscode" ]]; then
     export __ssh_entrypoint_run__=
 fi
 source /.entrypoint_ssh
