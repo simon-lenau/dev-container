@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-source "submodules/gitlab-tokens/gitlab-tokens-init"
-
-source "scripts/host/manage-gitlab-token"
+docker_image="simonlenau/dev-container:containr_latest"
 
 printf "export %s\n" \
     "WORKDIR=~/EXAMPLE/" \
@@ -41,9 +39,9 @@ else
         --mail-type=ALL \
         --mail-user=lenau@cispa.de \
         --partition=r65257773x \
-        --container-image=$(git_repo_info --type="registry")r-ver:latest \
+        --container-image="${docker_image}" \
         --no-container-mount-home \
-        --container-mounts="./.env:/.env,./ssh_keys/:/dev-container/ssh_keys/" \
+        --container-mounts="./.env:/.env,./ssh_keys/:/dev-container/ssh_keys/,./scripts/run/:/dev-container/run " \
         --container-entrypoint \
         --pty bash -c /\$DEV_CONTAINER_DIR/run/dropbear_init
 fi

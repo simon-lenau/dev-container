@@ -16,7 +16,7 @@ folder="$(readlink -f $(eval "echo "${folder}""))"
 
 # ================== > Check if already in target folder < =================== #
 current_folder="$(readlink -f $(eval "echo "${PWD}""))"
-if [[ "${current_folder}" == "${folder}" ]]; then exit 0; fi
+if [[ "${current_folder}" == "${folder}" ]]; then return 0; fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ================ > Offer user to move vscode to `folder` < ================= #
@@ -51,8 +51,10 @@ fi
 
 # Check if the shell is run from vscode
 if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
+echo "1"
     cd "${folder}"
 else
+echo "2"
     code -r "${folder}"
 fi
 
