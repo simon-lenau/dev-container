@@ -5,9 +5,7 @@
 # ││ └─ ./scripts/run/set_folder                                            ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
 
-echo "AAA"
-
-if [ -n "${__ssh_entrypoint_run__}" ]; then return 0; fi
+if [ -n "${__ssh_entrypoint_run__}" ]; then exit 0; fi
 export __ssh_entrypoint_run__=true
 source "${DEV_CONTAINER_DIR}/run/print_functions"
 
