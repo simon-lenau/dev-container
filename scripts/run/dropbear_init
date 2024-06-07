@@ -65,4 +65,4 @@ printf "Running on %s, port %s\n" \
     "${dropbear_port}"
 echo "----------------------------------------------------"
 
-dropbear -F -E -c "source "${bashrc_path}"" -s -p ${dropbear_port}
+dropbear -F -E -s -p ${dropbear_port}
