@@ -64,4 +64,4 @@ printf "Running on %s, port %s\n" \
     "${dropbear_port}"
 echo "----------------------------------------------------"
 
-dropbear -F -E -s -p ${dropbear_port}
+dropbear -F -E -e -s -p ${dropbear_port}
