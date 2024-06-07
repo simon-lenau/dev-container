@@ -1,3 +1,4 @@
-dropbear
 curl
+dropbear
+libfontconfig1-dev
 openssh-client
