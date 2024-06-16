@@ -119,7 +119,7 @@ python-container-build:
     # Export package lists
     - >- 
       export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
-      export r_packages="";
+      export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
     # Determine image information
     - >-
       export image_name="$(echo ${PYTHON_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
@@ -131,6 +131,7 @@ python-container-build:
       --dockerfile "./Dockerfile"
       --build-arg "ubuntu_packages"="${ubuntu_packages}"
       --build-arg "r_packages"="${r_packages}"
+      --build-arg "python_packages"="${python_packages}"
       --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
       --build-arg "FROM_IMAGE"="${PYTHON_IMAGE}"

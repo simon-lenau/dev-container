@@ -6,6 +6,7 @@ ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:latest"
 FROM "$FROM_IMAGE"
 
 ARG r_packages="" \
+    python_packages="" \
     ubuntu_packages="" \
     workdir="/WORKDIR/" \
     outdir="/OUTDIR/"
@@ -17,6 +18,7 @@ ENV \
 
 ONBUILD ARG \
     r_packages="" \
+    python_packages="" \
     ubuntu_packages="" \
     workdir="/WORKDIR/" \
     outdir="/OUTDIR/"
@@ -41,6 +43,9 @@ RUN \
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
+    fi \
+    if [ -n "${python_packages}" ]; then \ 
+        /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
     fi
 
 
@@ -50,6 +55,9 @@ ONBUILD RUN \
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
+    fi \
+    if [ -n "${python_packages}" ]; then \ 
+        /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
     fi
 
 
