@@ -137,6 +137,5 @@ python-container-build:
       --build-arg "FROM_IMAGE"="${PYTHON_IMAGE}"
       --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
       --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest"
-
-# --destination "index.docker.io/simonlenau/dev-container:${image_name}_${image_vers}"
-# --destination "index.docker.io/simonlenau/dev-container:${image_name}_latest"
+      --destination "index.docker.io/simonlenau/dev-container:${image_name}_${image_vers}"
+      --destination "index.docker.io/simonlenau/dev-container:${image_name}_latest"
