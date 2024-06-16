@@ -43,10 +43,10 @@ RUN \
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
-    fi \
+    fi; \
     if [ -n "${python_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
-    fi
+    fi;
 
 
 ONBUILD RUN \
@@ -55,10 +55,10 @@ ONBUILD RUN \
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
-    fi \
+    fi; \
     if [ -n "${python_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
-    fi
+    fi;
 
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
