@@ -76,11 +76,11 @@ COPY scripts/run $DEV_CONTAINER_DIR/run
 #     ) &)
 # ======================== > Install vscode-server < ========================= #
 
-RUN << 'ENDRUN'
-    echo A
-    echo B
-    echo C
-ENDRUN
+RUN <<EOF
+echo A
+echo B
+echo C
+EOF
 
 # RUN \
 #     /bin/bash -c "(
