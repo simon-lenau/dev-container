@@ -73,11 +73,11 @@ RUN \
     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64" && \
     printf "%s\n" \
         "#!/usr/bin/env bash" \
-        "ln -s \
-            "$HOME/.vscode-server" \
-            "$HOME/code" \
-            "$HOME/.vscode" \
-            "$HOME/code-server" \
+        "ln -s \\"
+            "$HOME/.vscode-server \\" \
+            "$HOME/code \\" \
+            "$HOME/.vscode \\" \
+            "$HOME/code-server \\" \
             "\${HOME}" \
         >> ${vscode_init_file} && \
         chmod a+x ${vscode_init_file}; \
