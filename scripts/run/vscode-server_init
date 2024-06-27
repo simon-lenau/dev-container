@@ -2,12 +2,14 @@ if [ -n "${__vscode-server_init_run__}" ]; then return 0; fi
 export __vscode_server_init_run__=true
 
 function link_if_exists {
-    if [ -d "/root/.vscode-server" ]; then
-        ln -s /root/.vscode-server $HOME
+    if [ -d "/root/${1}" ]; then
+        if [ ! -d "${HOME}/${1}" ]; then
+            ln -s "/root/${1}" "$HOME/${1}"
+        fi
     fi
 }
 
-link_if_exists "/root/.vscode-server"
-link_if_exists "/root/.vscode"
-link_if_exists "/root/code-server"
-link_if_exists "/root/code"
+link_if_exists ".vscode-server"
+link_if_exists ".vscode"
+link_if_exists "code-server"
+link_if_exists "code"
