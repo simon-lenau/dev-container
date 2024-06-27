@@ -78,7 +78,7 @@ RUN \
             "$HOME/code \\" \
             "$HOME/.vscode \\" \
             "$HOME/code-server \\" \
-            "\${HOME}"
+            "\${HOME}" \
         >> ${vscode_init_file} && \
         chmod a+x ${vscode_init_file}; \
         cat ${vscode_init_file} 
