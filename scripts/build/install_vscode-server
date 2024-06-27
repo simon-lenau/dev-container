@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
-echo "pre-installation of vscode still not working properly!"
-
-
 cd /
 
 printf -- "Installing vscode-server..." &&
     curl -sL \
-        https://raw.githubusercontent.com/b01/dl-vscode-server/main/download-vs-code-server.sh |
+        https://raw.githubusercontent.com/b01/dl-vscode-server/main/download-vs-code.sh |
     /bin/bash -s -- ${@} > \
         "./vscode-server.log" 2>&1 &&
     (
@@ -15,8 +12,9 @@ printf -- "Installing vscode-server..." &&
             rm -rf "./vscode-server.log"
     ) ||
     (
+        retval=$?
         sed -i 's/^/\t/' "./vscode-server.log" &&
             printf -- "failed:\n" &&
             cat "./vscode-server.log" &&
-            exit 1
+            exit $?
     )
