@@ -1,6 +1,6 @@
 # =========================== > Base environment < =========================== #
 
-ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr/r-ver:latest"
+ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr:latest"
 
 
 FROM "$FROM_IMAGE"
@@ -31,9 +31,13 @@ SHELL ["/bin/bash", "-c"]
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# ========================== > Run Build scripts < =========================== #
+# ============================ > Copy ./scripts < ============================ #
+COPY scripts/ /$DEV_CONTAINER_DIR/
+RUN rm -rf /$DEV_CONTAINER_DIR/host
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 
-COPY scripts/build /$DEV_CONTAINER_DIR/build
+
+# ========================== > Run Build scripts < =========================== #
 
 # ========================= > Install dependencies < ========================= #
 
@@ -63,37 +67,19 @@ ONBUILD RUN \
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# ========================= > Copy Runtime Scripts < ========================= #
-COPY scripts/run $DEV_CONTAINER_DIR/run
-# ────────────────────────────────── <end> ─────────────────────────────────── #
-# /bin/bash -c '( (
-#     set -e
-#     cd /
-#     true
-#     echo "this line should be printed..."
-#     false
-#     echo "this line MUST NOT be printed!"
-#     ) &)
 # ======================== > Install vscode-server < ========================= #
 
-RUN <<BLA
-echo A
-echo B
-echo C
-BLA
 
-# RUN \
-#     /bin/bash -c "(
-#         cat >> /$DEV_CONTAINER_DIR/run/vscode-server_init <<'EOF' 
-# #!/usr/bin/env bash
-# ln -s "$HOME/.vscode-server/" ~/.vscode-server
-# ln -s "$HOME/code" ~/code/
-# ln -s "$HOME/.vscode" ~/.vscode/
-# ln -s "$HOME/code-server" ~/code-server/
-# EOF
-#     )"
-    
-# RUN cat /$DEV_CONTAINER_DIR/run/vscode-server_init
+
+RUN \
+    /$DEV_CONTAINER_DIR/build/install_vscode-server && \
+    printf "%s\n" \
+        "#!/usr/bin/env bash" \
+        "ln -s "$HOME/.vscode-server/" ~/.vscode-server" \
+        "ln -s "$HOME/code" ~/code/" \
+        "ln -s "$HOME/.vscode" ~/.vscode/" \
+        "ln -s "$HOME/code-server" ~/code-server/"; \
+        cat /$DEV_CONTAINER_DIR/run/vscode-server_init
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
