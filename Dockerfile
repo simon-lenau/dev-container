@@ -73,7 +73,7 @@ RUN \
     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64" && \
     printf "%s\n" \
         "#!/usr/bin/env bash" \
-        "ln -s \\"
+        "ln -s \\" \
             "$HOME/.vscode-server \\" \
             "$HOME/code \\" \
             "$HOME/.vscode \\" \
