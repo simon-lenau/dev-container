@@ -32,8 +32,8 @@ SHELL ["/bin/bash", "-c"]
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ============================ > Copy ./scripts < ============================ #
-COPY scripts/ /$DEV_CONTAINER_DIR/
-RUN rm -rf /$DEV_CONTAINER_DIR/host
+COPY scripts/run /$DEV_CONTAINER_DIR/run
+COPY scripts/build /$DEV_CONTAINER_DIR/build
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 
@@ -69,16 +69,7 @@ ONBUILD RUN \
 
 # ======================== > Install vscode-server < ========================= #
 RUN \
-    vscode_init_file="/$DEV_CONTAINER_DIR/run/vscode-server_init"; \
-    /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64" && \
-    printf "ln -s ${HOME}/%s ~\n" \
-            ".vscode-server" \
-            ".vscode" \
-            "code-server" \
-            "code" \
-        >> ${vscode_init_file} && \
-        chmod a+x ${vscode_init_file}; \
-        cat ${vscode_init_file} 
+    /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64"
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
@@ -91,7 +82,12 @@ COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 RUN \
-    ln -s "${DEV_CONTAINER_DIR}/run/dropbear_init" /dropbear_init; \
-    ln -s "${DEV_CONTAINER_DIR}/run/entrypoint_ssh" /.entrypoint_ssh
+    printf "source \"%s\"\n" \
+        "${DEV_CONTAINER_DIR}/run/vscode-server_init" \
+        "${DEV_CONTAINER_DIR}/run/dropbear_init" \
+        >> ${DEV_CONTAINER_DIR}/run/init" && \
+    chmod a+x "${DEV_CONTAINER_DIR}/run/init";
+    ln -s "${DEV_CONTAINER_DIR}/run/ssh_entrypoint" /.ssh_entrypoint; \
+    ln -s "${DEV_CONTAINER_DIR}/run/init" /init;
 
-CMD bash -c "/dropbear_init"
+CMD bash -c "/init"
