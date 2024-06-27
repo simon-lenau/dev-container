@@ -86,7 +86,7 @@ RUN \
         "${DEV_CONTAINER_DIR}/run/vscode-server_init" \
         "${DEV_CONTAINER_DIR}/run/dropbear_init" \
         >> ${DEV_CONTAINER_DIR}/run/init" && \
-    chmod a+x "${DEV_CONTAINER_DIR}/run/init";
+    chmod a+x "${DEV_CONTAINER_DIR}/run/init"; \
     ln -s "${DEV_CONTAINER_DIR}/run/ssh_entrypoint" /.ssh_entrypoint; \
     ln -s "${DEV_CONTAINER_DIR}/run/init" /init;
 
