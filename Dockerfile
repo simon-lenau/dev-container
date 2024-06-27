@@ -69,8 +69,6 @@ ONBUILD RUN \
 
 # ======================== > Install vscode-server < ========================= #
 
-
-
 RUN \
     vscode_init_file="/$DEV_CONTAINER_DIR/run/vscode-server_init"; \
     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64" && \
@@ -81,8 +79,7 @@ RUN \
         "ln -s "$HOME/.vscode" ~/.vscode/" \
         "ln -s "$HOME/code-server" ~/code-server/" \
         >> ${vscode_init_file} && \
-        chmod a+x ${vscode_init_file}; \
-        cat /$DEV_CONTAINER_DIR/run/vscode-server_init
+        chmod a+x ${vscode_init_file}
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
@@ -94,7 +91,8 @@ COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-RUN ln -s "${DEV_CONTAINER_DIR}/run/dropbear_init" /dropbear_init
-RUN ln -s "${DEV_CONTAINER_DIR}/run/entrypoint_ssh" /.entrypoint_ssh
+RUN \
+    ln -s "${DEV_CONTAINER_DIR}/run/dropbear_init" /dropbear_init \
+    ln -s "${DEV_CONTAINER_DIR}/run/entrypoint_ssh" /.entrypoint_ssh
 
 CMD bash -c "/dropbear_init"
