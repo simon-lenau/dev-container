@@ -1,5 +1,5 @@
-if [ -n "${__vscode-server_init_run__}" ]; then return 0; fi
-export __vscode_server_init_run__=true
+# if [ -n "${__vscode-server_init_run__}" ]; then return 0; fi
+# export __vscode_server_init_run__=true
 
 function make_link {
     if [ -d "/root/${1}" ]; then
