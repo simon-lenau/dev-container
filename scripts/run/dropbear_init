@@ -72,4 +72,4 @@ printf "Running on %s, port %s\n" \
     "${dropbear_port}"
 echo "----------------------------------------------------"
 
-dropbear -F -E -s -p ${dropbear_port}
+/usr/sbin/dropbear -F -E -s -p ${dropbear_port}
