@@ -88,7 +88,7 @@ COPY scripts    /ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 
 RUN \
     chmod a+x "${DEV_CONTAINER_DIR}/run/dropbear_init"; \
-    ln -s "$(which dropbear)" "/bin"; \
+    ln -s "$(which dropbear)" "$(dirname $(which dropbearkey))"; \
     ln -s "${DEV_CONTAINER_DIR}/run/ssh_entrypoint" /.ssh_entrypoint; \
     ln -s "${DEV_CONTAINER_DIR}/run/dropbear_init" /dropbear_init;
 
