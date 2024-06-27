@@ -1,5 +1,5 @@
 if [ -n "${__vscode-server_init_run__}" ]; then return 0; fi
-export __vscode-server_init_run__=true
+export __vscode_server_init_run__=true
 ln -s /root/.vscode-server ~
 ln -s /root/.vscode ~
 ln -s /root/code-server ~
