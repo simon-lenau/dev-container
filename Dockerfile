@@ -70,7 +70,7 @@ COPY scripts/run $DEV_CONTAINER_DIR/run
 # ======================== > Install vscode-server < ========================= #
 RUN \
     touch /$DEV_CONTAINER_DIR/run/vscode-server_init && \
-    chmod a+x /$DEV_CONTAINER_DIR/run/vscode-server_init; \
+    chmod a+x /$DEV_CONTAINER_DIR/run/vscode-server_init && \
     cat >> /$DEV_CONTAINER_DIR/run/vscode-server_init <<'EOF'
 #!/usr/bin/env bash
 ln -s "$HOME/.vscode-server/" ~/.vscode-server/
