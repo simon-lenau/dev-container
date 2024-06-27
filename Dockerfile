@@ -45,6 +45,7 @@ RUN \
     if [ -n "${ubuntu_packages}" ]; then \
         /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
         echo "Dropbear: $(which dropbear)"; \
+        echo "PATH: $PATH"; \        
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
@@ -79,8 +80,12 @@ RUN \
 
 # =============================== > SSH keys < =============================== #
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
-COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
+COPY scripts    /ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
+
+
+ENV PATH="$PATH:$(dirname $(which dropbear))"
+
 
 RUN \
     chmod a+x "${DEV_CONTAINER_DIR}/run/dropbear_init"; \
