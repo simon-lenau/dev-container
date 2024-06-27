@@ -82,12 +82,8 @@ COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 RUN \
-    printf "source \"%s\"\n" \
-        "${DEV_CONTAINER_DIR}/run/vscode-server_init" \
-        "${DEV_CONTAINER_DIR}/run/dropbear_init" \
-        >> "${DEV_CONTAINER_DIR}/run/init" && \
-    chmod a+x "${DEV_CONTAINER_DIR}/run/init"; \
+    chmod a+x "${DEV_CONTAINER_DIR}/run/dropbear_init"; \
     ln -s "${DEV_CONTAINER_DIR}/run/ssh_entrypoint" /.ssh_entrypoint; \
-    ln -s "${DEV_CONTAINER_DIR}/run/init" /init;
+    ln -s "${DEV_CONTAINER_DIR}/run/dropbear_init" /dropbear_init;
 
 CMD bash -c "/init"
