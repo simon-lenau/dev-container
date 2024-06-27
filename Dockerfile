@@ -72,13 +72,16 @@ ONBUILD RUN \
 
 
 RUN \
+    vscode_init_file="/$DEV_CONTAINER_DIR/run/vscode-server_init"; \
     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64" && \
     printf "%s\n" \
         "#!/usr/bin/env bash" \
         "ln -s "$HOME/.vscode-server/" ~/.vscode-server" \
         "ln -s "$HOME/code" ~/code/" \
         "ln -s "$HOME/.vscode" ~/.vscode/" \
-        "ln -s "$HOME/code-server" ~/code-server/"; \
+        "ln -s "$HOME/code-server" ~/code-server/" \
+        >> ${vscode_init_file} && \
+        chmod a+x ${vscode_init_file}; \
         cat /$DEV_CONTAINER_DIR/run/vscode-server_init
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
