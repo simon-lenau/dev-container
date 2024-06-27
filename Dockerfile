@@ -80,7 +80,7 @@ RUN \
 
 # =============================== > SSH keys < =============================== #
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
-COPY scripts    /ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
+COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 
