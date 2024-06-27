@@ -56,6 +56,7 @@ RUN \
 ONBUILD RUN \
     if [ -n "${ubuntu_packages}" ]; then \
         /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
+        echo "Dropbear: $(which dropbear)"
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
