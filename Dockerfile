@@ -63,10 +63,13 @@ ONBUILD RUN \
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
+# ========================= > Copy Runtime Scripts < ========================= #
+COPY scripts/run $DEV_CONTAINER_DIR/run
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ======================== > Install vscode-server < ========================= #
 RUN \
-    cat >>/$DEV_CONTAINER_DIR/run/vscode-server_init <<'EOF'
+    cat > /$DEV_CONTAINER_DIR/run/vscode-server_init <<'EOF'
 #!/usr/bin/env bash
 ln -s "$HOME/.vscode-server/" ~/.vscode-server/
 ln -s "$HOME/code" ~/code/
@@ -80,9 +83,7 @@ EOF
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# ========================= > Copy Runtime Scripts < ========================= #
-COPY scripts/run $DEV_CONTAINER_DIR/run
-# ────────────────────────────────── <end> ─────────────────────────────────── #
+
 
 # =============================== > SSH keys < =============================== #
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
