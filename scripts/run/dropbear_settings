@@ -2,8 +2,7 @@
 # ││ Dependencies:                                                          ││ #
 # ││ ./scripts/run/dropbear_settings                                        ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
-if [ -n "${__dropbear_settings_run__}" ]; then return 0; fi
-export __dropbear_settings_run__=true
+
 # =============================== > Settings < =============================== #
 SSH_KEY_FOLDER="${DEV_CONTAINER_DIR}/ssh_keys"
 DROPBEAR_FOLDER="/etc/dropbear"

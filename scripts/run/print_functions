@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-if [ -n "${__print_functions_run__}" ]; then return 0; fi
-export __print_functions_run__=true
+
 # ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
 # ││ Dependencies:                                                          ││ #
 # ││ ./scripts/run/print_functions                                          ││ #
