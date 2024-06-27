@@ -72,7 +72,7 @@ ONBUILD RUN \
 
 
 RUN \
-    /$DEV_CONTAINER_DIR/build/install_vscode-server && \
+    /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64" && \
     printf "%s\n" \
         "#!/usr/bin/env bash" \
         "ln -s "$HOME/.vscode-server/" ~/.vscode-server" \
