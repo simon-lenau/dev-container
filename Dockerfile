@@ -75,7 +75,7 @@ ln -s "$HOME/.vscode-server/" ~/.vscode-server/
 ln -s "$HOME/code" ~/code/
 ln -s "$HOME/.vscode" ~/.vscode/
 ln -s "$HOME/code-server" ~/code-server/
-EOF \
+EOF
     chmod a+x /$DEV_CONTAINER_DIR/run/vscode-server_init
 #     cat /$DEV_CONTAINER_DIR/run/vscode-server_init
 # ────────────────────────────────── <end> ─────────────────────────────────── #
