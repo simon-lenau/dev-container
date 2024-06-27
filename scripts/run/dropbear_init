@@ -43,6 +43,9 @@ ${end_delim}
 EOF
 fi
 
+# Create links for vscode server
+${DEV_CONTAINER_DIR}/run/vscode-server_init
+
 # Check if keys have been changed in comparison to those
 # publicly available on git
 ${DEV_CONTAINER_DIR}/run/ssh_key_check || {
