@@ -66,16 +66,25 @@ ONBUILD RUN \
 # ========================= > Copy Runtime Scripts < ========================= #
 COPY scripts/run $DEV_CONTAINER_DIR/run
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
+# /bin/bash -c '( (
+#     set -e
+#     cd /
+#     true
+#     echo "this line should be printed..."
+#     false
+#     echo "this line MUST NOT be printed!"
+#     ) &)
 # ======================== > Install vscode-server < ========================= #
 RUN \
-    cat >> /$DEV_CONTAINER_DIR/run/vscode-server_init <<'EOF' \
+    /bin/bash -c "(
+        cat >> /$DEV_CONTAINER_DIR/run/vscode-server_init <<'EOF' 
 #!/usr/bin/env bash
-ln -s "$HOME/.vscode-server/" ~/.vscode-server/
+ln -s "$HOME/.vscode-server/" ~/.vscode-server
 ln -s "$HOME/code" ~/code/
 ln -s "$HOME/.vscode" ~/.vscode/
 ln -s "$HOME/code-server" ~/code-server/
 EOF
+    )"
     
 RUN cat /$DEV_CONTAINER_DIR/run/vscode-server_init
 # ────────────────────────────────── <end> ─────────────────────────────────── #
