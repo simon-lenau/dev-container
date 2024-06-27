@@ -79,7 +79,7 @@ ln -s "$HOME/.vscode" ~/.vscode/
 ln -s "$HOME/code-server" ~/code-server/
 EOF
     
-RUN cat /$DEV_CONTAINER_DIR/run/vscode-server_init
+# RUN cat /$DEV_CONTAINER_DIR/run/vscode-server_init
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
