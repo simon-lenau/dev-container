@@ -43,8 +43,12 @@ ${end_delim}
 EOF
 fi
 
+echo "pre: $PWD"
+
 # Initialize VScode server folders
-"${DEV_CONTAINER_DIR}/run/vscode-server_init"
+source "${DEV_CONTAINER_DIR}/run/vscode-server_init"
+
+echo "post: $PWD"
 
 # Check if keys have been changed in comparison to those
 # publicly available on git
