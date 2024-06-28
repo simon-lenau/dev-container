@@ -49,7 +49,7 @@ build-container:
 r-container-build:
   extends: build-container
   stage: container-build
-   before_script:
+  before_script:
     # Set container image
     - export FROM_IMAGE="${R_IMAGE}"
     # Export package lists
