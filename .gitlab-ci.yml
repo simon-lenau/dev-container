@@ -32,26 +32,28 @@ stages:
       export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${image_name}";  
     # Build container
     - >-
-      /kaniko/executor
-      --context "./"
-      --dockerfile "./Dockerfile"
-      --build-arg "ubuntu_packages"="${ubuntu_packages}"
-      --build-arg "r_packages"="${r_packages}"
-      --build-arg "python_packages"="${python_packages}"
-      --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-      --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
-      --destination "${GITLAB_REGISTRY_PATH}:${image_vers}"
-      --destination "${GITLAB_REGISTRY_PATH}:latest"
-      --destination "${DOCKERHUB_REGISTRY_PATH}_${image_vers}"
-      --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
+      echo "FROM IMAGE: $FROM_IMAGE";
+      # /kaniko/executor
+      # --context "./"
+      # --dockerfile "./Dockerfile"
+      # --build-arg "ubuntu_packages"="${ubuntu_packages}"
+      # --build-arg "r_packages"="${r_packages}"
+      # --build-arg "python_packages"="${python_packages}"
+      # --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+      # --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
+      # --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+      # --destination "${GITLAB_REGISTRY_PATH}:${image_vers}"
+      # --destination "${GITLAB_REGISTRY_PATH}:latest"
+      # --destination "${DOCKERHUB_REGISTRY_PATH}_${image_vers}"
+      # --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
 
 r-container-build:
   extends: .build-container
   stage: container-build
+  # Set base image
+  variables:
+    FROM_IMAGE: "${R_IMAGE}"
   before_script:
-    # Set container image
-    - export FROM_IMAGE="${R_IMAGE}"
     # Export package lists
     - >- 
       export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
@@ -61,9 +63,10 @@ r-container-build:
 python-container-build:
   extends: .build-container
   stage: container-build
+  # Set base image
+  variables:
+    FROM_IMAGE: "${PYTHON_IMAGE}"
   before_script:
-    # Set container image
-    - export FROM_IMAGE="${PYTHON_IMAGE}"
     # Export package lists
     - >- 
       export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
