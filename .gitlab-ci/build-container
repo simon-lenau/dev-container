@@ -21,8 +21,8 @@ export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NA
 command="$(
 cat << EOF
 /kaniko/executor
-    --context "$PWD/"
-    --dockerfile "$PWD/Dockerfile"
+    --context "\${CI_PROJECT_DIR}/"
+    --dockerfile "\${CI_PROJECT_DIR}/Dockerfile"
     --build-arg "ubuntu_packages"="\${ubuntu_packages}"
     --build-arg "r_packages"="\${r_packages}"
     --build-arg "python_packages"="\${python_packages}"
@@ -53,6 +53,7 @@ fi
 printf "%s\n" "$command"
 
 echo "$PWD"
+echo "${CI_PROJECT_DIR}"
 
 ls
 
