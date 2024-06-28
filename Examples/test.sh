@@ -1,2 +1,0 @@
-export __ssh_entrypoint_run__=true
-exit 0

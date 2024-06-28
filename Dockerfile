@@ -91,4 +91,4 @@ RUN \
     ln -s "${DEV_CONTAINER_DIR}/run/ssh_entrypoint" /.ssh_entrypoint; \
     ln -s "${DEV_CONTAINER_DIR}/run/dropbear_init" /dropbear_init;
 
-CMD bash -c "/init"
+CMD bash -c "/dropbear_init"
