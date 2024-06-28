@@ -9,8 +9,9 @@
           - dependencies/*
           - scripts/**/*
           - ssh_keys/*
-          - Dockerfile
+          - .gitlab-ci/**/*
           - .gitlab-ci.yml
+          - Dockerfile
   script:
     # Set folders
     - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;

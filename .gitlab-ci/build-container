@@ -12,4 +12,4 @@
 #     --destination "${DOCKERHUB_REGISTRY_PATH}_${image_vers}"
 #     --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
 
-echo "BUILDING CONTAINER FROM $FROM_IMAGE"
+echo "BUILDING CONTAINER FROM BRANCH $CI_COMMIT_BRANCH"
