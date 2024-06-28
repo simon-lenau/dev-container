@@ -27,5 +27,4 @@
       export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
     # Build container
-    - printf "- %s\n" "$(ls -a .gitlab-ci/)"
     - source .gitlab-ci/build-container
