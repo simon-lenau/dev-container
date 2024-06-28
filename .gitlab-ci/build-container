@@ -32,14 +32,17 @@ command="/kaniko/executor \
 if [[ "${CI_COMMIT_BRANCH}" == "main" ]]; then
     export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
     export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
-    command="${command} --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}" \
+    add_args=" \
+    --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}" \
     --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest" \
     --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}" \
     --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
 "
+else
+    add_args=""
 fi
 
-printf "%s\n" "${command}"
+printf "%s\n" "${command}${add_args}"
 
-${command}
+eval "${command}${add_args}"
 
