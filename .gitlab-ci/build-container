@@ -18,36 +18,28 @@ fi
 
 export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}_${IMAGE_NAME}";
 
-command="$(
-cat << EOF
-/kaniko/executor \
---context "\${CI_PROJECT_DIR}" \
---build-arg "ubuntu_packages"="\${ubuntu_packages}" \
---build-arg "r_packages"="\${r_packages}" \
---build-arg "python_packages"="\${python_packages}" \
---build-arg "workdir"="/\${CI_PROJECT_TITLE}/" \
---build-arg "outdir"="/\${CI_PROJECT_TITLE}_output/" \
---build-arg "FROM_IMAGE"="\${FROM_IMAGE}" \
---destination "\${GITLAB_REGISTRY_PATH}"
-EOF
-)"
+command="/kaniko/executor \
+    --context "\${CI_PROJECT_DIR}" \
+    --build-arg "ubuntu_packages"="\${ubuntu_packages}" \
+    --build-arg "r_packages"="\${r_packages}" \
+    --build-arg "python_packages"="\${python_packages}" \
+    --build-arg "workdir"="/\${CI_PROJECT_TITLE}/" \
+    --build-arg "outdir"="/\${CI_PROJECT_TITLE}_output/" \
+    --build-arg "FROM_IMAGE"="\${FROM_IMAGE}" \
+    --destination "\${GITLAB_REGISTRY_PATH}""
 
 
 if [[ "${CI_COMMIT_BRANCH}" == "main" ]]; then
     export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
     export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
-    command="$(
-cat << EOF
-${command} \
---destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
---destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
---destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
---destination "${DOCKERHUB_REGISTRY_PATH}_latest"
-EOF
-)"
+    command+="--destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}" \
+    --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest" \
+    --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}" \
+    --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
+"
 fi
 
 printf "%s\n" "${command}"
 
-
 eval "${command}"
+
