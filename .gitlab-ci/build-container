@@ -40,9 +40,9 @@ if [[ "${CI_COMMIT_BRANCH}" == "main" ]]; then
     command="$(
 cat << EOF
 ${command}
---destination "\${GITLAB_REGISTRY_MAIN_PATH}:\${image_vers}"
+--destination "\${GITLAB_REGISTRY_MAIN_PATH}:\${IMAGE_VERS}"
 --destination "\${GITLAB_REGISTRY_MAIN_PATH}:latest"
---destination "\${DOCKERHUB_REGISTRY_PATH}_\${image_vers}"
+--destination "\${DOCKERHUB_REGISTRY_PATH}_\${IMAGE_VERS}"
 --destination "\${DOCKERHUB_REGISTRY_PATH}_latest"
 EOF
 )"
