@@ -1,0 +1,15 @@
+# /kaniko/executor
+#     --context "./"
+#     --dockerfile "./Dockerfile"
+#     --build-arg "ubuntu_packages"="${ubuntu_packages}"
+#     --build-arg "r_packages"="${r_packages}"
+#     --build-arg "python_packages"="${python_packages}"
+#     --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
+#     --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
+#     --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+#     --destination "${GITLAB_REGISTRY_PATH}:${image_vers}"
+#     --destination "${GITLAB_REGISTRY_PATH}:latest"
+#     --destination "${DOCKERHUB_REGISTRY_PATH}_${image_vers}"
+#     --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
+
+echo "BUILDING CONTAINER FROM $FROM_IMAGE"
