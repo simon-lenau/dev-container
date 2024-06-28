@@ -2,7 +2,6 @@
 
 ARG FROM_IMAGE="projects.cispa.saarland:5005/c01sile/containr:latest"
 
-
 FROM "$FROM_IMAGE"
 
 ARG r_packages="" \
@@ -36,16 +35,13 @@ COPY scripts/run /$DEV_CONTAINER_DIR/run
 COPY scripts/build /$DEV_CONTAINER_DIR/build
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-
 # ========================== > Run Build scripts < =========================== #
 
 # ========================= > Install dependencies < ========================= #
 
 RUN \
     if [ -n "${ubuntu_packages}" ]; then \
-        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
-        echo "Dropbear: $(which dropbear)"; \
-        echo "PATH: $PATH"; \        
+        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \    
     fi; \
     if [ -n "${r_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
@@ -53,7 +49,6 @@ RUN \
     if [ -n "${python_packages}" ]; then \ 
         /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
     fi;
-
 
 ONBUILD RUN \
     if [ -n "${ubuntu_packages}" ]; then \
@@ -66,7 +61,6 @@ ONBUILD RUN \
         /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
     fi;
 
-
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ======================== > Install vscode-server < ========================= #
@@ -76,15 +70,10 @@ RUN \
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-
-
 # =============================== > SSH keys < =============================== #
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/run/.default_ssh_keys/
 # ────────────────────────────────── <end> ─────────────────────────────────── #
-
-
-
 
 RUN \
     chmod a+x "${DEV_CONTAINER_DIR}/run/dropbear_init"; \
