@@ -28,7 +28,7 @@ cat << EOF
 --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
 --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
 --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
---destination "\${GITLAB_REGISTRY_PATH}:latest"
+--destination "\${GITLAB_REGISTRY_PATH}"
 EOF
 )"
 
