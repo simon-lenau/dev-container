@@ -5,8 +5,8 @@ variables:
 stages:
   - container-build
 
-r-container-build:
-  stage: container-build
+build-container:
+  stage: none
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
@@ -23,82 +23,14 @@ r-container-build:
     - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;
     # Set Credentials
     - source "${CI_PROJECT_DIR}/scripts/CI/set_credentials";
-    # Export package lists
-    - >- 
-      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
-      export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
     # Determine image information
     - >-
-      export image_name="$(echo ${R_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
-      export image_vers="$(echo ${R_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-    # Build the container
+      export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
+      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
+    # Export Image Paths
     - >-
-      /kaniko/executor
-      --context "./"
-      --dockerfile "./Dockerfile"
-      --build-arg "ubuntu_packages"="${ubuntu_packages}"
-      --build-arg "r_packages"="${r_packages}"
-      --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-      --build-arg "FROM_IMAGE"="${R_IMAGE}"
-      --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
-      --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest"
-      --destination "index.docker.io/simonlenau/dev-container:${image_name}_${image_vers}"
-      --destination "index.docker.io/simonlenau/dev-container:${image_name}_latest"
-
-python-container-build:
-  stage: container-build
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  rules:
-    - changes:
-        paths:
-          - dependencies/*
-          - scripts/**/*
-          - ssh_keys/*
-          - Dockerfile
-          - .gitlab-ci.yml
-  script:
-    # Set folders
-    - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;
-    # Set Credentials
-    - >-
-      printf "{
-        \"auths\": 
-        {
-        \"${CI_REGISTRY}\":
-          { 
-            \"auth\": 
-              \"$(
-              printf "%s:%s" \
-                "${CI_REGISTRY_USER}" \
-                "${CI_REGISTRY_PASSWORD}" | \
-              base64 -w 0
-              )\"
-          },
-          \"https://index.docker.io/v1/\":
-          { 
-            \"auth\": 
-              \"$(
-              printf "%s:%s" \
-                "${DOCKERHUB_REGISTRY_USER}" \
-                "${DOCKERHUB_REGISTRY_PASSWORD}" | \
-              base64 -w 0
-              )\"
-          }
-        }
-      }" \
-      > /kaniko/.docker/config.json;
-    # Export package lists
-    - >- 
-      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
-      export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
-    # Determine image information
-    - >-
-      export image_name="$(echo ${PYTHON_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
-      export image_vers="$(echo ${PYTHON_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-    # Build the container
+      export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${image_name}";
+      export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${image_name}";  
     - >-
       /kaniko/executor
       --context "./"
@@ -108,8 +40,31 @@ python-container-build:
       --build-arg "python_packages"="${python_packages}"
       --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-      --build-arg "FROM_IMAGE"="${PYTHON_IMAGE}"
-      --destination "${CI_REGISTRY_IMAGE}/${image_name}:${image_vers}"
-      --destination "${CI_REGISTRY_IMAGE}/${image_name}:latest"
-      --destination "index.docker.io/simonlenau/dev-container:${image_name}_${image_vers}"
-      --destination "index.docker.io/simonlenau/dev-container:${image_name}_latest"
+      --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
+      --destination "${GITLAB_REGISTRY_PATH}:${image_vers}"
+      --destination "${GITLAB_REGISTRY_PATH}:latest"
+      --destination "${DOCKERHUB_REGISTRY_PATH}_${image_vers}"
+      --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
+
+r-container-build:
+  extends: build-container
+  stage: container-build
+   before_script:
+    # Set container image
+    - export FROM_IMAGE="${R_IMAGE}"
+    # Export package lists
+    - >- 
+      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
+      export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
+
+
+python-container-build:
+  extends: build-container
+  stage: container-build
+  before_script:
+    # Set container image
+    - export FROM_IMAGE="${PYTHON_IMAGE}"
+    # Export package lists
+    - >- 
+      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
+      export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
