@@ -16,7 +16,7 @@ if ! check_dependency "ubuntu"; then
     export ubuntu_packages=
 fi
 
-export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}";
+export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}_${CI_COMMIT_BRANCH}_${IMAGE_NAME}";
 
 command="$(
 cat << EOF
