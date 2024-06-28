@@ -6,7 +6,6 @@ stages:
   - container-build
 
 build-container:
-  stage: none
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
