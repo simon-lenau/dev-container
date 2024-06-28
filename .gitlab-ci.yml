@@ -8,16 +8,12 @@ stages:
 include:
   - local: '.gitlab-ci/templates/build-container.yaml'
 
-r-container-build:
+R-container-build:
   extends: .build-container
   # Set base image
   variables:
     FROM_IMAGE: "${R_IMAGE}"
-  before_script:
-    # Export package lists
-    - >- 
-      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
-      export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
+    install_dependencies: "ubuntu R"
 
 
 python-container-build:
@@ -25,8 +21,4 @@ python-container-build:
   # Set base image
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
-  before_script:
-    # Export package lists
-    - >- 
-      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
-      export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
+    install_dependencies: "ubuntu python"

@@ -17,6 +17,11 @@
     - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;
     # Set Credentials
     - source ".gitlab-ci/set_credentials";
+    # Export package lists
+    - >- 
+      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
+      export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
+      export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
     # Determine image information
     - >-
       export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
