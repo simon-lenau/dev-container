@@ -2,7 +2,7 @@
   stage: container-build
   image:
     name: gcr.io/kaniko-project/executor:debug
-    entrypoint: ["/bin/bash"]
+    entrypoint: ["bash"]
   rules:
     - changes:
         paths:
