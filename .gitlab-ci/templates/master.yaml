@@ -11,7 +11,7 @@
           - .gitlab-ci/**/*
           - .gitlab-ci.yml
           - Dockerfile
-  pre_script:
+  before_script:
     # Set folders
     - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;
     # Set Credentials
