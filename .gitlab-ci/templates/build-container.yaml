@@ -24,12 +24,8 @@
       export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
     # Determine image information
     - >-
-      export image_name="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
-      export image_vers="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')";
-    # Export Image Paths
-    - >-
-      export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${image_name}";
-      export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${image_name}";  
+      export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
+      export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
     # Build container
     - printf "- %s\n" "$(ls -a .gitlab-ci/)"
     - source .gitlab-ci/build-container
