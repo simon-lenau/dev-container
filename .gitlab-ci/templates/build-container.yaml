@@ -33,13 +33,13 @@
       export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
       export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}";
     - >-
-      # source .gitlab-ci/build-container;
-      /kaniko/executor
-      --context "/builds/c01sile/dev-container"
-      --build-arg "ubuntu_packages"="${ubuntu_packages}"
-      --build-arg "r_packages"="${r_packages}"
-      --build-arg "python_packages"="${python_packages}"
-      --build-arg "workdir"="/dev-container/"
-      --build-arg "outdir"="/dev-container_output/"
-      --build-arg "FROM_IMAGE"="python:3.12"
-      --destination "projects.cispa.saarland:5005/c01sile/dev-container/main_python"
+      source .gitlab-ci/build-container;
+      # /kaniko/executor
+      # --context "/builds/c01sile/dev-container"
+      # --build-arg "ubuntu_packages"="${ubuntu_packages}"
+      # --build-arg "r_packages"="${r_packages}"
+      # --build-arg "python_packages"="${python_packages}"
+      # --build-arg "workdir"="/dev-container/"
+      # --build-arg "outdir"="/dev-container_output/"
+      # --build-arg "FROM_IMAGE"="python:3.12"
+      # --destination "projects.cispa.saarland:5005/c01sile/dev-container/main_python"
