@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "${install_dependencies}" | grep -qie "\b${1}\b"
