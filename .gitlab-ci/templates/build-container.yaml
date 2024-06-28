@@ -34,6 +34,7 @@
       export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
     # Build container
     - >-
+      echo ">>$(which docker)<<";
       # /kaniko/executor 
       # --context "${CI_PROJECT_DIR}" 
       # --build-arg "ubuntu_packages"="${ubuntu_packages}" 
@@ -43,4 +44,3 @@
       # --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
       # --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
       # --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
-      echo ">>$(which docker)<<";
