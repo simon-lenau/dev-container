@@ -35,11 +35,11 @@
     - >-
       # source .gitlab-ci/build-container;
       /kaniko/executor
-        --context "/builds/c01sile/dev-container"
-        --build-arg "ubuntu_packages"="${ubuntu_packages}"
-        --build-arg "r_packages"="${r_packages}"
-        --build-arg "python_packages"="${python_packages}"
-        --build-arg "workdir"="/dev-container/"
-        --build-arg "outdir"="/dev-container_output/"
-        --build-arg "FROM_IMAGE"="python:3.12"
-        --destination "projects.cispa.saarland:5005/c01sile/dev-container/main_python"
+      --context "/builds/c01sile/dev-container"
+      --build-arg "ubuntu_packages"="${ubuntu_packages}"
+      --build-arg "r_packages"="${r_packages}"
+      --build-arg "python_packages"="${python_packages}"
+      --build-arg "workdir"="/dev-container/"
+      --build-arg "outdir"="/dev-container_output/"
+      --build-arg "FROM_IMAGE"="python:3.12"
+      --destination "projects.cispa.saarland:5005/c01sile/dev-container/main_python"
