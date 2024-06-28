@@ -31,4 +31,5 @@
       export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${image_name}";
       export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${image_name}";  
     # Build container
+    - printf "- %s\n" "$(ls -a)"
     - ${CI_PROJECT_DIR}/.gitlab-ci/build-container
