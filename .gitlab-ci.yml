@@ -4,6 +4,7 @@ variables:
 
 stages:
   - container-build
+  - container-forward
 
 include:
   - local: '.gitlab-ci/templates/build-container.yaml'
@@ -22,3 +23,15 @@ python-container-build:
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
     install_dependencies: "ubuntu python"
+
+R-container-forward:
+  extends: .forward-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${R_IMAGE}"
+
+python-container-forward:
+  extends: .forward-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${PYTHON_IMAGE}"
