@@ -12,9 +12,10 @@
 #     --destination "${DOCKERHUB_REGISTRY_PATH}_${image_vers}"
 #     --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
 echo "BUILDING CONTAINER FROM BRANCH $CI_COMMIT_BRANCH - CI_JOB_NAME: $CI_JOB_NAME"
+echo "\${install_dependencies}: ${install_dependencies}"
+install_dependencies=( ${install_dependencies} )
+echo "\${install_dependencies}: ${install_dependencies[@]}" || exit 0
 
-install_dependencies=(${install_dependencies})
-
-for dep in "${install_dependencies[@]}"; do
-    echo "dep $dep"
-done
+# for dep in "${install_dependencies[@]}"; do
+#     echo "dep $dep"
+# done
