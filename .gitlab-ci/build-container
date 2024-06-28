@@ -22,9 +22,9 @@ command="$(
 cat << EOF
 /kaniko/executor
 --context "${CI_PROJECT_DIR}"
---build-arg "ubuntu_packages"="${ubuntu_packages}"
---build-arg "r_packages"="${r_packages}"
---build-arg "python_packages"="${python_packages}"
+--build-arg "ubuntu_packages"="\${ubuntu_packages}"
+--build-arg "r_packages"="\${r_packages}"
+--build-arg "python_packages"="\${python_packages}"
 --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
 --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
 --build-arg "FROM_IMAGE"="${FROM_IMAGE}"

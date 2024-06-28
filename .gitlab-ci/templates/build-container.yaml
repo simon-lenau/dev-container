@@ -19,9 +19,9 @@
     - source ".gitlab-ci/set_credentials";
     # Export package lists
     - >- 
-      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null | paste -sd" " || return 0);
-      export r_packages=$(cat dependencies/R 2>/dev/null | paste -sd" "  || return 0);
-      export python_packages=$(cat dependencies/python 2>/dev/null | paste -sd" " || return 0);
+      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null  || return 0);
+      # export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
+      # export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
     # Determine image information
     - >-
       export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
