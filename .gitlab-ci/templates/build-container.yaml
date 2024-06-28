@@ -19,9 +19,9 @@
     - source ".gitlab-ci/set_credentials";
     # Export package lists
     - >- 
-      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null || return 0);
-      # export r_packages=$(cat dependencies/R 2>/dev/null || return 0);
-      # export python_packages=$(cat dependencies/python 2>/dev/null || return 0);
+      export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null | paste -sd" " || return 0);
+      export r_packages=$(cat dependencies/R 2>/dev/null | paste -sd" "  || return 0);
+      export python_packages=$(cat dependencies/python 2>/dev/null | paste -sd" " || return 0);
     # Determine image information
     - >-
       export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
@@ -34,18 +34,3 @@
       export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}";
     - >-
       source .gitlab-ci/build-container;
-      # /kaniko/executor
-      # --context "${CI_PROJECT_DIR}/"
-      # --dockerfile "Dockerfile"
-      # --build-arg "ubuntu_packages"="${ubuntu_packages}"
-      # --build-arg "r_packages"="${r_packages}"
-      # --build-arg "python_packages"="${python_packages}"
-      # --build-arg "workdir"="/${CI_PROJECT_TITLE}/"
-      # --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/"
-      # --build-arg "FROM_IMAGE"="${FROM_IMAGE}"
-      # --destination "${GITLAB_REGISTRY_PATH}:${IMAGE_VERS}"
-      # --destination "${GITLAB_REGISTRY_PATH}:latest"
-      # --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
-      # --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
-      # --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
-      # --destination "${DOCKERHUB_REGISTRY_PATH}_latest";
