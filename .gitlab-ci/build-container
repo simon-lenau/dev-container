@@ -21,8 +21,8 @@ export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NA
 command="$(
 cat << EOF
 /kaniko/executor
-    --context "./"
-    --dockerfile "./Dockerfile"
+    --context "$PWD/"
+    --dockerfile "$PWD/Dockerfile"
     --build-arg "ubuntu_packages"="\${ubuntu_packages}"
     --build-arg "r_packages"="\${r_packages}"
     --build-arg "python_packages"="\${python_packages}"
@@ -33,7 +33,7 @@ cat << EOF
     --destination "\${GITLAB_REGISTRY_PATH}:latest"
 EOF
 )"
-CI_COMMIT_BRANCH="main"
+
 
 if [[ "${CI_COMMIT_BRANCH}" == "main" ]]; then
     export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
