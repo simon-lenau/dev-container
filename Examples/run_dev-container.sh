@@ -15,7 +15,7 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
                 perl -p0e "s/(5005)#/\${1}\//gmi"
         )"
 
-        echo "${CISPA_GITLAB_TOKEN}" |
+        echo "${GITLAB_ACCESS_TOKEN}" |
             docker login \
                 --username c01sile \
                 --password-stdin \
@@ -33,7 +33,7 @@ if [[ "${HOST}${HOSTNAME}" =~ "MacBook" ]]; then
         bash -c /\$DEV_CONTAINER_DIR/run/dropbear_init
 else
     srun \
-        --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- ${now}" \
+        --job-name="${BASH_SOURCE[0]}${ZSH_ARGZERO} -- $(date -Iminutes)" \
         --cpus-per-task=5 \
         --time 300:00 \
         --mail-type=ALL \
