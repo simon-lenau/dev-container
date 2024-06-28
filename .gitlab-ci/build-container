@@ -41,5 +41,5 @@ fi
 
 printf "%s\n" "${command}"
 
-eval "${command}"
+${command}
 
