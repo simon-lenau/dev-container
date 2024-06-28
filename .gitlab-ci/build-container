@@ -18,8 +18,8 @@ fi
 
 export GITLAB_REGISTRY_PATH="${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}_${IMAGE_NAME}";
 
-command="$(
-cat << EOF
+
+cat << EOF >> .gitlab-ci/run_kaniko
 /kaniko/executor \
 --context "\${CI_PROJECT_DIR}" \
 --build-arg "ubuntu_packages"="\${ubuntu_packages}" \
@@ -30,24 +30,20 @@ cat << EOF
 --build-arg "FROM_IMAGE"="\${FROM_IMAGE}" \
 --destination "\${GITLAB_REGISTRY_PATH}"
 EOF
-)"
 
 
 if [[ "${CI_COMMIT_BRANCH}" == "main" ]]; then
     export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
     export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
-#     command="$(
-# cat << EOF
-# ${command} \
-# --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
-# --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
-# --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
-# --destination "${DOCKERHUB_REGISTRY_PATH}_latest"
-# EOF
-# )"
+cat << EOF > .gitlab-ci/run_kaniko
+--destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
+--destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
+--destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
+--destination "${DOCKERHUB_REGISTRY_PATH}_latest"
+EOF
+
 fi
 
-printf "%s\n" "${command}"
+cat .gitlab-ci/run_kaniko
 
-
-eval "${command}"
+source .gitlab-ci/run_kaniko
