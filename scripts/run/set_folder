@@ -50,7 +50,7 @@ fi
 
 # Check if the shell is run from vscode
 if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
-    cd "${folder}" && echo "A!" || echo "B!"
+    cd "${folder}" && echo "Success for \$TERM_PROGRAM: $TERM_PROGRAM" || echo "Failed for \$TERM_PROGRAM: $TERM_PROGRAM"
 else
     code -r "${folder}"
 fi
