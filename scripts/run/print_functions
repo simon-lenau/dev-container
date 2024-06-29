@@ -14,6 +14,9 @@
     export tput_available=false
 }
 
+if [ -z "${TERM}" ]; then
+    export tput_available=false
+fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ============== > Functions for conditional tput formatting < =============== #
