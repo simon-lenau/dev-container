@@ -54,5 +54,7 @@ if [ ! -z "${WORKDIR}" ]; then
     source $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
 fi
 
+echo "Finished SSH ENTRYPOINT!"
+
 return 0
 # ────────────────────────────────── <end> ─────────────────────────────────── #

@@ -55,5 +55,7 @@ else
     code -r "${folder}"
 fi
 
+echo "Finished set_folder!"
+
 return 0
 # ────────────────────────────────── <end> ─────────────────────────────────── #
