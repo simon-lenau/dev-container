@@ -34,6 +34,7 @@ if grep -iq "${begin_delim}" "${bashrc_path}"; then
     perl -p0i -e "s/${begin_delim}.*${end_delim}//gms" "${bashrc_path}"
 fi
 
+# Add `dev-container shell setup` section to .bashrc
 cat \
     >>${bashrc_path} <<EOF
 ${begin_delim}
