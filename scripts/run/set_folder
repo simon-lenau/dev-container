@@ -4,6 +4,9 @@
 # ││ ./scripts/run/set_folder                                               ││ #
 # ││ └─ ./scripts/run/print_functions                                       ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
+# Only do anything if this is an interactive shell
+if ! tty -s; then return 0; fi
+
 source "${DEV_CONTAINER_DIR}/run/print_functions"
 
 # ============================== > Arguments < =============================== #
@@ -50,13 +53,10 @@ printf "Moving to\n\t%s\n" "$(tput_file "${folder}" 5)"
 
 # Check if the shell is run from vscode
 if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
-:
-    # cd "${folder}" && echo "Success for \$TERM_PROGRAM: $TERM_PROGRAM" || echo "Failed for \$TERM_PROGRAM: $TERM_PROGRAM"
+    cd "${folder}" && echo "Success for \$TERM_PROGRAM: $TERM_PROGRAM" || echo "Failed for \$TERM_PROGRAM: $TERM_PROGRAM"
 else
     code -r "${folder}"
 fi
-
-echo "Finished set_folder!"
 
 return 0
 # ────────────────────────────────── <end> ─────────────────────────────────── #
