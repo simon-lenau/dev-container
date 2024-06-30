@@ -51,9 +51,10 @@ echo "==========================================================================
 
 # ========== > Call script to set workdir if not objected by user < ========== #
 if [ ! -z "${WORKDIR}" ]; then
-# Irgendwie funktioniert das mit dem set_folder nicht
-
-    source $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
+    # Irgendwie funktioniert das mit dem set_folder nicht
+    if [ ! -z "${TRY_SET_FOLDER}" ]; then
+        source $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
+    fi
 fi
 
 echo "Finished SSH ENTRYPOINT!"
