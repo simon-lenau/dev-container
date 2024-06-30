@@ -29,9 +29,13 @@ bashrc_path="$HOME/.bashrc"
 begin_delim="# >>>>>>>>>>>>>>>>>>>> dev-container shell setup >>>>>>>>>>>>>>>>>>>> "
 end_delim="# <<<<<<<<<<<<<<<<<<<< dev-container shell setup <<<<<<<<<<<<<<<<<<<< "
 
-if ! grep -iq "${begin_delim}" "${bashrc_path}"; then
-    cat \
-        >>${bashrc_path} <<EOF
+# Remove the `dev-container shell setup` section from .bashrc if it is already there
+if grep -iq "${begin_delim}" "${bashrc_path}"; then
+    perl -p0i -e "s/${begin_delim}.*${end_delim}//gms" "${bashrc_path}"
+fi
+
+cat \
+    >>${bashrc_path} <<EOF
 ${begin_delim}
 export DEV_CONTAINER_DIR="${DEV_CONTAINER_DIR}"
 export PATH="${PATH}:\${PATH}"
@@ -42,7 +46,6 @@ export __SET_FOLDER__=${__SET_FOLDER__}
 source /.ssh_entrypoint
 ${end_delim}
 EOF
-fi
 
 # Initialize VScode server folders
 source "${DEV_CONTAINER_DIR}/run/vscode-server_init"
