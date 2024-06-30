@@ -46,11 +46,12 @@ if [[ "$key" == $'\e' ]]; then
 fi
 
 # Move to workdir
-    printf "Moving to\n\t%s\n" "$(tput_file "${folder}" 5)"
+printf "Moving to\n\t%s\n" "$(tput_file "${folder}" 5)"
 
 # Check if the shell is run from vscode
 if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
-    cd "${folder}" && echo "Success for \$TERM_PROGRAM: $TERM_PROGRAM" || echo "Failed for \$TERM_PROGRAM: $TERM_PROGRAM"
+:
+    # cd "${folder}" && echo "Success for \$TERM_PROGRAM: $TERM_PROGRAM" || echo "Failed for \$TERM_PROGRAM: $TERM_PROGRAM"
 else
     code -r "${folder}"
 fi

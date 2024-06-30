@@ -50,11 +50,12 @@ echo "==========================================================================
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ========== > Call script to set workdir if not objected by user < ========== #
-# if [ ! -z "${WORKDIR}" ]; then
-#     source $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
-# fi
+if [ ! -z "${WORKDIR}" ]; then
+# Irgendwie funktioniert das mit dem set_folder nicht
+
+    source $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
+fi
 
 echo "Finished SSH ENTRYPOINT!"
-# Irgendwie funktioniert das mit dem entrypoint nicht
 return 0
 # ────────────────────────────────── <end> ─────────────────────────────────── #
