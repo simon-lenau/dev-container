@@ -52,6 +52,7 @@ echo "==========================================================================
 # ========== > Call script to set workdir if not objected by user < ========== #
 if [ ! -z "${WORKDIR}" ]; then
     # Irgendwie funktioniert das mit dem set_folder nicht
+    echo "__SET_FOLDER__: $__SET_FOLDER__"
     if [ ! -z "${__SET_FOLDER__}" ]; then
         source $DEV_CONTAINER_DIR/run/set_folder "${WORKDIR}"
     fi
