@@ -15,6 +15,13 @@ include:
     - export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
     - export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}";    
     - echo "${FULL_AUTH_FILE}";
+
+
+
+
+
+
+
     # - cat ${FULL_AUTH_FILE};
     # - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
     # - >- 
