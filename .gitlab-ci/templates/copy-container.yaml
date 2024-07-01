@@ -2,7 +2,7 @@
 
 .copy-container:
   image:
-    name: docker://quay.io/skopeo/stable:latest
+    name: quay.io/skopeo/stable:latest
     entrypoint: [""]
   stage: container-forward
   script:

@@ -10,20 +10,20 @@ include:
   - local: '.gitlab-ci/templates/build-container.yaml'
   - local: '.gitlab-ci/templates/copy-container.yaml'
 
-R-container-build:
-  extends: .build-container
-  # Set base image
-  variables:
-    FROM_IMAGE: "${R_IMAGE}"
-    install_dependencies: "ubuntu R"
+# R-container-build:
+#   extends: .build-container
+#   # Set base image
+#   variables:
+#     FROM_IMAGE: "${R_IMAGE}"
+#     install_dependencies: "ubuntu R"
 
 
-python-container-build:
-  extends: .build-container
-  # Set base image
-  variables:
-    FROM_IMAGE: "${PYTHON_IMAGE}"
-    install_dependencies: "ubuntu python"
+# python-container-build:
+#   extends: .build-container
+#   # Set base image
+#   variables:
+#     FROM_IMAGE: "${PYTHON_IMAGE}"
+#     install_dependencies: "ubuntu python"
 
 
 # Use skopeo
