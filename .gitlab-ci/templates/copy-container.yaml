@@ -7,4 +7,4 @@
   script:
     - cat /kaniko/.docker/config.json;
     - printf "%s\n"  "$(ls)";
-    - echo "FROM: ${FROM}";
+    - printf -- "A: ${A}";
