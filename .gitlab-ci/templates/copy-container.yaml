@@ -12,7 +12,7 @@ include:
     AUTH_FILE: ~/.docker/config.json
   script:
     - !reference [.base-template, script]
-    - export DOCKER_CONFIG="${AUTH_FILE}";
+    # - export DOCKER_CONFIG="${AUTH_FILE}";
     - >-
       if [ -z "${OUTPUT_VERSION}" ]; then
         export OUTPUT_VERSION="${IMAGE_VERS}";
