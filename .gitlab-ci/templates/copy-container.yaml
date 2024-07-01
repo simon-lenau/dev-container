@@ -9,13 +9,13 @@ include:
     entrypoint: [""]
   script:
     - !reference [.base-template, script]
-    - >-
-      echo "FROM: $FROM";
-      echo "TO: $TO";      
+    # - >-
+    #   echo "FROM: $FROM";
+    #   echo "TO: $TO";      
     - >-
       export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
       export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
     - >- 
       crane copy 
-      "${FROM}"
-      "${TO}";
+      "${SOURCE}"
+      "${DEST}";
