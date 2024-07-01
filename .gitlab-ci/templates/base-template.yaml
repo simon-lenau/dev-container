@@ -18,4 +18,4 @@
       # Set Credentials
       mkdir -p "$(dirname "${AUTH_FILE}")";
       mkdir -p "/kaniko/.docker";
-      source ".gitlab-ci/set_credentials">"${AUTH_FILE}";
+      "$(source ".gitlab-ci/set_credentials")" >"${AUTH_FILE}";
