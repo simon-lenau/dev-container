@@ -14,9 +14,7 @@ include:
     - !reference [.base-template, script]
     - export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
     - export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}";    
-    - echo "${AUTH_FILE}";
-    - cat ${AUTH_FILE};
-    # - >- 
-    #   crane copy 
-    #   "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-    #   "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}";
+    - >- 
+      crane copy 
+      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+      "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}";
