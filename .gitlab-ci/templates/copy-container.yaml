@@ -14,6 +14,10 @@ include:
     - !reference [.base-template, script]
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
     - >-
+      if [ ! -z "${IMAGE_VERSION}" ]; then
+        export IMAGE_VERS="${IMAGE_VERSION}";
+      fi
+    - >-
       echo "IMAGE_VERS: $IMAGE_VERS";
     # - >-
     #   crane copy 
