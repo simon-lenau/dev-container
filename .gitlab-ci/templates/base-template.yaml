@@ -12,7 +12,8 @@
     - >-
       # Set Credentials
       outfile_dir="$(dirname "${AUTH_FILE}")";
-      printf "Creating ${outfile_dir}";
+    - printf "%s\n" "Creating ${outfile_dir}";
+    - >-
       mkdir -p "${outfile_dir}";
       touch "${AUTH_FILE}";
       source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
