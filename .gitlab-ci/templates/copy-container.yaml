@@ -17,6 +17,7 @@ include:
     - echo "${AUTH_FILE}";
     - cat ${AUTH_FILE};
     - export DOCKER_CONFIG="${AUTH_FILE}";
+    - crane auth login ${CI_REGISTRY_IMAGE};
     - >- 
       crane copy 
       "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
