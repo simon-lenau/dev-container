@@ -1,7 +1,4 @@
 .master:
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
   rules:
     - changes:
         paths:

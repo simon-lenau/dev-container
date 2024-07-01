@@ -4,6 +4,9 @@ include:
 
 .build-container:
   extends: .master
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
   stage: container-build
   script:
     - !reference [.master, script]
@@ -32,10 +35,8 @@ include:
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
       --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
       --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-      --tar-path image.tar;
   artifacts:
     paths:
-    - image.tar
     - .docker/config.json
     when: on_success
       # --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
