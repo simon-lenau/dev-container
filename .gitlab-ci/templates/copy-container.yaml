@@ -15,11 +15,11 @@ include:
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
     - >-
       if [ ! -z "${IMAGE_VERSION}" ]; then
-        export IMAGE_VERS="${IMAGE_VERSION}";
+        export OUTPUT_VERSION="${IMAGE_VERSION}";
+      else 
+        export OUTPUT_VERSION="${IMAGE_VERS}";
       fi
     - >-
-      echo "IMAGE_VERS: $IMAGE_VERS";
-    # - >-
-    #   crane copy 
-    #   "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-    #   "${TO_IMAGE}${IMAGE_NAME}${SEPARATOR}${IMAGE_VERS}";
+      crane copy 
+      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+      "${TO_IMAGE}${IMAGE_NAME}${SEPARATOR}${OUTPUT_VERSION}";
