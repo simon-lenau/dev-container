@@ -6,7 +6,8 @@ include:
   extends: .master
   stage: container-build
   script:
-    # Export package lists
+    - !reference [.master, script]
+    # Export dependency lists
     - >- 
       if .gitlab-ci/needs_dependencies "ubuntu"; then 
         export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null  || return 0);
@@ -30,12 +31,14 @@ include:
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
       --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
       --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
+      --tar-path image.tar
+  artifacts:
+    paths:
+    - image.tar
+    - /kaniko/.docker/config.json
+    when: on_success
       # --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
       # --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
       # --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
       # --destination "${DOCKERHUB_REGISTRY_PATH}_latest";
 
-.copy-container:
-  extends: .master
-  stage: container-build
-  script:

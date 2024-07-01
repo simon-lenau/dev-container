@@ -18,12 +18,12 @@ include:
 #     install_dependencies: "ubuntu R"
 
 
-# python-container-build:
-#   extends: .build-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${PYTHON_IMAGE}"
-#     install_dependencies: "ubuntu python"
+python-container-build:
+  extends: .build-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${PYTHON_IMAGE}"
+    install_dependencies: "ubuntu python"
 
 
 # Use skopeo
@@ -34,9 +34,8 @@ forward-container-test:
   variables:
     FROM: "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
     TO: "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
-  after_script:
-    # Copy container
-    - copy ${FROM} ${TO}
+  needs:
+    python-container-build
 
 # R-container-forward:
 #   extends: .forward-container

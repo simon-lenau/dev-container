@@ -1,11 +1,12 @@
 
 
 .copy-container:
+  stage: push
   image:
-    name: quay.io/skopeo/stable:latest
+    name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
-  stage: container-forward
   script:
-    # Set Credentials
-    - source ".gitlab-ci/set_credentials";
-    - echo "BLABLA"
+  - cat /kaniko/.docker/config.json
+  - printf "%s\n"  "$(ls)"
+  - echo "FROM: $FROM"
+  - echo "TO: $TO"
