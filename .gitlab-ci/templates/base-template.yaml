@@ -15,6 +15,7 @@
     - export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
     - export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
     - export AUTH_FILE="$( printf -- "$AUTH_FILE" | sed "s|~\/|$HOME\/|g" )";
+    - echo $AUTH_FILE
       # Set credentials
     - mkdir -p "$(dirname "${AUTH_FILE}")";
     - source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
