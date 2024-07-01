@@ -46,7 +46,7 @@ forward-container-main-python:
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
     SEPARATOR: "_"
-    IMAGE_VERSION: "latest"
+    TO_IMAGE
   parallel:
     matrix:
-      - TO_IMAGE: ['index.docker.io/simonlenau/dev-container:']
+      - OUTPUT_VERSION: ["", "latest"]

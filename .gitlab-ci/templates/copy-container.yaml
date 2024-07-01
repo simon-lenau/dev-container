@@ -14,9 +14,7 @@ include:
     - !reference [.base-template, script]
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
     - >-
-      if [ ! -z "${IMAGE_VERSION}" ]; then
-        export OUTPUT_VERSION="${IMAGE_VERSION}";
-      else 
+      if [ -z "${OUTPUT_VERSION}" ]; then
         export OUTPUT_VERSION="${IMAGE_VERS}";
       fi
     - >-
