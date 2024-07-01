@@ -17,8 +17,8 @@ include:
     - echo "${AUTH_FILE}";
     - cat ${AUTH_FILE};
     - export DOCKER_CONFIG="${AUTH_FILE}";
-    - crane auth login projects.cispa.saarland:5005;
-    - >- 
-      crane copy 
-      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-      "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}";
+    - crane ls ${CI_REGISTRY_IMAGE};
+    # - >- 
+    #   crane copy 
+    #   "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+    #   "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}";
