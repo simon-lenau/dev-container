@@ -31,7 +31,6 @@ forward-container-test:
   extends: .copy-container
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
-    SOURCE: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}"
     DEST: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}"
   # needs:
   #   - python-container-build
