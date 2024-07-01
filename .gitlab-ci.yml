@@ -3,45 +3,48 @@ variables:
   PYTHON_IMAGE: python:3.12
 
 stages:
-  - container-build
+  # - container-build
   - container-forward
 
 include:
   - local: '.gitlab-ci/templates/build-container.yaml'
   - local: '.gitlab-ci/templates/copy-container.yaml'
 
-build-container-R:
-  extends: .build-container
-  # Set base image
-  variables:
-    FROM_IMAGE: "${R_IMAGE}"
-    install_dependencies: "ubuntu R"
+# build-container-R:
+#   extends: .build-container
+#   # Set base image
+#   variables:
+#     FROM_IMAGE: "${R_IMAGE}"
+#     install_dependencies: "ubuntu R"
 
 
-build-container-python:
-  extends: .build-container
-  # Set base image
-  variables:
-    FROM_IMAGE: "${PYTHON_IMAGE}"
-    install_dependencies: "ubuntu python"
+# build-container-python:
+#   extends: .build-container
+#   # Set base image
+#   variables:
+#     FROM_IMAGE: "${PYTHON_IMAGE}"
+#     install_dependencies: "ubuntu python"
 
 
+# index.docker.io/simonlenau/dev-container:${IMAGE_NAME}
+# "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}"
 
-forward-container-main-R:
-  extends: .copy-container
-  variables:
-    FROM_IMAGE: "${R_IMAGE}"
-  needs:
-    - build-container-R
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+# forward-container-main-R:
+#   extends: .copy-container
+#   variables:
+#     FROM_IMAGE: "${R_IMAGE}"
+#   parallel:
+#     matrix:
+#       - TO_IMAGE: [index.docker.io/simonlenau/dev-container:${IMAGE_NAME}]
+#   # needs:
+#   #   - build-container-R
+#   # rules:
+#   #   - if: $CI_COMMIT_BRANCH == "main"
 
 forward-container-main-python:
   extends: .copy-container
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
-  needs:
-    - build-container-python
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-
+  parallel:
+    matrix:
+      - TO_IMAGE: [index.docker.io/simonlenau/dev-container:\${IMAGE_NAME}_\${IMAGE_VERS}]

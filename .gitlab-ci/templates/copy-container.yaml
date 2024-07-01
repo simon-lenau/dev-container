@@ -12,14 +12,9 @@ include:
     AUTH_FILE: ~/.docker/config.json
   script:
     - !reference [.base-template, script]
-    - export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
-    - export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}";    
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
-    - >-
-      crane copy 
-      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-      "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}";
-    - >-
-      crane copy 
-      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-      "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}";
+    - printf "%s\n" "Pushing to" "${TO_IMAGE}"
+    # - >-
+    #   crane copy 
+    #   "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+    #   "${TO_IMAGE}";
