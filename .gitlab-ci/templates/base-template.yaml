@@ -19,6 +19,6 @@
     - echo "BLA -> $FULL_AUTH_FILE (${AUTH_FILE})"
     - mkdir -p "$(dirname "${AUTH_FILE}")";
     - source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
-    - export FULL_AUTH_FILE="$(eval "echo "${path}"")";
+    - export FULL_AUTH_FILE="$(readlink -f "${AUTH_FILE}")";
     - echo "BLA -> $FULL_AUTH_FILE (${AUTH_FILE})"
 
