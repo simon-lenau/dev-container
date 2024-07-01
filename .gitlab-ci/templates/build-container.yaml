@@ -9,7 +9,7 @@ include:
   stage: container-build
   script:
     - !reference [.base-template, script]
-    - printf -- "HOME IS: $HOME"
+    - printf -- "HOME IS: $HOME";
     # Export dependency lists
     - >- 
       if .gitlab-ci/needs_dependencies "ubuntu"; then 
@@ -31,11 +31,7 @@ include:
       --build-arg "workdir"="/${CI_PROJECT_TITLE}/" 
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
       --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
-      --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-  artifacts:
-    paths:
-    - .docker/config.json
-    when: on_success
+      --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
       # --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
       # --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
       # --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
