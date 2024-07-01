@@ -8,7 +8,7 @@
           - .gitlab-ci/**/*
           - .gitlab-ci.yml
           - Dockerfile
-  script:
+  before_script:
     - >-
       # Set folders
       cd "${CI_PROJECT_DIR}";
