@@ -22,4 +22,4 @@ include:
     - >-
       crane copy 
       "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-      "${DOCKERHUB_REGISTRY_PATH}:${IMAGE_VERS}";
+      "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}";
