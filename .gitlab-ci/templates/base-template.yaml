@@ -19,5 +19,5 @@
       # Set credentials
     - mkdir -p "$(dirname "${AUTH_FILE}")";
     - source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
-    - echo "BLA"
+    - echo "BLA $AUTH_FILE"
 
