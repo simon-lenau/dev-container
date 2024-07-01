@@ -14,7 +14,7 @@
       # Determine image information
     - export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
     - export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
-    # - export AUTH_FILE="$( printf -- "$AUTH_FILE" | sed "s|~\/|$HOME\/|g" )";
+    - export AUTH_FILE="$( printf -- "$AUTH_FILE" | sed "s|~\/|$HOME\/|g" )";
     - if [ -z "${AUTH_FILE}" ]; then echo "Missing \$AUTH_FILE!"; exit 1; fi
       # Set credentials
     - mkdir -p "$(dirname "${AUTH_FILE}")";

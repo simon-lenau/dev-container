@@ -29,7 +29,8 @@ include:
 
 forward-container-gitlab-main:
   extends: .copy-container
-  variables:
+  variables: 
+    !reference [.copy-container, variables]
   parallel:
     matrix:
       - TO_IMAGE: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}/"
