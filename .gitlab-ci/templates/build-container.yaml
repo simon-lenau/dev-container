@@ -11,8 +11,8 @@ include:
     AUTH_FILE: /kaniko/.docker/config.json
   script:
     - !reference [.base-template, script]
-    # Export dependency lists
     - >- 
+      # Export dependency lists
       if .gitlab-ci/needs_dependencies "ubuntu"; then 
         export ubuntu_packages=$(cat dependencies/Ubuntu 2>/dev/null  || return 0);
       fi;
@@ -22,7 +22,7 @@ include:
       if .gitlab-ci/needs_dependencies "python"; then 
         export python_packages=$(cat dependencies/python 2>/dev/null || return 0); 
       fi;
-    # Build container
+      # Build container
       /kaniko/executor 
       --context "${CI_PROJECT_DIR}" 
       --build-arg "ubuntu_packages"="${ubuntu_packages}" 
