@@ -17,7 +17,7 @@
       export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
       export FULL_AUTH_FILE="$(
         printf -- "$AUTH_FILE" |
-          perl -p0e "s/~\//$HOME\//gmi"
+          sed "s|~\/|$HOME\/|g"
       )"
       # Set credentials
     - echo "BLA -> $FULL_AUTH_FILE (${AUTH_FILE})"
