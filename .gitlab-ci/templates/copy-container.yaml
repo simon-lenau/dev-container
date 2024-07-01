@@ -5,5 +5,5 @@
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
   script:
-    - cat /kaniko/.docker/config.json;
+    # - cat /kaniko/.docker/config.json;
     - printf "%s\n"  "$(ls)";
