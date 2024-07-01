@@ -35,7 +35,7 @@ forward-container-test:
     FROM: "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
     TO: "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
   needs:
-    python-container-build
+    - python-container-build
 
 # R-container-forward:
 #   extends: .forward-container
