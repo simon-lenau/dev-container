@@ -13,6 +13,7 @@ include:
   script:
     - !reference [.base-template, script]
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
+    - printf "%s\n" "Pushing to" "${TO_IMAGE}"
     - export TO_IMAGE="$(eval "echo "${TO_IMAGE}"")"
     - printf "%s\n" "Pushing to" "${TO_IMAGE}"
     # - >-
