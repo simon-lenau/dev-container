@@ -18,6 +18,7 @@ include:
     - >-
       export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
       export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
+    - cat ${AUTH_FILE};
     - >- 
       crane copy 
       "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
