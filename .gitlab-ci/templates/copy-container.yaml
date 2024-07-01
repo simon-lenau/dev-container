@@ -10,3 +10,4 @@
     - source ".gitlab-ci/set_credentials";
     # Copy container
     - copy ${FROM} ${TO}
+    - echo "BLABLA"
