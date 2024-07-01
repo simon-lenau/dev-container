@@ -40,7 +40,6 @@ forward-container-gitlab-main:
         SEPARATOR: "_"
         FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
         OUTPUT_VERSION: [ "", "latest" ]
-
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
