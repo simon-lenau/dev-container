@@ -11,6 +11,7 @@ include:
   variables:
     AUTH_FILE: ~/.docker/config.json
   script:
+    # BLA
     - !reference [.base-template, script]
     - >-
       export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
