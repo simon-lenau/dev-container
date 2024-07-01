@@ -18,12 +18,12 @@ include:
 #     install_dependencies: "ubuntu R"
 
 
-# python-container-build:
-#   extends: .build-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${PYTHON_IMAGE}"
-#     install_dependencies: "ubuntu python"
+python-container-build:
+  extends: .build-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${PYTHON_IMAGE}"
+    install_dependencies: "ubuntu python"
 
 
 
