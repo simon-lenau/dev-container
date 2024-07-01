@@ -8,7 +8,7 @@ stages:
 
 include:
   - local: '.gitlab-ci/templates/build-container.yaml'
-  - local: '.gitlab-ci/templates/forward-container.yaml'
+  - local: '.gitlab-ci/templates/copy-container.yaml'
 
 R-container-build:
   extends: .build-container
