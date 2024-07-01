@@ -3,46 +3,45 @@ variables:
   PYTHON_IMAGE: python:3.12
 
 stages:
-  # - container-build
+  - container-build
   - container-forward
 
 include:
   - local: '.gitlab-ci/templates/build-container.yaml'
   - local: '.gitlab-ci/templates/copy-container.yaml'
 
-# R-container-build:
-#   extends: .build-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${R_IMAGE}"
-#     install_dependencies: "ubuntu R"
+build-container-R:
+  extends: .build-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${R_IMAGE}"
+    install_dependencies: "ubuntu R"
 
 
-# python-container-build:
-#   extends: .build-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${PYTHON_IMAGE}"
-#     install_dependencies: "ubuntu python"
+build-container-python:
+  extends: .build-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${PYTHON_IMAGE}"
+    install_dependencies: "ubuntu python"
 
 
 
-forward-container-test:
+forward-container-main-R:
+  extends: .copy-container
+  variables:
+    FROM_IMAGE: "${R_IMAGE}"
+  needs:
+    - build-container-R
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+forward-container-main-python:
   extends: .copy-container
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
-    DEST: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}"
-  # needs:
-  #   - python-container-build
+  needs:
+    - build-container-python
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
-# R-container-forward:
-#   extends: .forward-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${R_IMAGE}"
-
-# python-container-forward:
-#   extends: .forward-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${PYTHON_IMAGE}"

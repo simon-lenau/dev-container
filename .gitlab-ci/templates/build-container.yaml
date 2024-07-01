@@ -32,8 +32,4 @@ include:
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
       --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
       --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
-      --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
-      --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
-      --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
-      --destination "${DOCKERHUB_REGISTRY_PATH}_latest";
 
