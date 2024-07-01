@@ -18,4 +18,4 @@
       # Set credentials
       mkdir -p "$(dirname "${AUTH_FILE}")";
       touch "${AUTH_FILE}";
-      ./.gitlab-ci/set_credentials "${AUTH_FILE}";
+    - source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
