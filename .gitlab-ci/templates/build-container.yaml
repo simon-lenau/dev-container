@@ -23,7 +23,6 @@ include:
         export python_packages=$(cat dependencies/python 2>/dev/null || return 0); 
       fi;
     # Build container
-    - >-
       /kaniko/executor 
       --context "${CI_PROJECT_DIR}" 
       --build-arg "ubuntu_packages"="${ubuntu_packages}" 
