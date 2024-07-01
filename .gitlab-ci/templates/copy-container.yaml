@@ -9,7 +9,7 @@ include:
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
   variables:
-    AUTH_FILE: ~/.docker/config.json
+    AUTH_FILE: '~/.docker/config.json'
   script:
     - !reference [.base-template, script]
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
