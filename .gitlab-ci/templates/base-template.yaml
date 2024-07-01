@@ -9,11 +9,9 @@
           - .gitlab-ci.yml
           - Dockerfile
   script:
-    - echo "${AUTH_FILE}";
-    - export outfile_dir="$(dirname "${AUTH_FILE}")";
-    - printf "%s\n" "Creating ${outfile_dir}";
     - >-
-      mkdir -p "${outfile_dir}";
+      # Set credentials
+      mkdir -p "$(dirname "${AUTH_FILE}")";
       touch "${AUTH_FILE}";
       source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
       # Set folders
