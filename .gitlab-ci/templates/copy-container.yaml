@@ -13,10 +13,7 @@ include:
   script:
     - !reference [.base-template, script]
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
-    - printf "%s\n" "Pushing to" "${TO_IMAGE}"
-    - export TO_IMAGE="sh "echo $(echo "$(echo "${TO_IMAGE}" | sed 's|@|\$|g')")""
-    - printf "%s\n" "Pushing to" "${TO_IMAGE}"
-    # - >-
-    #   crane copy 
-    #   "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-    #   "${TO_IMAGE}";
+    - >-
+      crane copy 
+      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+      "${TO_IMAGE}${IMAGE_NAME}${SEPARATOR}${IMAGE_VERS}";

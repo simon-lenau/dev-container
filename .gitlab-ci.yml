@@ -45,6 +45,7 @@ forward-container-main-python:
   extends: .copy-container
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
+    SEPARATOR: "_"
   parallel:
     matrix:
-      - TO_IMAGE: ['index.docker.io/simonlenau/dev-container:@{IMAGE_NAME}_@{IMAGE_VERS}']
+      - TO_IMAGE: ['index.docker.io/simonlenau/dev-container:']
