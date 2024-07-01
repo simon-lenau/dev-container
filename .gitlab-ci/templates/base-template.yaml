@@ -17,4 +17,5 @@
       export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
       # Set Credentials
       mkdir -p "$(dirname "${AUTH_FILE}")";
+      mkdir -p "/kaniko/.docker";
       source ".gitlab-ci/set_credentials">"${AUTH_FILE}";

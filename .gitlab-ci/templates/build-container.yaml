@@ -8,7 +8,7 @@ include:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   variables:
-    AUTH_FILE: "/kaniko/.docker/config.json"
+    AUTH_FILE: /kaniko/.docker/config.json
   script:
     - !reference [.base-template, script]
     - >-
