@@ -16,8 +16,8 @@
       export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
       # Set credentials
-    - mkdir -p "$(dirname "${FULL_AUTH_FILE}")";
-    - source ".gitlab-ci/set_credentials" > "${FULL_AUTH_FILE}";
-    - export FULL_AUTH_FILE="$(readlink -f ${AUTH_FILE})";
+      export FULL_AUTH_FILE="$(eval "echo "${path}"")";
     - echo "BLA -> $FULL_AUTH_FILE (${AUTH_FILE})"
+    # - mkdir -p "$(dirname "${FULL_AUTH_FILE}")";
+    # - source ".gitlab-ci/set_credentials" > "${FULL_AUTH_FILE}";
 
