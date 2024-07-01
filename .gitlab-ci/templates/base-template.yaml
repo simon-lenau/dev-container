@@ -9,13 +9,11 @@
           - .gitlab-ci.yml
           - Dockerfile
   script:
-    - >-
-      # Set folders
-      cd "${CI_PROJECT_DIR}";
+    # Set folder 
+    - cd "${CI_PROJECT_DIR}";
       # Determine image information
-      export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
-      export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
+    - export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
+    - export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
     # Set credentials
     - mkdir -p "$(dirname "${AUTH_FILE}")";
-    - touch "${AUTH_FILE}";
     - source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
