@@ -23,18 +23,23 @@ include:
       fi;
       printf "%s\n" "\${AUTH_FILE}: ${AUTH_FILE}";
       cat ${AUTH_FILE};
-      # # Build container
-      # /kaniko/executor 
-      # --context "${CI_PROJECT_DIR}" 
-      # --build-arg "ubuntu_packages"="${ubuntu_packages}" 
-      # --build-arg "r_packages"="${r_packages}" 
-      # --build-arg "python_packages"="${python_packages}" 
-      # --build-arg "workdir"="/${CI_PROJECT_TITLE}/" 
-      # --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
-      # --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
-      # --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
-      # --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
-      # --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
-      # --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
-      # --destination "${DOCKERHUB_REGISTRY_PATH}_latest";
+
+
+
+
+
+# # Build container
+# /kaniko/executor 
+# --context "${CI_PROJECT_DIR}" 
+# --build-arg "ubuntu_packages"="${ubuntu_packages}" 
+# --build-arg "r_packages"="${r_packages}" 
+# --build-arg "python_packages"="${python_packages}" 
+# --build-arg "workdir"="/${CI_PROJECT_TITLE}/" 
+# --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
+# --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
+# --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
+# --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
+# --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
+# --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
+# --destination "${DOCKERHUB_REGISTRY_PATH}_latest";
 
