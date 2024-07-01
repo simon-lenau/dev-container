@@ -3,13 +3,14 @@ include:
 
 .build-container:
   extends: .base-template
+  stage: container-build
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
-  stage: container-build
+  variables:
+    AUTH_FILE: /kaniko/.docker/config.json
   script:
     - !reference [.base-template, script]
-    - printf "HOME IS $(cd ~/ && echo "$PWD")";
     # Export dependency lists
     - >- 
       if .gitlab-ci/needs_dependencies "ubuntu"; then 

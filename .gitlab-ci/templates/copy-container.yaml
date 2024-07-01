@@ -4,9 +4,12 @@ include:
 
 .copy-container:
   extends: .base-template
+  stage: container-forward
   image:
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
+  variables:
+    AUTH_FILE: ~/.docker/config.json
   script:
     - !reference [.base-template, script]
     # - >-
@@ -17,5 +20,5 @@ include:
       export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
     - >- 
       crane copy 
-      "${SOURCE}"
-      "${DEST}";
+      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+      "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}";
