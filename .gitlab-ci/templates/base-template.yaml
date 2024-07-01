@@ -8,7 +8,8 @@
           - .gitlab-ci/**/*
           - .gitlab-ci.yml
           - Dockerfile
-  before_script:
+  script:
+    - echo "BASE SCRIPT1!"
     - >-
       # Set folders
       cd "${CI_PROJECT_DIR}";
@@ -20,5 +21,4 @@
       mkdir -p "/kaniko/.docker";
       echo "writing to ${AUTH_FILE}";
       "$(source ".gitlab-ci/set_credentials")" >"${AUTH_FILE}";
-  script:
-    - echo "BASE SCRIPT!"
+    - echo "BASE SCRIPT2!"
