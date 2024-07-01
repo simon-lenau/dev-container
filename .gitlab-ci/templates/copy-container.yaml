@@ -1,15 +1,14 @@
 
+include:
+  - local: '.gitlab-ci/templates/base-template.yaml'
 
 .copy-container:
-  extends: .master
+  extends: .base-template
   image:
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
   script:
-    - !reference [.master, script]
-    # Set Credentials
-    - mkdir -p $HOME/.docker/
-    - source ".gitlab-ci/set_credentials" >$HOME/.docker/config.json;
+    - !reference [.base-template, script]
     - >-
       echo "FROM: $FROM";
       echo "TO: $TO";      

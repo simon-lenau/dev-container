@@ -1,18 +1,15 @@
 include:
-  - local: '.gitlab-ci/templates/master.yaml'
-  - local: '.gitlab-ci/templates/copy-container.yaml'
+  - local: '.gitlab-ci/templates/base-template.yaml'
 
 .build-container:
-  extends: .master
+  extends: .base-template
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   stage: container-build
   script:
-    - !reference [.master, script]
-    # Set Credentials
-    - mkdir -p /kaniko/.docker
-    - source ".gitlab-ci/set_credentials" >/kaniko/.docker/config.json
+    - !reference [.base-template, script]
+    - echo "HOME IS: $HOME"
     # Export dependency lists
     - >- 
       if .gitlab-ci/needs_dependencies "ubuntu"; then 

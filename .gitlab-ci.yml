@@ -33,8 +33,8 @@ forward-container-test:
   stage: container-forward
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
-    FROM: "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-    TO: "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
+    SOURCE: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}"
+    DEST: "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
   needs:
     - python-container-build
 
