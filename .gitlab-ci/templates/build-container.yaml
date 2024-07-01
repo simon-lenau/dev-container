@@ -8,9 +8,8 @@ include:
   script:
     - !reference [.master, script]
     # Set Credentials
-    -> -
-      mkdir -p /kaniko/.docker &&
-      source ".gitlab-ci/set_credentials" >/kaniko/.docker/config.json;
+    - mkdir -p /kaniko/.docker
+    - source ".gitlab-ci/set_credentials" >/kaniko/.docker/config.json
     # Export dependency lists
     - >- 
       if .gitlab-ci/needs_dependencies "ubuntu"; then 
