@@ -14,7 +14,8 @@ include:
     - !reference [.base-template, script]
     - export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
     - export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}";    
-    - echo "${FULL_AUTH_FILE}";
+    - echo "AAA: ${AUTH_FILE}";
+    - cat "${AUTH_FILE}";
 
 
 
