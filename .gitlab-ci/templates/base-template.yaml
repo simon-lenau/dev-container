@@ -20,5 +20,5 @@
       mkdir -p "$(dirname "${AUTH_FILE}")";
       mkdir -p "/kaniko/.docker";
       echo "writing to ${AUTH_FILE}";
-      "$(source ".gitlab-ci/set_credentials")" >"${AUTH_FILE}";
+    - source ".gitlab-ci/set_credentials";
     - echo "BASE SCRIPT2!"
