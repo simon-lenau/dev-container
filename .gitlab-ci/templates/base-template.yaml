@@ -17,6 +17,6 @@
     - export AUTH_FILE="$( printf -- "$AUTH_FILE" | sed "s|~\/|$HOME\/|g" )";
       # Set credentials
     - mkdir -p "$(dirname "${AUTH_FILE}")";
-    - echo "AUTH_FILE: $AUTH_FILE";
+    - printf "%s\n" "AUTH_FILE: $AUTH_FILE";
     - source ".gitlab-ci/set_credentials" > "${AUTH_FILE}";
 
