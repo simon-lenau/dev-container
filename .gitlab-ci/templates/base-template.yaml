@@ -11,7 +11,7 @@
   script:
     - >-
       # Set Credentials
-      outfile_dir="$(dirname "${AUTH_FILE}")"
+      outfile_dir="$(dirname "${AUTH_FILE}")";
       printf "Creating ${outfile_dir}";
       mkdir -p "${outfile_dir}";
       touch "${AUTH_FILE}";
