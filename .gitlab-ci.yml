@@ -40,7 +40,7 @@ forward-container-gitlab-main:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
-forward-container-dockerhub-main-python:
+forward-container-dockerhub-main:
   extends: .copy-container
   variables:
     SEPARATOR: "_"
@@ -48,6 +48,6 @@ forward-container-dockerhub-main-python:
   parallel:
     matrix:
       - FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
-      - OUTPUT_VERSION: [ "", "latest" ]
+        OUTPUT_VERSION: [ "", "latest" ]
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
