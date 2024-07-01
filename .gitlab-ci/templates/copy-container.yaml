@@ -13,7 +13,8 @@ include:
   script:
     - !reference [.base-template, script]
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
-    - echo "IMAGE_VERS: $IMAGE_VERS";
+    - >-
+      echo "IMAGE_VERS: $IMAGE_VERS";
     # - >-
     #   crane copy 
     #   "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
