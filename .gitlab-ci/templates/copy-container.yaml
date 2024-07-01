@@ -5,5 +5,11 @@
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
   script:
-    # - cat /kaniko/.docker/config.json;
+    # Set Credentials
+    - mkdir -p $HOME/.docker/
+    - source ".gitlab-ci/set_credentials" >$HOME/.docker/config.json;
     - printf "%s\n"  "$(ls)";
+    - >-
+      export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
+      export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
+    - crane push image.tar "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}";

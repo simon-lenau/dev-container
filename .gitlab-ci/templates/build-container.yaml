@@ -7,6 +7,10 @@ include:
   stage: container-build
   script:
     - !reference [.master, script]
+    # Set Credentials
+    -> -
+      mkdir -p /kaniko/.docker &&
+      source ".gitlab-ci/set_credentials" >/kaniko/.docker/config.json;
     # Export dependency lists
     - >- 
       if .gitlab-ci/needs_dependencies "ubuntu"; then 
@@ -20,8 +24,6 @@ include:
       fi;
     # Build container
     - >-
-      export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
-      export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
       /kaniko/executor 
       --context "${CI_PROJECT_DIR}" 
       --build-arg "ubuntu_packages"="${ubuntu_packages}" 
@@ -35,7 +37,7 @@ include:
   artifacts:
     paths:
     - image.tar
-    - /kaniko/.docker/config.json
+    - .docker/config.json
     when: on_success
       # --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
       # --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"

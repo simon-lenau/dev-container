@@ -13,9 +13,7 @@
           - Dockerfile
   script:
     # Set folders
-    - cd "${CI_PROJECT_DIR}" && mkdir -p /kaniko/.docker;
-    # Set Credentials
-    - source ".gitlab-ci/set_credentials";
+    - cd "${CI_PROJECT_DIR}";
     # Determine image information
     - >-
       export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
