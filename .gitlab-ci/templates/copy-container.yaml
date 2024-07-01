@@ -17,6 +17,7 @@ include:
     - echo "${AUTH_FILE}";
     - cat ${AUTH_FILE};
     - export DOCKER_CONFIG="${AUTH_FILE}";
+    - cat ~/.docker/config.json
     - crane ls ${CI_REGISTRY_IMAGE};
     # - >- 
     #   crane copy 
