@@ -8,8 +8,8 @@ include:
     entrypoint: [""]
   stage: container-build
   script:
-    - !reference [.base-template, script];
-    - printf -- "HOME IS: $HOME";
+    - !reference [.base-template, script]
+    # - printf -- "HOME IS: $HOME";
     # Export dependency lists
     - >- 
       if .gitlab-ci/needs_dependencies "ubuntu"; then 
