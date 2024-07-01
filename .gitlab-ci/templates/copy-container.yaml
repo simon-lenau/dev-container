@@ -14,7 +14,7 @@ include:
     - !reference [.base-template, script]
     - export DOCKER_CONFIG="${FULL_AUTH_FILE}";
     - printf "%s\n" "Pushing to" "${TO_IMAGE}"
-    - export TO_IMAGE="eval "echo $(echo "$(echo "${TO_IMAGE}" | sed 's|@|\$|g')")""
+    - export TO_IMAGE="sh "echo $(echo "$(echo "${TO_IMAGE}" | sed 's|@|\$|g')")""
     - printf "%s\n" "Pushing to" "${TO_IMAGE}"
     # - >-
     #   crane copy 
