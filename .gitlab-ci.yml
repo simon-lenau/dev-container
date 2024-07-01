@@ -28,7 +28,7 @@ python-container-build:
 
 # Use skopeo
 
-.forward-container:
+forward-container-test:
   extends: .copy-container
   stage: container-forward
   variables:
