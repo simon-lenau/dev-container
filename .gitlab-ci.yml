@@ -30,24 +30,17 @@ include:
 forward-container-gitlab-main:
   extends: .copy-container
   variables:
-    FROM_IMAGE: 
-    SEPARATOR: ":"
-    TO_IMAGE: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}/"
   parallel:
     matrix:
-      - FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
-      - OUTPUT_VERSION: [ "", "latest" ]
+      - TO_IMAGE: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}/"
+        SEPARATOR: ":"
+        FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
+        OUTPUT_VERSION: [ "", "latest" ]
+      - TO_IMAGE: "index.docker.io/simonlenau/dev-container:"
+        SEPARATOR: "_"
+        FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
+        OUTPUT_VERSION: [ "", "latest" ]
+
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
-forward-container-dockerhub-main:
-  extends: .copy-container
-  variables:
-    SEPARATOR: "_"
-    TO_IMAGE: "index.docker.io/simonlenau/dev-container:"
-  parallel:
-    matrix:
-      - FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
-        OUTPUT_VERSION: [ "", "latest" ]
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
