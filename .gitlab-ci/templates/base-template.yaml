@@ -16,5 +16,5 @@
       export IMAGE_NAME="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/\:.*$//')";
       export IMAGE_VERS="$(echo ${FROM_IMAGE} | sed 's/.*\///' | sed 's/^.*\:\(.*\)$/\1/')"; 
     # Set Credentials
-    - mkdir -p $HOME/.docker/
+    - mkdir -p $HOME/.docker/;
     - source ".gitlab-ci/set_credentials" >$HOME/.docker/config.json;
