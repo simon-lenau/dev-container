@@ -7,4 +7,3 @@
   script:
     - cat /kaniko/.docker/config.json;
     - printf "%s\n"  "$(ls)";
-    - printf -- "A: ${A}";
