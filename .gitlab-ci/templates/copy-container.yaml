@@ -16,6 +16,9 @@ include:
     #   export GITLAB_REGISTRY_MAIN_PATH="${CI_REGISTRY_IMAGE}/${IMAGE_NAME}";
     #   export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}"; 
     - >-
+      mkdir -p "$(dirname "${AUTH_FILE}")";
+      touch "${AUTH_FILE}";    
+    - >-
       echo "${AUTH_FILE}";
       echo "$(ls -a ~/)";
       echo "$(ls -a ~/.docker)";
