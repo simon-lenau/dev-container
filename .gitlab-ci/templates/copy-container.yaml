@@ -1,12 +1,11 @@
 
 
 .copy-container:
-  stage: push
   image:
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: [""]
   script:
-    - cat /kaniko/.docker/config.json
-    - printf "%s\n"  "$(ls)"
-    - echo "FROM: $FROM"
-    - echo "TO: $TO"
+    - cat /kaniko/.docker/config.json;
+    - printf "%s\n"  "$(ls)";
+    - echo "FROM: $FROM";
+    - echo "TO: $TO";
