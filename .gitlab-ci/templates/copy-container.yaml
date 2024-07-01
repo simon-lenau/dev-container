@@ -16,6 +16,7 @@ include:
     - export DOCKERHUB_REGISTRY_PATH="index.docker.io/simonlenau/dev-container:${IMAGE_NAME}";    
     - echo "${AUTH_FILE}";
     - cat ${AUTH_FILE};
+    - export DOCKER_CONFIG="${AUTH_FILE}";
     - >- 
       crane copy 
       "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
