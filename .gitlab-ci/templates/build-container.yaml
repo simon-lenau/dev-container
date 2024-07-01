@@ -1,5 +1,6 @@
 include:
   - local: '.gitlab-ci/templates/master.yaml'
+  - local: '.gitlab-ci/templates/copy-container.yaml'
 
 .build-container:
   extends: .master
@@ -28,8 +29,13 @@ include:
       --build-arg "workdir"="/${CI_PROJECT_TITLE}/" 
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
       --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
-      --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
-      --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
-      --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
-      --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
-      --destination "${DOCKERHUB_REGISTRY_PATH}_latest";
+      --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
+      # --destination "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
+      # --destination "${GITLAB_REGISTRY_MAIN_PATH}:latest"
+      # --destination "${DOCKERHUB_REGISTRY_PATH}_${IMAGE_VERS}"
+      # --destination "${DOCKERHUB_REGISTRY_PATH}_latest";
+
+.copy-container:
+  extends: .master
+  stage: container-build
+  script:

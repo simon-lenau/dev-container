@@ -28,6 +28,13 @@ python-container-build:
 
 # Use skopeo
 
+.forward-container:
+  extends: .copy-container
+  stage: container-forward
+  variables:
+    FROM: "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+    TO: "${GITLAB_REGISTRY_MAIN_PATH}:${IMAGE_VERS}"
+
 # R-container-forward:
 #   extends: .forward-container
 #   # Set base image

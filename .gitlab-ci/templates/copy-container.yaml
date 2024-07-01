@@ -1,0 +1,12 @@
+
+
+.copy-container:
+  image:
+    name: docker://quay.io/skopeo/stable:latest
+    entrypoint: [""]
+  stage: container-forward
+  script:
+    # Set Credentials
+    - source ".gitlab-ci/set_credentials";
+    # Copy container
+    - copy ${FROM} ${TO}
