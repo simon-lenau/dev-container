@@ -3,45 +3,71 @@ variables:
   PYTHON_IMAGE: python:3.12
 
 stages:
-  # - container-build
+  - container-build
   - container-forward
 
 include:
   - local: '.gitlab-ci/templates/build-container.yaml'
   - local: '.gitlab-ci/templates/copy-container.yaml'
 
-# build-container-R:
-#   extends: .build-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${R_IMAGE}"
-#     install_dependencies: "ubuntu R"
+build-container-R:
+  extends: .build-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${R_IMAGE}"
+    install_dependencies: "ubuntu R"
 
 
-# build-container-python:
-#   extends: .build-container
-#   # Set base image
-#   variables:
-#     FROM_IMAGE: "${PYTHON_IMAGE}"
-#     install_dependencies: "ubuntu python"
+build-container-python:
+  extends: .build-container
+  # Set base image
+  variables:
+    FROM_IMAGE: "${PYTHON_IMAGE}"
+    install_dependencies: "ubuntu python"
 
+forward-container-gitlab-main-R:
+  extends: .copy-container
+  variables:
+    FROM_IMAGE: "${R_IMAGE}"
+    SEPARATOR: "_"
+    TO_IMAGE: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}/"
+  parallel:
+    matrix:
+      - OUTPUT_VERSION: [ "", "latest" ]
+  needs:
+    - build-container-R
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
-# index.docker.io/simonlenau/dev-container:${IMAGE_NAME}
-# "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}"
+forward-container-dockerhub-main-R:
+  extends: .copy-container
+  variables:
+    FROM_IMAGE: "${R_IMAGE}"
+    SEPARATOR: ":"
+    TO_IMAGE: "index.docker.io/simonlenau/dev-container:"
+  parallel:
+    matrix:
+      - OUTPUT_VERSION: [ "", "latest" ]
+  needs:
+    - build-container-R
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
-# forward-container-main-R:
-#   extends: .copy-container
-#   variables:
-#     FROM_IMAGE: "${R_IMAGE}"
-#   parallel:
-#     matrix:
-#       - TO_IMAGE: [index.docker.io/simonlenau/dev-container:${IMAGE_NAME}]
-#   # needs:
-#   #   - build-container-R
-#   # rules:
-#   #   - if: $CI_COMMIT_BRANCH == "main"
+forward-container-gitlab-main-python:
+  extends: .copy-container
+  variables:
+    FROM_IMAGE: "${PYTHON_IMAGE}"
+    SEPARATOR: ":"
+    TO_IMAGE: "${CI_REGISTRY_IMAGE}/${IMAGE_NAME}/"
+  parallel:
+    matrix:
+      - OUTPUT_VERSION: [ "", "latest" ]
+  needs:
+    - build-container-python
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
-forward-container-main-python:
+forward-container-dockerhub-main-python:
   extends: .copy-container
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
@@ -50,3 +76,7 @@ forward-container-main-python:
   parallel:
     matrix:
       - OUTPUT_VERSION: [ "", "latest" ]
+  needs:
+    - build-container-python
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
