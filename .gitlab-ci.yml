@@ -46,6 +46,11 @@ forward-container-main-python:
   variables:
     FROM_IMAGE: "${PYTHON_IMAGE}"
     SEPARATOR: "_"
+    IMAGE_VERS: BLA
   parallel:
     matrix:
       - TO_IMAGE: ['index.docker.io/simonlenau/dev-container:']
+  needs:
+    - build-container-python
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
