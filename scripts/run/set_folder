@@ -27,7 +27,7 @@ if [[ "${current_folder}" == "${folder}" ]]; then return 0; fi
 tput_store_cursor && tput_restore_and_clear
 
 # Print folder and user choices
-printf "Moving to\n\t%s\nin 3 secs.\n" "$(tput_file "${folder}" 5)"
+printf "\nMoving to\n\t%s\nin 3 secs.\n" "$(tput_file "${folder}" 5)"
 printf "\t%-25s%-20s\n" \
     $(tput_keys "ESCAPE" "cancel") \
     $(tput_keys "Other" "proceed")
