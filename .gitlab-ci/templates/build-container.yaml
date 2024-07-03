@@ -1,0 +1,36 @@
+include:
+  - local: '.gitlab-ci/templates/base-template.yaml'
+
+.build-container:
+  extends: .base-template
+  stage: container-build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  variables:
+    AUTH_FILE: /kaniko/.docker/config.json
+  script:
+    - !reference [.base-template, script]
+    # Export lists of dependencies
+    - >-
+      if .gitlab-ci/needs_dependencies "ubuntu"; then 
+        export ubuntu_packages=$(cat dependencies/ubuntu 2>/dev/null || return 0); 
+      fi;
+      if .gitlab-ci/needs_dependencies "R"; then 
+        export r_packages=$(cat dependencies/R 2>/dev/null || return 0); 
+      fi;
+      if .gitlab-ci/needs_dependencies "python"; then 
+        export python_packages=$(cat dependencies/python 2>/dev/null || return 0); 
+      fi;
+    # Build container
+    - >-
+      /kaniko/executor 
+      --context "${CI_PROJECT_DIR}" 
+      --build-arg "ubuntu_packages"="${ubuntu_packages}" 
+      --build-arg "r_packages"="${r_packages}" 
+      --build-arg "python_packages"="${python_packages}" 
+      --build-arg "workdir"="/${CI_PROJECT_TITLE}/" 
+      --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
+      --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
+      --destination "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
+

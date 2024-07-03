@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/set_folder                                               ││ #
+# ││ └─ ./scripts/run/print_functions                                       ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+# Only do anything if this is an interactive shell
+if ! tty -s; then return 0; fi
+
+source "${DEV_CONTAINER_DIR}/run/print_functions"
+
+# ============================== > Arguments < =============================== #
+# $1: Target folder
+folder="${1:-$HOME}"
+# Fully expand target folder
+folder="$(readlink -f $(eval "echo "${folder}""))"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ================== > Check if already in target folder < =================== #
+current_folder="$(readlink -f $(eval "echo "${PWD}""))"
+if [[ "${current_folder}" == "${folder}" ]]; then return 0; fi
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ================ > Offer user to move vscode to `folder` < ================= #
+
+# If tput is available: Store cursor position
+tput_store_cursor && tput_restore_and_clear
+
+# Print folder and user choices
+printf "Moving to\n\t%s\nin 3 secs.\n" "$(tput_file "${folder}" 5)"
+printf "\t%-25s%-20s\n" \
+    $(tput_keys "ESCAPE" "cancel") \
+    $(tput_keys "Other" "proceed")
+
+# Wait 3 secs for user input
+read -s -n 1 -t 3 key
+
+# If tput is available: Restore cursor position and clear everything afterwards
+tput_restore_and_clear
+if [[ "$key" == $'\e' ]]; then
+    printf "OK, staying in\n\t%s\n" "$(tput_file "${current_folder}" 5)"
+    printf "To move to default folder, use\n\t"
+    if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
+        printf "%s\n" "$(tput_command "cd \"${folder}\"" 2)"
+    else
+        printf "%s\n" "$(tput_command "code -r \"${folder}\"" 2)"
+    fi
+    return 0
+fi
+
+# Move to workdir
+printf "Moving to\n\t%s\n" "$(tput_file "${folder}" 5)"
+
+# Check if the shell is run from vscode
+if [[ ! "${TERM_PROGRAM}" == "vscode" ]]; then
+    cd "${folder}" || echo "Failed cd'ing to ${folder}"
+else
+    code -r "${folder}"
+fi
+
+return 0
+# ────────────────────────────────── <end> ─────────────────────────────────── #

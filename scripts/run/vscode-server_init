@@ -1,0 +1,17 @@
+includeguard_name="__vscode_server_init_run_${USER}__"
+
+if [ -n "${!includeguard_name}" ]; then return 0; fi
+export ${includeguard_name}=true
+
+function make_link {
+    if [ ! -d "${HOME}/${1}" ]; then
+        if [ -d "/root/${1}" ]; then
+            ln -s "/root/${1}" "$HOME/${1}"
+        fi
+    fi
+}
+
+make_link ".vscode-server"
+make_link ".vscode"
+make_link "code-server"
+make_link "code"

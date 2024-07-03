@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/ssh_key_check                                            ││ #
+# ││ └─ ./scripts/run/dropbear_settings                                     ││ #
+# ││ └─ ./scripts/run/print_functions                                       ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
+# ========================= > Source dependencies < ========================== #
+source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
+source "${DEV_CONTAINER_DIR}/run/print_functions"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# List key files
+key_files=($(ls "${SSH_KEY_FOLDER}" | grep -v "user_id$"))
+
+# Declare arrays of (un)changed key files
+unchanged_key_files=()
+changed_key_files=()
+
+# Loop over keys
+for key_file in "${key_files[@]}"; do
+    key="$(cat "${SSH_KEY_FOLDER}/$key_file")"
+    default_key="$(
+        cat "${DEV_CONTAINER_DIR}/run/.default_ssh_keys/$key_file" ||
+            echo ""
+    )"
+    # If keys are in list of default keys:
+    # add key_file to `unchanged_key_files`,
+    # otherwise to `changed_key_files`
+    if [[ "${default_key}" == "${key}" ]]; then
+        unchanged_key_files+=("${key_file}")
+    else
+        changed_key_files+=("${key_file}")
+    fi
+done
+
+# Check if all key files were changed
+if [ ${#unchanged_key_files[@]} -eq 0 ]; then exit 0; fi
+
+# Otherwise: warn user
+err \
+    "Warning:" \
+    "The following key files are unchanged:"
+printf -- "\n"
+printf "  - $(tput_file "%s" 5)\n" \
+    "${unchanged_key_files[@]}" \
+    >&2
+
+printf "$(tput_red "%s")\n" \
+    "This poses security risks as they are publicly available."
+
+printf "%b\n" \
+    "Please consider changing the keys in $(tput_file "${SSH_KEY_FOLDER}" 5) by" \
+    "$(tput_file [a] 2) mounting a folder to $(tput_file "${SSH_KEY_FOLDER}" 5)" \
+    "    with files corresponding to those in $(tput_file "./scripts/ssh_keys" 5) and/or" \
+    "$(tput_file [b] 2) running $(tput_command "$DEV_CONTAINER_DIR/run/ssh_key_setup \"generate\"" 5)" \
+    "When combining $(tput_file [a] 2) and $(tput_file [b] 2), the keys will be in the mounted folder and easily re-usable." \
+    >&2
+
+exit 1

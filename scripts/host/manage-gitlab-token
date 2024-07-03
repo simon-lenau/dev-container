@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/host/manage-gitlab-token                                     ││ #
+# ││ └─ gitlab-tokens                                                       ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
+source "submodules/gitlab-tokens/gitlab-tokens-init"
+
+# ============================ > Git repo infos < ============================ #
+git_host=$(git_repo_info --type "host")
+git_proj=$(git_repo_info --type "project")
+git_registry=$(git_repo_info --type "registry")
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ======================= > Container registry token < ======================= #
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Check / rotate / create container registry token                       ││ #
+# ││ This token is used to pull the container from the gitlab registry      ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+tokenfile="~/credentials/${git_host}/${git_proj}/auto_container_token"
+
+# Check if current token is valid
+if ! read_from_file --file="${tokenfile}" | git_token_valid; then
+    # The current token is not valid
+    #   => create or rotate it
+    read_from_file --file "~/credentials/${git_host}/personal_token" |
+        git_token_renew --tokenfile "${tokenfile}"
+
+    # Check if token is now valid
+    if read_from_file --file "${tokenfile}" | git_token_valid; then
+        # The created or rotated token is valid
+        #   => export it
+        export CISPA_GITLAB_TOKEN=$(read_from_file --file ${tokenfile})
+    else
+        # Creating or rotating a token failed
+        #   => throw error
+        err \
+            "Docker credentials invalid!" \
+            "Please make sure that" \
+            "\t$(eval "echo "~/credentials/${git_host}/personal_token"")" \
+            "contains a gitlab token with \`api\` scope for" \
+            "\t${git_host}" \
+            "and/or" \
+            "\t$(eval "echo ${tokenfile}")" \
+            "contains a token with \`container_registry\` scope for" \
+            "\t${git_registry}"
+        exit 1
+    fi
+else
+    # Current token is valid
+    #   => export it
+    export CISPA_GITLAB_TOKEN=$(read_from_file --file ${tokenfile})
+fi
+
+# ────────────────────────────────── <end >─────────────────────────────────── #
+
+# ============================== > Job token < =============================== #
+
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Provide this repo's job tokens access to containr                      ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
+# read_from_file --file "~/credentials/${git_host}/personal_token" |
+#     git_token_access \
+#         --to_project="c01sile/containr" \
+#         --action=grant
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #

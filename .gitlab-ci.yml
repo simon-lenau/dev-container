@@ -1,0 +1,38 @@
+variables:
+  R_IMAGE: index.docker.io/simonlenau/containr:4.3.3
+  PYTHON_IMAGE: python:3.12
+
+stages:
+  - container-build
+  - container-forward
+
+include:
+  - local: '.gitlab-ci/templates/build-container.yaml'
+  - local: '.gitlab-ci/templates/copy-container.yaml'
+
+build-container:
+  extends: .build-container
+  parallel:
+    matrix:
+    # Build R image
+    - FROM_IMAGE: "${R_IMAGE}"
+      install_dependencies: "ubuntu R"
+    # Build python image
+    - FROM_IMAGE: "${PYTHON_IMAGE}"
+      install_dependencies: "ubuntu python"
+
+forward-container-main:
+  extends: .copy-container
+  parallel:
+    matrix:
+      # Forward to gitlab registry (without the /<branch>/ part)
+      - TO_PATH: "${CI_REGISTRY_IMAGE}/"
+        FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
+        OUTPUT_VERSION: [ "", "latest" ]
+      # Forward to dockerhub registry
+      - TO_PATH: "index.docker.io/simonlenau/dev-container:"
+        FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
+        OUTPUT_VERSION: [ "", "latest" ]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+

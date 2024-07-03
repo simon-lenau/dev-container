@@ -1,0 +1,37 @@
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/dropbear_settings                                        ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
+# =============================== > Settings < =============================== #
+SSH_KEY_FOLDER="${DEV_CONTAINER_DIR}/ssh_keys"
+DROPBEAR_FOLDER="/etc/dropbear"
+
+host_key_types=(
+    ed25519
+    ecdsa
+    rsa
+    dss
+)
+
+authorized_keys_file="$HOME/.ssh/authorized_keys"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ============================= > Expand paths < ============================= #
+
+SSH_KEY_FOLDER="$(echo "$(eval "echo "${SSH_KEY_FOLDER}"")")"
+authorized_keys_file="$(echo "$(eval "echo "${authorized_keys_file}"")")"
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ================== > Set dropbear port if empty / zero < =================== #
+
+if [ -z "${dropbear_port}" ]; then
+    dropbear_port=$(id -u)
+fi
+if [ ! "${dropbear_port}" -gt 0 ]; then
+    dropbear_port=50201
+fi
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+

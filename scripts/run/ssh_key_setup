@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/ssh_key_setup                                            ││ #
+# ││ └─ ./scripts/run/dropbear_settings                                     ││ #
+# ││ └─ ./scripts/run/print_functions                                       ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
+# ========================= > Source dependencies < ========================== #
+source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
+source "${DEV_CONTAINER_DIR}/run/print_functions"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ========================= > Argument processing < ========================== #
+action="${1}"
+
+if (echo "${action}" | grep -iq "generate"); then
+    action="generate"
+elif (echo "${action}" | grep -iq "insert"); then
+    action="insert"
+else
+    err \
+        "Error:" \
+        "First (any only) argument to\n\t$(tput_file "${BASH_SOURCE[0]}" 1)\n" \
+        "should be 'generate' or 'insert'."
+    exit 1
+fi
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ============================ > Create folders < ============================ #
+mkdir -p "${SSH_KEY_FOLDER}"
+mkdir -p "${DROPBEAR_FOLDER}"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# =========================== > Set-up user keys < =========================== #
+user_key_file="${SSH_KEY_FOLDER}/dev-container_user_id"
+
+if [[ "${action}" == "generate" ]]; then
+    rm -rf ${user_key_file}*
+    printf "Generating $(tput_file "%-64s" 5)" "${user_key_file}"
+    ssh-keygen \
+        -N "" \
+        -t ed25519 \
+        -f "${user_key_file}" \
+        >/dev/null 2>&1
+    printf "$(tput_green "%s")\n" "OK"
+fi
+mkdir -p "$(dirname "${authorized_keys_file}")"
+touch "${authorized_keys_file}"
+if (! cat "${authorized_keys_file}" | grep -iq "$(cat "${user_key_file}.pub")"); then
+    cat "${user_key_file}.pub" >>"${authorized_keys_file}"
+fi
+chmod go-rwx "${authorized_keys_file}"
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# =========================== > Set-up host keys < =========================== #
+for host_key_type in "${host_key_types[@]}"; do
+    org_file="${SSH_KEY_FOLDER}/dropbear_${host_key_type}_host_key.txt"
+    dropbear_file="${DROPBEAR_FOLDER}/dropbear_${host_key_type}_host_key"
+    if [[ "${action}" == "generate" ]]; then
+        rm -rf "${dropbear_file}"
+        # Generate host key
+        printf "Generating $(tput_file "%-64s" 5)" "${org_file}"
+        dropbearkey \
+            -t "${host_key_type}" \
+            -f "${dropbear_file}" \
+            >/dev/null 2>&1
+        # Store host key in org_file
+        openssl base64 \
+            <"${dropbear_file}" \
+            >"${org_file}"
+        printf "$(tput_green "%s")\n" "OK"
+    else
+        # Insert predefined host keys
+        cat "${org_file}" |
+            openssl base64 -d \
+                >"${dropbear_file}"
+    fi
+done
+# ────────────────────────────────── <end> ─────────────────────────────────── #

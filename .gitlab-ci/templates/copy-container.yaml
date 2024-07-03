@@ -1,0 +1,31 @@
+
+include:
+  - local: '.gitlab-ci/templates/base-template.yaml'
+
+.copy-container:
+  extends: .base-template
+  stage: container-forward
+  image:
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: [""]
+  variables:
+    AUTH_FILE: ~/.docker/config.json
+  script:
+    - !reference [.base-template, script]
+    - >-
+      if [ -z "${OUTPUT_VERSION}" ]; then
+        export OUTPUT_VERSION="${IMAGE_VERS}";
+      fi
+    - >-
+      if [ -z "${SEPARATOR}" ]; then
+        if echo "${TO_PATH}" | sed "s|${CI_REGISTRY_IMAGE}||gi" | grep -iq -e "\:"; then
+          SEPARATOR="_"
+        else
+          SEPARATOR=":"
+        fi;
+      fi;
+    # - export DOCKER_CONFIG="$(dirname ${AUTH_FILE})";
+    - >-
+      crane copy 
+      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+      "${TO_PATH}${IMAGE_NAME}${SEPARATOR}${OUTPUT_VERSION}";

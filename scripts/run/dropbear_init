@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ Dependencies:                                                          ││ #
+# ││ ./scripts/run/dropbear_init                                            ││ #
+# ││ └─ dropbear                                                            ││ #
+# ││ └─ ./scripts/run/dropbear_settings                                     ││ #
+# ││ └─ ./scripts/run/print_functions                                       ││ #
+# ││ └─ ./scripts/run/ssh_entrypoint                                        ││ #
+# ││ └─ ./scripts/run/ssh_key_check                                         ││ #
+# ││ └─ ./scripts/run/ssh_key_setup                                         ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
+source "${DEV_CONTAINER_DIR}/run/print_functions"
+
+# Enter folder
+mkdir -p "${DROPBEAR_FOLDER}"
+cd ${DROPBEAR_FOLDER}
+
+# Delete existing host keys
+rm -rf ./host_key_*
+
+# Read host keys from files in ${SSH_KEY_FOLDER}
+source "${DEV_CONTAINER_DIR}/run/ssh_key_setup" "insert"
+
+# Add section to .bashrc that automatically execudes code
+bashrc_path="$HOME/.bashrc"
+
+begin_delim="# >>>>>>>>>>>>>>>>>>>> dev-container shell setup >>>>>>>>>>>>>>>>>>>> "
+end_delim="# <<<<<<<<<<<<<<<<<<<< dev-container shell setup <<<<<<<<<<<<<<<<<<<< "
+
+# Remove the `dev-container shell setup` section from .bashrc if it is already there
+if grep -iq "${begin_delim}" "${bashrc_path}"; then
+    perl -p0i -e "s/${begin_delim}.*${end_delim}//gms" "${bashrc_path}"
+fi
+
+# Add `dev-container shell setup` section to .bashrc
+cat \
+    >>${bashrc_path} <<EOF
+${begin_delim}
+export DEV_CONTAINER_DIR="${DEV_CONTAINER_DIR}"
+export PATH="${PATH}:\${PATH}"
+if [[ "\${TERM_PROGRAM}" == "vscode" ]]; then
+    export __ssh_entrypoint_run__=
+fi
+source /.ssh_entrypoint
+${end_delim}
+EOF
+
+# Initialize VScode server folders
+source "${DEV_CONTAINER_DIR}/run/vscode-server_init"
+
+# Check if keys have been changed in comparison to those
+# publicly available on git
+${DEV_CONTAINER_DIR}/run/ssh_key_check || {
+    # Store cursor position
+    tput_store_cursor
+    printf "%s\n" "Do you wish to proceed $(tput_red "with unsafe keys")? (yes / no)"
+    read -n 255 -t 30 answer
+    if (echo "${answer}" | grep "^\s*[Yy]\([Ee][Ss]\)\{1,1\}\s*$"); then
+        # Restore cursor position and clear everything afterwards
+        tput_restore_and_clear
+        echo "OK, $(tput_red "proceeding with unsafe keys")"
+    else
+        exit 1
+    fi
+}
+
+echo "----------------------------------------------------"
+printf "Running on %s, port %s\n" \
+    "$HOST$HOSTNAME" \
+    "${dropbear_port}"
+echo "----------------------------------------------------"
+
+/usr/sbin/dropbear -F -E -s -p ${dropbear_port}
