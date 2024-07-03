@@ -10,6 +10,28 @@
 # ││ └─ ./scripts/run/ssh_key_check                                         ││ #
 # ││ └─ ./scripts/run/ssh_key_setup                                         ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
+
+# =========================== > Environment File < =========================== #
+# ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
+# ││ This will check for an environment file and source it if it is there   ││ #
+# └└────────────────────────────────────────────────────────────────────────┘┘ #
+
+if [ -f ${HOME}/.env ]; then
+    source "${HOME}/.env" &&
+        {
+            echo "source'd \${HOME}/.env"
+        } ||
+        printf "%s\n" "source ${HOME}/.env failed"
+elif [ -f /.env ]; then
+    source /.env &&
+        {
+            echo "source'd /.env"
+        } ||
+        printf "%s\n" "source /.env failed"
+fi
+
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
 source "${DEV_CONTAINER_DIR}/run/dropbear_settings"
 source "${DEV_CONTAINER_DIR}/run/print_functions"
 
