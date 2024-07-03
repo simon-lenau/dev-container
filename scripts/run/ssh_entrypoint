@@ -17,14 +17,12 @@ if [ -f ${HOME}/.env ]; then
     source "${HOME}/.env" &&
     {
         echo "source'd \${HOME}/.env"
-        cat "${HOME}/.env"
     } ||
         printf "%s\n" "source ${HOME}/.env failed"
 elif [ -f /.env ]; then
     source /.env &&
     {
         echo "source'd /.env"
-        cat "/.env"
     }  ||
         printf "%s\n" "source /.env failed"
 fi
@@ -44,19 +42,19 @@ elif [ -f /.entrypoint ]; then
 fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
-# # ======================== > Print default folders < ========================= #
-# if [ ! -z "${WORKDIR}${OUTDIR}" ]; then
-#     echo "================================================================================"
-#     printf "%-12s%s\n" \
-#         "\$WORKDIR" \
-#         "$(tput_file "$(readlink -f ${WORKDIR})" 5)"
-#     printf "%-12s%s\n" \
-#         "\$OUTDIR" \
-#         "$(tput_file "$(readlink -f ${OUTDIR})" 5)"
-#     echo "================================================================================"
-# fi
+# ======================== > Print default folders < ========================= #
+if [ ! -z "${WORKDIR}${OUTDIR}" ]; then
+    # echo "================================================================================"
+    printf "%-12s%s\n" \
+        "\$WORKDIR" \
+        "$(tput_file "$(readlink -f ${WORKDIR})" 5)"
+    printf "%-12s%s\n" \
+        "\$OUTDIR" \
+        "$(tput_file "$(readlink -f ${OUTDIR})" 5)"
+    # echo "================================================================================"
+fi
 
-# # ────────────────────────────────── <end> ─────────────────────────────────── #
+# ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ========== > Call script to set workdir if not objected by user < ========== #
 if [ ! -z "${WORKDIR}" ]; then
