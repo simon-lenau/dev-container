@@ -41,14 +41,16 @@ for ((i = 0; i < ${#packages[@]}; i += 2)); do
     pkg_ver="${packages[(($i + 1))]}"
     if [[ "${pkg_ver}" == "latest" || "${pkg_ver}" == "NULL" ]]; then
         pkg_ver="NULL"
+        pkg_ver_log="latest"
     else
         pkg_ver="\"${pkg_ver}\""
+        pkg_ver_log="${pkg_ver}"
     fi
     pkg_index="$(echo "$pkg" | sed 's/[^a-zA-Z0-9]/_/g')"
     (
         install_log=${outdir}/${pkg}.install_log
         (
-            printf "> %-30s %-30s" "${pkg}" "${pkg_ver}"
+            printf "> %-30s %-30s" "${pkg}" "${pkg_ver_log}"
             {
                 Rscript \
                     -e "
