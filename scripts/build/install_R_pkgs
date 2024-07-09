@@ -1,7 +1,104 @@
-#!/bin/bash
-echo "Attempting to install R packages:"
-printf "\t - %s\n" ${@}
+#!/usr/bin/env bash
 
-Rscript "${0}.R" ${@} >r_packages.log 2>&1 &&
-    (echo "... successful!" && rm -rf r_packages.log) ||
-    (sed -i 's/^/\t/' r_packages.log && cat r_packages.log && exit 1)
+packages=(${@})
+
+printf -- "================================================================================\n"
+
+printf -- "Attempting to install R-Packages:\n"
+
+outdir="./R-package-installation/"
+
+rm -rf $outdir
+
+if [ ! -d ${outdir} ]; then
+    mkdir -p $outdir
+fi
+
+# Install 'remotes' package for versioned installation of other packages
+(Rscript -e "library(\"remotes\")" >/dev/null 2>&1) ||
+    {
+        install_log=${outdir}/remotes.install_log
+        printf "> %-30s %-30s" "remotes" ""
+        (Rscript -e "install.packages(\"remotes\")" \
+            >${install_log} 2>&1) &&
+            {
+                printf -- " ... successful!\n" &&
+                    rm -rf ${install_log}
+            } ||
+            {
+                retval=$?
+                printf -- " ... failed:\n" &&
+                    sed -i 's/^/\t/' ${install_log} &&
+                    cat ${install_log} &&
+                    exit 1
+            }
+    }
+
+declare -A pkg_names
+
+for ((i = 0; i < ${#packages[@]}; i += 2)); do
+    pkg="${packages[$i]}"
+    pkg_ver="${packages[(($i + 1))]}"
+    if [[ "${pkg_ver}" == "latest" || "${pkg_ver}" == "NULL" ]]; then
+        pkg_ver="NULL"
+    else
+        pkg_ver="\"${pkg_ver}\""
+    fi
+    pkg_index="$(echo "$pkg" | sed 's/[^a-zA-Z0-9]/_/g')"
+    (
+        install_log=${outdir}/${pkg}.install_log
+        (
+            printf "> %-30s %-30s" "${pkg}" "${pkg_ver}"
+            {
+                Rscript \
+                    -e "
+                        options(warn=2)
+                        remotes::install_version(
+                            \"${pkg}\",
+                            version=${pkg_ver},
+                            repos=\"https://cloud.r-project.org\",
+                            upgrade=FALSE
+                        )
+                    " \
+                    >${install_log} 2>&1
+            } &&
+                {
+                    printf -- " ... successful!\n" && rm -rf ${install_log}
+                    echo "0" >${outdir}/${pkg_index}.exit
+                } ||
+                {
+                    retval=$?
+                    printf -- " ... failed:\n" &&
+                        sed -i 's/^/\t/' ${install_log} &&
+                        cat ${install_log}
+                    echo "${retval}" >${outdir}/${pkg_index}.exit
+                }
+        ) >${outdir}/${pkg}.log 2>&1
+    )
+    pkg_names[$pkg_index]="${pkg}"
+done
+
+# Continuously monitor all install processes.
+# If one finishes:
+#   - print log
+#   - remove log
+#   - exit if status != 0
+while [ ${#pkg_names[@]} -gt 0 ]; do
+    # Identify package(s) that finished installing
+    for pkg_index in "${!pkg_names[@]}"; do
+        if [ -f ${outdir}/${pkg_index}.exit ]; then
+            status=$(cat ${outdir}/${pkg_index}.exit)
+            cat ${outdir}/${pkg_names[$pkg_index]}.log
+            unset pkg_names[$pkg_index]
+            rm -f ${outdir}/${pkg_index}.exit
+            if [ $status -ne 0 ]; then
+                rm -rf $outdir
+                exit $status
+            fi
+        fi
+    done
+done
+
+rm -rf $outdir
+
+printf -- "================================================================================\n"

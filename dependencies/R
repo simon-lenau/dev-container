@@ -1,7 +1,7 @@
-data.table
-ggplot2
-httpgd
-parallel
-rstudioapi
-survey
-viridis
+data.table latest
+ggplot2 latest
+httpgd latest
+parallel latest
+rstudioapi latest
+survey latest
+viridis latest
