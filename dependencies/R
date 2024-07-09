@@ -1,7 +1,6 @@
 data.table latest
 ggplot2 latest
 httpgd latest
-parallel latest
 rstudioapi latest
 survey latest
 viridis latest
