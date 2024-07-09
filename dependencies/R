@@ -1,1 +1,6 @@
-data.table
+data.table latest
+ggplot2 latest
+httpgd latest
+rstudioapi latest
+survey latest
+viridis latest

@@ -2,13 +2,16 @@
 
 packages=(${@})
 
+
 printf -- "================================================================================\n"
 
 printf -- "Attempting to install R-Packages:\n"
 
-outdir="./R-package-installation/"
+outdir="./R-package-installation"
 
-rm -rf $outdir
+if [ -d ${outdir} ]; then
+    rm -rf $outdir
+fi
 
 if [ ! -d ${outdir} ]; then
     mkdir -p $outdir
@@ -17,89 +20,108 @@ fi
 # Install 'remotes' package for versioned installation of other packages
 (Rscript -e "library(\"remotes\")" >/dev/null 2>&1) ||
     {
-        install_log=${outdir}/remotes.install_log
-        printf "> %-30s %-30s" "remotes" ""
+        install_logfile=${outdir}/remotes.install_logfile
+        printf "> %-30s %-30s" "remotes" "latest"
         (Rscript -e "install.packages(\"remotes\")" \
-            >${install_log} 2>&1) &&
+            >${install_logfile} 2>&1) &&
             {
                 printf -- " ... successful!\n" &&
-                    rm -rf ${install_log}
+                    rm -rf ${install_logfile}
             } ||
             {
                 retval=$?
                 printf -- " ... failed:\n" &&
-                    sed -i 's/^/\t/' ${install_log} &&
-                    cat ${install_log} &&
+                    sed -i 's/^/\t/' ${install_logfile} &&
+                    cat ${install_logfile} &&
                     exit 1
             }
     }
 
 declare -A pkg_names
+declare -A pkg_versions
+declare -A pkg_indices
 
 for ((i = 0; i < ${#packages[@]}; i += 2)); do
-    pkg="${packages[$i]}"
-    pkg_ver="${packages[(($i + 1))]}"
-    if [[ "${pkg_ver}" == "latest" || "${pkg_ver}" == "NULL" ]]; then
-        pkg_ver="NULL"
-        pkg_ver_log="latest"
-    else
-        pkg_ver="\"${pkg_ver}\""
-        pkg_ver_log="${pkg_ver}"
-    fi
-    pkg_index="$(echo "$pkg" | sed 's/[^a-zA-Z0-9]/_/g')"
-    (
-        install_log=${outdir}/${pkg}.install_log
-        (
-            printf "> %-30s %-30s" "${pkg}" "${pkg_ver_log}"
+    pkg_index="$(echo "${packages[$i]}" | sed 's/[^a-zA-Z0-9]/_/g')"
+    pkg_names[$pkg_index]="${packages[$i]}"
+    pkg_versions[$pkg_index]="${packages[(($i + 1))]}"
+    pkg_indices[${pkg_index}]="${pkg_index}"
+done
+
+(
+    for pkg_index in "${pkg_indices[@]}"; do
+        pkg_ver="${pkg_versions[${pkg_index}]}"
+        if [[ "${pkg_ver}" == "latest" || "${pkg_ver}" == "NULL" ]]; then
+            pkg_ver_log="latest"
+            pkg_ver="NULL"
+        else
+            pkg_ver_log="${pkg_ver}"
+            pkg_ver="\"${pkg_ver}\""
+        fi
+        file_stub="${outdir}/${pkg_index}"
+
+        statusfile="${file_stub}.ret"
+        install_logfile="${file_stub}.inst"
+        logfile="${file_stub}.log"
+
+        {
+            printf "> %-30s %-30s" "${pkg_names[${pkg_index}]}" "${pkg_ver_log}"
             {
                 Rscript \
                     -e "
                         options(warn=2)
                         remotes::install_version(
-                            \"${pkg}\",
-                            version=${pkg_ver},
-                            repos=\"https://cloud.r-project.org\",
-                            upgrade=FALSE
-                        )
-                    " \
-                    >${install_log} 2>&1
-            } &&
-                {
-                    printf -- " ... successful!\n" && rm -rf ${install_log}
-                    echo "0" >${outdir}/${pkg_index}.exit
-                } ||
-                {
-                    retval=$?
-                    printf -- " ... failed:\n" &&
-                        sed -i 's/^/\t/' ${install_log} &&
-                        cat ${install_log}
-                    echo "${retval}" >${outdir}/${pkg_index}.exit
-                }
-        ) >${outdir}/${pkg}.log 2>&1
-    )
-    pkg_names[$pkg_index]="${pkg}"
-done
+                        \"${pkg_names[${pkg_index}]}\",
+                        version=${pkg_ver},
+                        repos=\"https://cloud.r-project.org\",
+                        upgrade=FALSE
+                    )
+                    "
+            } \
+                >"${install_logfile}" 2>&1 && :
 
-# Continuously monitor all install processes.
-# If one finishes:
-#   - print log
-#   - remove log
-#   - exit if status != 0
-while [ ${#pkg_names[@]} -gt 0 ]; do
-    # Identify package(s) that finished installing
-    for pkg_index in "${!pkg_names[@]}"; do
-        if [ -f ${outdir}/${pkg_index}.exit ]; then
-            status=$(cat ${outdir}/${pkg_index}.exit)
-            cat ${outdir}/${pkg_names[$pkg_index]}.log
-            unset pkg_names[$pkg_index]
-            rm -f ${outdir}/${pkg_index}.exit
-            if [ $status -ne 0 ]; then
-                rm -rf $outdir
-                exit $status
+            retval=$?
+
+            echo "${retval}" >${statusfile}
+
+            if [ ${retval} -ne 0 ]; then
+                printf -- " ... failed:\n" &&
+                    cat "${install_logfile}" | perl -pe 's/^/\t/'
+            else
+                printf -- " ... successful!\n" #&& rm -rf ${install_logfile}
             fi
-        fi
+        } >${logfile} 2>&1
     done
-done
+) &
+(
+    # Continuously monitor all install processes.
+    # If one finishes:
+    #   - print log
+    #   - remove log
+    #   - exit if status != 0
+    while [ ${#pkg_indices[@]} -gt 0 ]; do
+        # Identify package(s) that finished installing
+        for pkg_index in "${pkg_indices[@]}"; do
+            file_stub="${outdir}/${pkg_index}"
+
+            statusfile="${file_stub}.ret"
+            logfile="${file_stub}.log"
+
+            if [ -f ${statusfile} ]; then
+                sleep 0.25
+                status=$(cat "${statusfile}")
+                cat "${logfile}"
+                unset pkg_indices[${pkg_index}]
+                # rm -f "${statusfile}"
+                if [ $status -ne 0 ]; then
+                    exit $status
+                fi
+            fi
+        done
+    done
+) || exit $?
+
+wait
 
 rm -rf $outdir
 

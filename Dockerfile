@@ -41,24 +41,24 @@ COPY scripts/build /$DEV_CONTAINER_DIR/build
 
 RUN \
     if [ -n "${ubuntu_packages}" ]; then \
-        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \    
+        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"  || exit $?;  \    
     fi; \
     if [ -n "${r_packages}" ]; then \ 
-        /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
+        /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}" || exit $?;  \
     fi; \
     if [ -n "${python_packages}" ]; then \ 
-        /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
+        /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}" || exit $?; \
     fi;
 
 ONBUILD RUN \
     if [ -n "${ubuntu_packages}" ]; then \
-        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"; \
+        /$DEV_CONTAINER_DIR/build/install_ubuntu_pkgs "${ubuntu_packages}"  || exit $?;  \
     fi; \
     if [ -n "${r_packages}" ]; then \ 
-        /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"; \
+        /$DEV_CONTAINER_DIR/build/install_R_pkgs "${r_packages}"  || exit $?;  \
     fi; \
     if [ -n "${python_packages}" ]; then \ 
-        /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}"; \
+        /$DEV_CONTAINER_DIR/build/install_python_pkgs "${python_packages}" || exit $?;  \
     fi;
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
