@@ -51,6 +51,7 @@ done
 (
     for pkg_index in "${pkg_indices[@]}"; do
         pkg_ver="${pkg_versions[${pkg_index}]}"
+        shopt -s nocasematch  
         if [[ "${pkg_ver}" == "latest" || "${pkg_ver}" == "NULL" ]]; then
             pkg_ver_log="latest"
             pkg_ver="NULL"
@@ -58,6 +59,7 @@ done
             pkg_ver_log="${pkg_ver}"
             pkg_ver="\"${pkg_ver}\""
         fi
+        shopt -u nocasematch 
         file_stub="${outdir}/${pkg_index}"
 
         statusfile="${file_stub}.ret"
