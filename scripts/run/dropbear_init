@@ -60,8 +60,15 @@ fi
 cat \
     >>${bashrc_path} <<EOF
 ${begin_delim}
+
 export DEV_CONTAINER_DIR="${DEV_CONTAINER_DIR}"
 export PATH="${PATH}:\${PATH}"
+export PATH="\$("${DEV_CONTAINER_DIR}/run/make_unique" "\${PATH}" ":")";
+echo "ORGPATH IS:"
+echo "$PATH"
+echo "PATH IS:"
+echo "\$PATH"
+
 if [[ "\${TERM_PROGRAM}" == "vscode" ]]; then
     export __ssh_entrypoint_run__=
 fi

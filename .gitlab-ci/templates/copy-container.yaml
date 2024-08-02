@@ -26,6 +26,7 @@ include:
       fi;
     # - export DOCKER_CONFIG="$(dirname ${AUTH_FILE})";
     - >-
+      CI_COMMIT_BRANCH_CLEAN="$(echo "${CI_COMMIT_BRANCH}" | sed 's/[^a-zA-Z0-9]/_/g')";
       crane copy 
-      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}"
+      "${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH_CLEAN}/${IMAGE_NAME}:${IMAGE_VERS}"
       "${TO_PATH}${IMAGE_NAME}${SEPARATOR}${OUTPUT_VERSION}";

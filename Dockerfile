@@ -7,6 +7,7 @@ FROM "$FROM_IMAGE"
 ARG r_packages="" \
     python_packages="" \
     ubuntu_packages="" \
+    vscode_extensions="" \
     workdir="/WORKDIR/" \
     outdir="/OUTDIR/"
 
@@ -19,6 +20,7 @@ ONBUILD ARG \
     r_packages="" \
     python_packages="" \
     ubuntu_packages="" \
+    vscode_extensions="" \
     workdir="/WORKDIR/" \
     outdir="/OUTDIR/"
 
@@ -66,6 +68,18 @@ ONBUILD RUN \
 # ======================== > Install vscode-server < ========================= #
 RUN \
     /$DEV_CONTAINER_DIR/build/install_vscode-server "linux" "x64"
+
+RUN \
+    export PATH="/root/.vscode-server/bin/default_version/bin:$PATH"; \
+    if [ -n "${vscode_extensions}" ]; then \
+        /$DEV_CONTAINER_DIR/build/install_vscode-extensions "${vscode_extensions}"  || exit $?;  \    
+    fi;
+
+ONBUILD RUN \
+    export PATH="/root/.vscode-server/bin/default_version/bin:$PATH"; \
+    if [ -n "${vscode_extensions}" ]; then \
+        /$DEV_CONTAINER_DIR/build/install_vscode-extensions "${vscode_extensions}"  || exit $?;  \    
+    fi;
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #

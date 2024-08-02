@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if [ -z "${1}" ]; then
+    exit 0
+fi
+
+split="${2}"
+if [ -z "${split}" ]; then
+    split=";"
+fi
+
+
+_path=("$(echo "${1}" | tr "${split}" ' ')")
+unique_string=""
+outpath=()
+for element in ${_path}; do
+    if ! echo "${unique_string}" | grep "${element}" >/dev/null; then
+        outpath+=("$element")
+        unique_string+=" $element"
+    fi
+    printf -- "\n"
+done
+printf "%s\n" "${outpath[@]}" | paste -sd : -
