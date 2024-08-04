@@ -25,7 +25,7 @@ include:
       export vscode_extensions=$(cat dependencies/vscode_extensions 2>/dev/null || return 0); 
     # Build container
     - >-
-      export CONTAINER_BRANCH="$(echo "${CI_COMMIT_REF_NAME}" | sed 's/[^a-zA-Z0-9]/_/g')";
+      export REGISTRY_BRANCH="$(echo "${CI_COMMIT_REF_NAME}" | sed 's/[^a-zA-Z0-9]/_/g')";
       /kaniko/executor 
       --context "${CI_PROJECT_DIR}" 
       --build-arg "ubuntu_packages"="${ubuntu_packages}" 
@@ -35,5 +35,5 @@ include:
       --build-arg "workdir"="/${CI_PROJECT_TITLE}/" 
       --build-arg "outdir"="/${CI_PROJECT_TITLE}_output/" 
       --build-arg "FROM_IMAGE"="${FROM_IMAGE}" 
-      --destination "${CI_REGISTRY_IMAGE}/${CONTAINER_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
+      --destination "${CI_REGISTRY_IMAGE}/${REGISTRY_BRANCH}/${IMAGE_NAME}:${IMAGE_VERS}";
 

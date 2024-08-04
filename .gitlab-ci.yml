@@ -14,7 +14,7 @@ build-container:
   extends: .build-container
   parallel:
     matrix:
-    # Build R image
+    # Build R image 
     - FROM_IMAGE: "${R_IMAGE}"
       install_dependencies: "ubuntu R"
     # Build python image
