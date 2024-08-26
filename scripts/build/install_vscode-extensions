@@ -18,10 +18,9 @@ if [ ! -d ${outdir} ]; then
 fi
 
 for ((i = 0; i < ${#extensions[@]}; i += 2)); do
-# Install 'remotes' package for versioned installation of other packages
         install_logfile=${outdir}/${packages[$i]}.log
         printf "> %-50s" "${extensions[$i]}"
-        (code-server --install-extension --accept-server-license-terms  "${extensions[$i]}" \
+        (code-server --accept-server-license-terms --install-extension "${extensions[$i]}" \
             >${install_logfile} 2>&1) &&
             {
                 printf -- " ... successful!\n" &&
