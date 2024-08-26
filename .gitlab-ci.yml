@@ -17,7 +17,7 @@ build-container:
     # Build R image 
     - FROM_IMAGE: "${R_IMAGE}"
       install_dependencies: "ubuntu R"
-    # Build python image 
+    # Build python image
     - FROM_IMAGE: "${PYTHON_IMAGE}"
       install_dependencies: "ubuntu python"
 
