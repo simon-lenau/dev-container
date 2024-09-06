@@ -54,7 +54,7 @@ printf "$(tput_red "%s")\n" \
 printf "%b\n" \
     "Please consider changing the keys in $(tput_file "${SSH_KEY_FOLDER}" 5) by" \
     "$(tput_file [a] 2) mounting a folder to $(tput_file "${SSH_KEY_FOLDER}" 5)" \
-    "    with files corresponding to those in $(tput_file "./scripts/ssh_keys" 5) and/or" \
+    "    with files corresponding to those in $(tput_file "https://github.com/simon-lenau/dev-container/tree/main/scripts/ssh_keys" 5) and/or" \
     "$(tput_file [b] 2) running $(tput_command "$DEV_CONTAINER_DIR/run/ssh_key_setup \"generate\"" 5)" \
     "When combining $(tput_file [a] 2) and $(tput_file [b] 2), the keys will be in the mounted folder and easily re-usable." \
     >&2
