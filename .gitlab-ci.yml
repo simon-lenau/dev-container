@@ -1,6 +1,7 @@
 variables:
   R_IMAGE: index.docker.io/simonlenau/containr:4.4.1
   PYTHON_IMAGE: python:3.12
+  DROPBEAR_VERSION: 2024.85
 
 stages:
   - container-build

@@ -8,6 +8,7 @@ ARG r_packages="" \
     python_packages="" \
     ubuntu_packages="" \
     vscode_extensions="" \
+    DROPBEAR_VERSION="2024.85" \
     workdir="/WORKDIR/" \
     outdir="/OUTDIR/"
 
@@ -94,6 +95,11 @@ ONBUILD RUN \
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
+
+# ===================== > Install dropbear SSH server < ====================== #
+RUN /$DEV_CONTAINER_DIR/build/install_dropbear "${DROPBEAR_VERSION}"
+# ────────────────────────────────── <end> ─────────────────────────────────── #
+
 
 # =============================== > SSH keys < =============================== #
 COPY scripts/ssh_keys/* /$DEV_CONTAINER_DIR/ssh_keys/

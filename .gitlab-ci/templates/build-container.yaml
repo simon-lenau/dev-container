@@ -25,9 +25,15 @@ include:
       export vscode_extensions=$(cat dependencies/vscode_extensions 2>/dev/null || return 0); 
     # Build container
     - >-
-      export REGISTRY_BRANCH="$(echo "${CI_COMMIT_REF_NAME}" | sed 's/[^a-zA-Z0-9]/_/g')";
+      export REGISTRY_BRANCH="$(echo "$(
+      echo "${CI_COMMIT_REF_NAME}" | 
+        sed 's/[^a-zA-Z0-9]/_/g' | 
+          tr '[:upper:]' '[:lower:]'
+      )")";
+      echo "REGISTRY_BRANCH: $REGISTRY_BRANCH";
       /kaniko/executor 
       --context "${CI_PROJECT_DIR}" 
+      --build-arg "DROPBEAR_VERSION"="${DROPBEAR_VERSION}"
       --build-arg "ubuntu_packages"="${ubuntu_packages}" 
       --build-arg "r_packages"="${r_packages}" 
       --build-arg "python_packages"="${python_packages}" 

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+DROPBEAR_VERSION="${1}"
+INSTALL_FLD="${DEV_CONTAINER_DIR}/dropbear-installation"
+LOGFILE="./dropbear-install.log"
+
+printf -- "Installing dropbear ${DROPBEAR_VERSION}..." &&
+    (
+        if [ -z "${DROPBEAR_VERSION}" ]; then
+            echo "Missing argument: DROPBEAR_VERSION" >&2
+            exit 1
+        fi
+        curl -O https://matt.ucc.asn.au/dropbear/dropbear-${DROPBEAR_VERSION}.tar.bz2 &&
+            tar -xvjf dropbear-${DROPBEAR_VERSION}.tar.bz2 &&
+            cd dropbear-${DROPBEAR_VERSION} &&
+            ./configure &&
+            make install
+    ) >"${LOGFILE}" 2>&1
+retval=$?
+
+if [ $retval -eq 0 ]; then
+    printf -- "successful!\n" &&
+        rm -rf "${LOGFILE}"
+else
+    sed -i 's/^/\t/' "${LOGFILE}" &&
+        printf -- "failed:\n" &&
+        cat "${LOGFILE}" &&
+        exit $retval
+fi
