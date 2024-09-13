@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cd /
+printf -- "================================================================================\n"
 
 printf -- "Installing vscode-server..." &&
     curl -sL \

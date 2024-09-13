@@ -4,6 +4,8 @@ DROPBEAR_VERSION="${1}"
 INSTALL_FLD="${DEV_CONTAINER_DIR}/dropbear-installation"
 LOGFILE="./dropbear-install.log"
 
+printf -- "================================================================================\n"
+
 printf -- "Installing dropbear ${DROPBEAR_VERSION}..." &&
     (
         if [ -z "${DROPBEAR_VERSION}" ]; then

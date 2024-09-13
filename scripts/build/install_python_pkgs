@@ -1,8 +1,10 @@
 #!/bin/bash
+
+printf -- "================================================================================\n"
+
 echo "Attempting to install python packages:"
 printf "\t - %s\n" ${@}
 
-(pip install  --no-cache-dir ${@}) >python_packages.log 2>&1 &&
+(pip install --no-cache-dir ${@}) >python_packages.log 2>&1 &&
     (echo "... successful!" && rm -rf python_packages.log) ||
     (sed -i 's/^/\t/' python_packages.log && cat python_packages.log && exit 1)
-
