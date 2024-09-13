@@ -64,10 +64,6 @@ ${begin_delim}
 export DEV_CONTAINER_DIR="${DEV_CONTAINER_DIR}"
 export PATH="${PATH}:\${PATH}"
 export PATH="\$("${DEV_CONTAINER_DIR}/run/make_unique" "\${PATH}" ":")";
-echo "ORGPATH IS:"
-echo "$PATH"
-echo "PATH IS:"
-echo "\$PATH"
 
 if [[ "\${TERM_PROGRAM}" == "vscode" ]]; then
     export __ssh_entrypoint_run__=
@@ -101,4 +97,4 @@ printf "Running on %s, port %s\n" \
     "${dropbear_port}"
 echo "----------------------------------------------------"
 
-/usr/sbin/dropbear -F -E -s -p ${dropbear_port}
+/usr/local/sbin/dropbear -F -E -s -p ${dropbear_port}

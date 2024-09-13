@@ -97,7 +97,7 @@ ONBUILD RUN \
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ===================== > Install dropbear SSH server < ====================== #
-RUN /$DEV_CONTAINER_DIR/build/install_dropbear "${DROPBEAR_VERSION}"
+RUN /$DEV_CONTAINER_DIR/build/install_dropbear "${DROPBEAR_VERSION}";
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 
