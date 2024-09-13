@@ -15,15 +15,15 @@ source "${DEV_CONTAINER_DIR}/run/print_functions"
 
 if [ -f ${HOME}/.env ]; then
     source "${HOME}/.env" &&
-    {
-        echo "source'd \${HOME}/.env"
-    } ||
+        {
+            echo "source'd \${HOME}/.env"
+        } ||
         printf "%s\n" "source ${HOME}/.env failed"
 elif [ -f /.env ]; then
     source /.env &&
-    {
-        echo "source'd /.env"
-    }  ||
+        {
+            echo "source'd /.env"
+        } ||
         printf "%s\n" "source /.env failed"
 fi
 
@@ -43,15 +43,22 @@ fi
 # ────────────────────────────────── <end> ─────────────────────────────────── #
 
 # ======================== > Print default folders < ========================= #
-if [ ! -z "${WORKDIR}${OUTDIR}" ]; then
-    # echo "================================================================================"
+if [ ! -z "${WORKDIR}" ]; then
     printf "%-12s%s\n" \
         "\$WORKDIR" \
         "$(tput_file "$(readlink -f ${WORKDIR})" 5)"
+    if [ ! -d "${WORKDIR}" ]; then
+        mkdir -p "${WORKDIR}"
+    fi
+fi
+
+if [ ! -z "${OUTDIR}" ]; then
     printf "%-12s%s\n" \
         "\$OUTDIR" \
         "$(tput_file "$(readlink -f ${OUTDIR})" 5)"
-    # echo "================================================================================"
+    if [ ! -d "${OUTDIR}" ]; then
+        mkdir -p "${OUTDIR}"
+    fi
 fi
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
