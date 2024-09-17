@@ -12,7 +12,9 @@ printf -- "Installing dropbear ${DROPBEAR_VERSION}..." &&
             echo "Missing argument: DROPBEAR_VERSION" >&2
             exit 1
         fi
-        curl -O https://matt.ucc.asn.au/dropbear/dropbear-${DROPBEAR_VERSION}.tar.bz2 &&
+        mkdir -p "${INSTALL_FLD}" &&
+            cd "${INSTALL_FLD}" &&
+            curl -O https://matt.ucc.asn.au/dropbear/dropbear-${DROPBEAR_VERSION}.tar.bz2 &&
             tar -xvjf dropbear-${DROPBEAR_VERSION}.tar.bz2 &&
             cd dropbear-${DROPBEAR_VERSION} &&
             ./configure &&
