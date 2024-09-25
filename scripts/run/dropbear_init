@@ -91,9 +91,20 @@ ${DEV_CONTAINER_DIR}/run/ssh_key_check || {
     fi
 }
 
+if [ -n "${HOST}" ]; then 
+    SSH_HOSTNAME="$HOST"
+elif [ -n "${HOSTNAME}" ]; then 
+    SSH_HOSTNAME="$HOSTNAME"
+else 
+    err "\$HOST and \$HOSTNAME are both empty!"
+    exit 1
+fi
+
+echo "$SSH_HOSTNAME" > "${DEV_CONTAINER_DIR}/ssh_hostname.txt"
+
 echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" \
-    "$HOST$HOSTNAME" \
+    "$SSH_HOSTNAME" \
     "${dropbear_port}"
 echo "----------------------------------------------------"
 
