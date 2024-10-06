@@ -20,4 +20,4 @@ for element in ${_path}; do
     fi
     printf -- "\n"
 done
-printf "%s\n" "${outpath[@]}" | paste -sd : -
+printf "%s\n" "${outpath[@]}" | paste -sd : - | tr -d '\n'
