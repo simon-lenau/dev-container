@@ -15,7 +15,8 @@ ARG r_packages="" \
 ENV \
     DEV_CONTAINER_DIR="/dev-container" \
     WORKDIR="$workdir" \
-    OUTDIR="$outdir"
+    OUTDIR="$outdir" \
+    DEBIAN_FRONTEND="noninteractive"
 
 ONBUILD ARG \
     r_packages="" \
@@ -27,7 +28,8 @@ ONBUILD ARG \
 
 ONBUILD ENV \
     WORKDIR="$workdir" \
-    OUTDIR="$outdir"
+    OUTDIR="$outdir" \
+    DEBIAN_FRONTEND="noninteractive"
 
 SHELL ["/bin/bash", "-c"]
 
