@@ -59,7 +59,7 @@ chmod go-rwx "${authorized_keys_file}"
 for host_key_type in "${host_key_types[@]}"; do
     org_file="${SSH_KEY_FOLDER}/dropbear_${host_key_type}_host_key.txt"
     dropbear_file="${DROPBEAR_FOLDER}/dropbear_${host_key_type}_host_key"
-    if [[ "${action}" == "generate" ]]; then
+    if [[ "${action}" == "generate" || ! -f "${org_file}" ]]; then
         rm -rf "${dropbear_file}"
         # Generate host key
         printf "Generating $(tput_file "%-64s" 5)" "${org_file}"
