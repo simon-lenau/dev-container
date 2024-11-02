@@ -2,3 +2,4 @@ curl
 libfontconfig1-dev
 openssh-client
 pandoc
+tmux
