@@ -34,6 +34,8 @@ forward-container-main:
       - TO_PATH: "index.docker.io/simonlenau/dev-container:"
         FROM_IMAGE: [ "${PYTHON_IMAGE}", "${R_IMAGE}" ]
         OUTPUT_VERSION: [ "", "latest" ]
+  needs:
+    - build-container
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
