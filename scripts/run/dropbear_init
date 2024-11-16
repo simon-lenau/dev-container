@@ -15,19 +15,30 @@
 # ┌┌────────────────────────────────────────────────────────────────────────┐┐ #
 # ││ This will check for an environment file and source it if it is there   ││ #
 # └└────────────────────────────────────────────────────────────────────────┘┘ #
+ENV_FILE=""
+if [ -f "${HOME}/.env" ]; then
+    ENV_FILE="${HOME}/.env"
+elif [ -f "/.env" ]; then
+    ENV_FILE="/.env"
+fi
 
-if [ -f ${HOME}/.env ]; then
-    source "${HOME}/.env" &&
+if [ ! -z "${ENV_FILE}" ]; then
+    source "${ENV_FILE}" &&
         {
-            echo "source'd \${HOME}/.env"
+            echo "source'd ${ENV_FILE}"
         } ||
-        printf "%s\n" "source ${HOME}/.env failed"
-elif [ -f /.env ]; then
-    source /.env &&
-        {
-            echo "source'd /.env"
-        } ||
-        printf "%s\n" "source /.env failed"
+        printf "%s\n" "sourcing ${ENV_FILE} failed"
+
+    if [ -f "${HOME}/.Rprofile" ]; then
+        RPROFILE_FILE="${HOME}/.Rprofile"
+    elif [ -f "/.Rprofile" ]; then
+        RPROFILE_FILE="/.Rprofile"
+    fi
+    if [ ! -z "${RPROFILE_FILE}" ]; then
+        cat <<EOF >>"${RPROFILE_FILE}"
+readRenviron("/.env")
+EOF
+    fi
 fi
 
 # ────────────────────────────────── <end> ─────────────────────────────────── #
@@ -91,16 +102,16 @@ ${DEV_CONTAINER_DIR}/run/ssh_key_check || {
     fi
 }
 
-if [ -n "${HOST}" ]; then 
+if [ -n "${HOST}" ]; then
     SSH_HOSTNAME="$HOST"
-elif [ -n "${HOSTNAME}" ]; then 
+elif [ -n "${HOSTNAME}" ]; then
     SSH_HOSTNAME="$HOSTNAME"
-else 
+else
     err "\$HOST and \$HOSTNAME are both empty!"
     exit 1
 fi
 
-echo "$SSH_HOSTNAME" > "${DEV_CONTAINER_DIR}/ssh_hostname.txt"
+echo "$SSH_HOSTNAME" >"${DEV_CONTAINER_DIR}/ssh_hostname.txt"
 
 echo "----------------------------------------------------"
 printf "Running on %s, port %s\n" \
