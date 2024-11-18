@@ -17,7 +17,7 @@ if [ ! -d ${outdir} ]; then
     mkdir -p $outdir
 fi
 
-for ((i = 0; i < ${#extensions[@]}; i += 2)); do
+for ((i = 0; i < ${#extensions[@]}; i += 1)); do
         install_logfile=${outdir}/${packages[$i]}.log
         printf "> %-50s" "${extensions[$i]}"
         (code-server --accept-server-license-terms --install-extension "${extensions[$i]}" \
